@@ -19,3 +19,17 @@ Egy olyan felhasználóbarát online platform, amely elsődleges kiindulópontt�
 2. A felhasználó számára legyen elérhető az ár-összehasonlítás funkció, amely több áruház ajánlatát mutatja egy adott termékhez.
 3. Termék részletes adatainak megtekintése.
 4. Alapvető partnerinformációk a webáruház nevéről, logójáról és webcíméről.
+
+## Részletes követelmények:
+
+**K01 Adatgyűjtés** Áruházak kínálatának felderítése web scraping segítségével.  
+**K02 Keresés** A felhasználók képesek a kínálat között keresi.  
+**K03 Szűrés** A felhasználók képesek bizonyos kulcsszavak használatával a kínálat szűrésére.  
+**K04 Termék részletek** Az oldal megjeleníti a termékek részleteit.  
+**K05 Termék forrása** Az egyes termékek jól látható módon megjelölt forrással vannak ellátva.  
+**K06 Rendezés** A felhasználó képes a termékeket különböző szempontok szerint rendezni.  
+**K07 Árak összehasonlítása** Az oldal képes az egyes termékek árait összehasonlítani.
+
+## Fogalomtár:
+
+1. **Web scraping**: Adatgyűjtés weboldalakról automatizált szkriptek segítségével.
