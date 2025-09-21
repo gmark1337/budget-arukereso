@@ -1,0 +1,3 @@
+# Pista bácsi garbót keres Juliska néniek
+
+Pista bácsi, 76 évesen nem tud lépést tartani a modern technikákkal és nehézséget okoz neki az internet használata. Megszeretné lepni Juliska nénit egy nagyon szép piros garbóval. Nem ismeri a márkákat és az árakat. Pista bácsi fellép a weboldalunkra, ami egy keresővel fogadja. A kereső segítségével megadja, hogy ’piros garbó’, majd szűrhet az alapján, melyik webáruház eredményeit szeretné látni, és sorrendet állíthat be (pl. ár vagy méret szerint). A találatok szép képekkel jelennek meg, tartalmazzák az árakat, és ha rákattint egy ruhára, a rendszer átirányítja a hirdető weboldalára, ahol meg tudja vásárolni.
