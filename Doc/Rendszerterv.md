@@ -110,3 +110,19 @@ Egy Chromium alapú böngészőt használva, szimuláljuk az emberi cselekvést.
 3. Lekéri és elmenti az első találat adatait
 4. Oldalanként folytatja a keresést a megadott tartományban
 5. Az összegyűjtött találatokat visszaküldi a backend számára feldolgozásra
+
+
+# Backend terv
+
+A weboldal 3 különböző nézetből fog állni:
+1. [Keresési nézet](assets/keresesi-nezet.png) — az alapértelmezett ablak, ami fogadja az ide látogató felhasználókat
+1. [Találat nézet](assets/talalat-nezet.png) — a beállított feltételek illetve keresési kulcsszavak után a találatokat összesíti
+1. [Termék nézet](assets/termek-nezet.png) — a keresési találtok közül az általunk kiválasztott termék részletes információit mutatja meg
+
+### Működés
+
+- Környezet
+    - Node.js
+
+Az oldal meglátogatása esetén a **Keresési nézettel** találkozik a felhasználó, ahol a keresési mező kitöltése és az esetleges feltételek beállítása után az adatokat átadjuk a webscraping részére, aminek a folyamat végeztével beérkező válasza alapján átíránytjuk a felhasználót a **Találat nézethez**.
+Ebben a nézetben listázzuk a találatokat. Abban az esetben ha megtetszik egy termék vagy csak érdekli a felhasználót, a termékre való kattintással átléphet a **Termék nézetbe**, ahol részletesebb információkat talál az adott termékről.
