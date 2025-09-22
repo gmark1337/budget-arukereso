@@ -1,25 +1,27 @@
 import puppeteer from 'puppeteer'
+import {config} from './configuration/config.js'
 
-
-const hervisURL = "https://www.hervis.hu/shop/search/";
 const testSearchword = "kék felső";
 
+
+const hervisWebsite = config.websites["hervis"];
 
 async function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter){
-    const items = await page.evaluate((tag1, tag2, tag3, pricefilterString) => {
+    const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, priceFilterFlag) => {
         const priceFilter = new RegExp(pricefilterString,"i");
         const item = document.querySelector(tag1).querySelector(tag2).querySelectorAll('a');
         const prices = document.querySelector(tag1).querySelectorAll(tag3);
         return Array.from(item).map((img,index) => {    
             const imgs = img.querySelector('img');
-            let price = null;
             const priceElement = prices[index];
-            const text = priceElement.textContent.trim();
+            const text = priceElement.textContent;
             const match = text.match(priceFilter);
+
+            let price = null;
             if(match){
                 price = match[0].replace(/\s/g,"");
             } 
@@ -30,31 +32,31 @@ async function getImagesAsync(page, divSelector, linkSelector, priceSelector, pr
             };
         });
     },divSelector, linkSelector, priceSelector, priceFilter.source);
+
     return items;
 }
 
 async function encodeSearchItemAsync(searchedItem, url){
-    const encodedUrl = `${url}${encodeURIComponent(searchedItem)}`;
-    return encodedUrl;
+    return `${url}${encodeURIComponent(searchedItem)}`;
 }
 
 
 async function fetchHervisImages(page, numberOfItemsToFetch){
-    const foundPage = await encodeSearchItemAsync(testSearchword, hervisURL);
+    const foundPage = await encodeSearchItemAsync(testSearchword, hervisWebsite.baseUrl);
     await page.goto(foundPage);
 
     await sleep(1500);
 
-    const cookiedeny = await page.evaluateHandle(() => {
-        const host = document.querySelector(".cmpwrapper");
+    const cookiedeny = await page.evaluateHandle((tag1, tag2) => {
+        const host = document.querySelector(tag1);
         const shadow = host.shadowRoot;
-        return shadow.querySelector(".cmpboxbtn.cmpboxbtnno.cmptxt_btn_no");
-    });
+        return shadow.querySelector(tag2);
+    }, hervisWebsite.denyCookieSelector, hervisWebsite.shadowCookieDenyButton);
 
     await cookiedeny.click();
     await sleep(1500);
     const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;
-    const items = await getImagesAsync(page, '.product-list__list', '.product-scroll__list.products', '.product-panel__summary-price', regex);
+    const items = await getImagesAsync(page, hervisWebsite.wholePageSelector, hervisWebsite.urlTagSelector,hervisWebsite.priceTagSelector, regex);
 
     const selected = items.slice(0,numberOfItemsToFetch);
     const finalImages = {
@@ -70,6 +72,8 @@ async function Main() {
         headless:true,
         defaultViewport:false
     });
+
+
 
     const page = await browser.newPage();
 
