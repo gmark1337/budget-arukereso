@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>budget-arukereso</title>
+        <link rel="stylesheet" href="results.css">
+    </head>
+    <body>
+        <div id="results">
+            <% results.map((result) => { %>
+            <fieldset id="result">
+                <legend>Vendor: <%= result.WebsiteName %></legend>
+                <% result.FoundImages.map((item) => { %>
+                <div div="item">
+                Item: <%= item.Item %>
+                <img src="<%= item.URL %>">
+                Price: <%= item.Price %>
+                </div>
+                <% }); %>
+            </fieldset>
+            <% }); %>
+        </div>
+    </body>
+</html>
