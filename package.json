@@ -1,0 +1,22 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmark1337/budget-arukereso.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gmark1337/budget-arukereso/issues"
+  },
+  "homepage": "https://github.com/gmark1337/budget-arukereso#readme",
+  "description": "",
+  "dependencies": {
+    "puppeteer": "^24.22.0"
+  }
+}
