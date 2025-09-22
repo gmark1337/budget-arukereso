@@ -15,9 +15,10 @@
     "url": "https://github.com/gmark1337/budget-arukereso/issues"
   },
   "homepage": "https://github.com/gmark1337/budget-arukereso#readme",
-  "type":"module",
+  "type": "module",
   "description": "",
   "dependencies": {
+    "dotenv": "^17.2.2",
     "puppeteer": "^24.22.0"
   }
 }
