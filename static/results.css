@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+img {
+    height: 2em;
+}
+
+#item {
+    margin: 0.5em;
+}
+
+#result {
+    border: thin solid black;
+    padding: 2em;
+    margin: 0.3em;
+}
