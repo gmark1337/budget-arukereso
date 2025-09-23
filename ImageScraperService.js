@@ -2,8 +2,10 @@ import puppeteer from 'puppeteer'
 import {config} from './configuration/config.js'
 
 const testSearchword = "kék felső";
-
-
+const filters = {
+    minPrice: "3000",
+    maxPrice: "16000"
+};
 const hervisWebsite = config.websites["hervis"];
 
 async function sleep(ms){
@@ -36,13 +38,32 @@ async function getImagesAsync(page, divSelector, linkSelector, priceSelector, pr
     return items;
 }
 
-async function encodeSearchItemAsync(searchedItem, url){
-    return `${url}${encodeURIComponent(searchedItem)}`;
+function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
+    const searchedItemPart = encodeURIComponent(searchedItem);
+
+    let baseURL = `${url}${searchedItemPart}`;
+    
+    if(!filters.minPrice && !filters.maxPrice){
+        return baseURL;
+    }
+
+    let queryPart = `${searchedItem}`;
+    if(filters.minPrice && filters.maxPrice){
+        queryPart += `::price:[${filters.minPrice}.00 - ${filters.maxPrice}.00]`;
+    }
+
+    const encodedQuery = encodeURIComponent(queryPart)
+    .replace(/%3A%3A/g, "::")
+    .replace(/%3A/g, ":")
+    .replace(/%5B/g, "[")
+    .replace(/%5d/g, "]");
+    
+    url += `?query=${encodedQuery}`;
+    return url;
 }
 
-
 async function fetchHervisImages(page, numberOfItemsToFetch){
-    const foundPage = await encodeSearchItemAsync(testSearchword, hervisWebsite.baseUrl);
+    const foundPage = await encodeSearchItemWithFilteringAsync(testSearchword, hervisWebsite.baseUrl, filters);
     await page.goto(foundPage);
 
     await sleep(1500);
@@ -73,7 +94,7 @@ async function Main() {
         defaultViewport:false
     });
 
-
+    //console.log(await encodeSearchItemWithFilteringAsync(testSearchword, hervisWebsite.baseUrl, filters));
 
     const page = await browser.newPage();
 
