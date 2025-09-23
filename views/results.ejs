@@ -6,15 +6,17 @@
         <link rel="stylesheet" href="results.css">
     </head>
     <body>
+        <div id="loading">
+
+        </div>
         <div id="results">
             <% results.map((result) => { %>
             <fieldset id="result">
-                <legend>Vendor: <%= result.WebsiteName %></legend>
+                <legend>Vendor: <%= result.websiteName%></legend>
                 <% result.FoundImages.map((item) => { %>
-                <div div="item">
-                Item: <%= item.Item %>
-                <img src="<%= item.URL %>">
-                Price: <%= item.Price %>
+                <div id="item">
+                <a href="<%= item.href %>"><img src="<%= item.src%>"></a>
+                Price: <%= item.price %>
                 </div>
                 <% }); %>
             </fieldset>
