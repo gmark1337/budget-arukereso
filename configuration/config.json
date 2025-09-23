@@ -1,0 +1,12 @@
+{
+    "websites":{
+        "hervis":{
+            "baseUrl":"https://www.hervis.hu/shop/search/",
+            "denyCookieSelector":".cmpwrapper",
+            "shadowCookieDenyButton": ".cmpboxbtn.cmpboxbtnno.cmptxt_btn_no",
+            "wholePageSelector":".product-list__list",
+            "urlTagSelector":".product-scroll__list.products",
+            "priceTagSelector":".product-panel__summary-price"
+        }
+    }
+}
