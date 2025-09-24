@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product Search </title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="container header">
+    <h1>Product Search</h1>
+
+    <!-- Search bar + trailing controls -->
+    <div class="searchgroup">
+      <input id="q" type="search" placeholder="Search…" aria-label="Search" />
+      <!-- Clear button INSIDE the search bar (before the trailing icons) -->
+      <button id="clearSearch" class="clear-btn" aria-label="Clear search" title="Clear">✕</button>
+
+      <div class="trailing">
+        <!-- Sort -->
+        <button id="sortBtn" class="icon ghost" aria-label="Sort" title="Sort">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M4 7h16M7 12h10M10 17h4"
+                  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <span class="divider" aria-hidden="true"></span>
+
+        <!-- Filters -->
+        <button id="filterBtn" class="icon" aria-label="Filters" title="Filters">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M3 5h18l-7 8v5l-4 1v-6L3 5z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <span class="divider" aria-hidden="true"></span>
+
+        <!-- Dark Mode tile -->
+        <button id="themeToggle" class="tile" aria-label="Toggle dark mode" aria-pressed="false" title="Dark Mode">
+          <svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true">
+            <circle cx="24" cy="24" r="18" class="ico-ring"/>
+            <path d="M24 8a16 16 0 0 0 0 32V8z" class="ico-left"/>
+            <path d="M24 8a16 16 0 0 1 0 32V8z" class="ico-right"/>
+            <circle cx="24" cy="24" r="6" class="ico-dot"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Search history dropdown -->
+      <ul id="historyList" class="history hidden" aria-label="Search history"></ul>
+    </div>
+  </header>
+
+  <!-- Filter sheet -->
+  <aside id="filters" class="sheet" aria-hidden="true">
+    <div class="sheet-inner">
+      <div class="sheet-header">
+        <h2>Filters</h2>
+        <button id="closeFilters" class="icon ghost" aria-label="Close" title="Close">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18"
+                  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <label class="block">
+        Price: <span id="priceMinVal">0</span> – <span id="priceMaxVal">200</span> €
+      </label>
+      <div id="priceRange" class="range">
+        <div class="track"></div>
+        <div class="fill" id="rangeFill"></div>
+        <button class="thumb min" id="thumbMin" aria-label="Lower price"></button>
+        <button class="thumb max" id="thumbMax" aria-label="Upper price"></button>
+      </div>
+
+      <fieldset class="block">
+        <legend>Shops</legend>
+        <label><input type="checkbox" class="shop" value="Alindo" checked> <span>Alindo</span></label>
+        <label><input type="checkbox" class="shop" value="eStore" checked> <span>eStore</span></label>
+        <label><input type="checkbox" class="shop" value="SaleShop" checked> <span>SaleShop</span></label>
+        <label><input type="checkbox" class="shop" value="Hervis" checked> <span>Hervis</span></label>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Size</legend>
+        <div class="chips" id="sizeChips">
+          <button type="button" data-size="XS" class="chip">XS</button>
+          <button type="button" data-size="S"  class="chip">S</button>
+          <button type="button" data-size="M"  class="chip">M</button>
+          <button type="button" data-size="L"  class="chip">L</button>
+          <button type="button" data-size="XL" class="chip">XL</button>
+          <button type="button" data-size="2XL" class="chip">2XL</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="block">
+        <legend>Gender</legend>
+        <div class="chips" id="genderChips">
+          <button type="button" data-gender="Women"  class="chip">Women</button>
+          <button type="button" data-gender="Men"    class="chip">Men</button>
+          <button type="button" data-gender="Unisex" class="chip">Unisex</button>
+          <button type="button" data-gender="Kids"   class="chip">Kids</button>
+        </div>
+      </fieldset>
+
+      <div class="sheet-actions">
+        <button id="clearFilters" class="btn ghost">Clear</button>
+        <button id="applyFilters" class="btn">Apply</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sort menu -->
+  <div id="sortMenu" class="menu" aria-hidden="true">
+    <button data-sort="relevance">Relevance</button>
+    <button data-sort="priceAsc">Lowest price</button>
+    <button data-sort="priceDesc">Highest price</button>
+  </div>
+
+  <main class="container">
+    <h2 id="resultsTitle" class="results-title">Results</h2>
+    <section id="grid" class="grid" aria-live="polite"></section>
+    <p id="empty" class="empty hidden">No results. Try adjusting filters.</p>
+  </main>
+
+  <!-- Product detail dialog -->
+  <dialog id="productDialog" class="dialog">
+    <div class="dialog-body">
+      <img id="pImg" alt="" />
+      <div class="details">
+        <h3 id="pTitle"></h3>
+        <p><strong>Size:</strong> <span id="pSize"></span></p>
+        <p><strong>Color:</strong> <span id="pColor"></span></p>
+        <p><strong>Price:</strong> <span id="pPrice"></span></p>
+        <p><a id="pLink" target="_blank" rel="noopener">Seller website</a></p>
+      </div>
+    </div>
+    <form method="dialog" class="dialog-actions">
+      <button class="btn ghost">Close</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
