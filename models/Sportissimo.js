@@ -1,26 +1,45 @@
-import puppeteer from "puppeteer";
-import { getImagesAsync, sleep} from "../ImageScraperService.js";
+import { getImagesAsync, sleep,filters} from "../ImageScraperService.js";
+import {config} from '../configuration/config.js'
 
-const baseURL = "https://www.sportisimo.hu/termekkereso-katalogus/";
 
-function encodeURL(searchedword, url){
-    const searchedItem = encodeURIComponent(searchedword);
+const sportissmoWebsite = config.websites["sportissimo"];
 
-    return `${url}?q=${searchedItem}`
+function encodeURL(searchedword, url, filters = {}){
+    const params = [];
+
+    //encode ?products[range][price]=23896:135329
+    if(filters.minPrice && filters.maxPrice){
+        const pricePart =  `products[range][price]=${filters.minPrice}:${filters.maxPrice}`;
+        params.push(pricePart);
+    }
+
+    if(filters.size){
+        const sizePart = `products[refinementList][sizes][0]=${encodeURIComponent(filters.size)}`;
+        params.push(sizePart);
+    }
+
+    if(searchedword){
+        params.push(`q=${encodeURIComponent(searchedword)}`);
+    }
+
+
+    const queryString = params.join("&")
+    return `${url}?${queryString}`;
 
 }
 
 export async function fetchSportissimoImages(searchword, page, numberOfItemsToFetch){
-    const foundPage = await encodeURL(searchword,baseURL)
+    const foundPage = await encodeURL(searchword,sportissmoWebsite.baseUrl, filters);
 
     await page.goto(foundPage);
 
     const regex = /^(\d{1,3}(?:[ \u00A0]\d{3})*)\s*Ft/;
     await sleep(1500);
-    const images = await getImagesAsync(page, '.zws-main__list','.ais-InfiniteHits-list.zws-infinite-hits__list','.product-box__prices',regex, '.product-box__image');
+    const images = await getImagesAsync(page, sportissmoWebsite.wholePageSelector,sportissmoWebsite.urlTagSelector,sportissmoWebsite.priceTagSelector,regex, sportissmoWebsite.productImageSelector);
 
-    console.log(images);
+    
     const selected = images.slice(0, numberOfItemsToFetch);
+    //console.log(images);
     const finalImages = {
         websiteName: 'Sportissimo',
         FoundImages: selected
@@ -28,12 +47,3 @@ export async function fetchSportissimoImages(searchword, page, numberOfItemsToFe
 
     return finalImages;
 }
-
-
-//document.querySelector('.zws-main__list').querySelector('.ais-InfiniteHits-list.zws-infinite-hits__list').querySelectorAll('a')
-
-//IMG
-//document.querySelector('.zws-main__list').querySelector('.ais-InfiniteHits-list.zws-infinite-hits__list').querySelector('.product-box__image').querySelector('img')
-
-//PRICE
-//document.querySelector('.zws-main__list').querySelector('.ais-InfiniteHits-list.zws-infinite-hits__list').querySelector('.product-box__price-value').textContent

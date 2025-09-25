@@ -48,7 +48,8 @@ export async function fetchHervisImages(searchword, page, numberOfItemsToFetch){
 	}, hervisWebsite.denyCookieSelector, hervisWebsite.shadowCookieDenyButton);
 
 	await cookiedeny.click();
-	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;	await sleep(1500);
+	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;
+    await sleep(1500);
 
 	const items = await getImagesAsync(page, hervisWebsite.wholePageSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex, hervisWebsite.productImageSelector);
 
