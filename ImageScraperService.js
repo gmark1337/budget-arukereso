@@ -3,7 +3,8 @@ import {config} from './configuration/config.js';
 
 const filters = {
     minPrice: "3000",
-    maxPrice: "16000"
+    maxPrice: "16000",
+	size:"M"
 };
 const hervisWebsite = config.websites["hervis"];
 
@@ -44,13 +45,21 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
     let baseURL = `${url}${searchedItemPart}`;
     
     if(!filters.minPrice && !filters.maxPrice){
+		console.log(`Returning baseURL(no filter): ${baseURL}`);
         return baseURL;
     }
 
-    let queryPart = `${searchedItem}`;
+    let queryPart = searchedItem;
+
+	if(filters.size){
+		queryPart += `::sizesInStockplain:${filters.size}:`;
+	}
+
     if(filters.minPrice && filters.maxPrice){
         queryPart += `::price:[${filters.minPrice}.00 - ${filters.maxPrice}.00]`;
     }
+
+	
 
     const encodedQuery = encodeURIComponent(queryPart)
     .replace(/%3A%3A/g, "::")
@@ -58,8 +67,10 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
     .replace(/%5B/g, "[")
     .replace(/%5d/g, "]");
     
-    url += `?query=${encodedQuery}`;
-    return url;
+    baseURL += `?query=${encodedQuery}`;
+	console.log(`The whole url is: ${baseURL}`);
+    return baseURL;
+	
 }
 
 async function fetchHervisImages(searchword, page, numberOfItemsToFetch){
@@ -104,4 +115,7 @@ export async function Search(searchword) {
 	return hervisImages;
 }
 
-//console.log(await Search("Kék felső"));
+console.log(await Search("Kék felső"));
+
+//https://www.hervis.hu/shop/search/kék%20felső?query=kék%20felső::sizesInStockplain:M:price:%5B3999.00%20-%2015870.00%5D
+//https://www.hervis.hu/shop/search/Kék%20felső::sizesInStockplain:M:?query=Kék%20felső::price:%5B3000.00%20-%2016000.00%5D
