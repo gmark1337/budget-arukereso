@@ -18,7 +18,7 @@ app.get("/", (_, res) => {
 
 app.get("/results", async (req, res) => {
     res.render("results", {
-        results: [await Search(req.query.searchword)]
+        results: await Search(req.query.searchword)
     })
 })
 
