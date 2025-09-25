@@ -11,13 +11,13 @@ async function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter) {
-	const items = await page.evaluate((tag1, tag2, tag3, pricefilterString) => {
+async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector) {
+	const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, imageSelector) => {
 		const priceFilter = new RegExp(pricefilterString, 'i');
 		const item = document.querySelector(tag1).querySelector(tag2).querySelectorAll('a');
 		const prices = document.querySelector(tag1).querySelectorAll(tag3);
 		return [...item].map((img, index) => {
-			const imgs = img.querySelector('img');
+			const imgs = img.querySelector(imageSelector).querySelector('img');
 			const priceElement = prices[index];
 			const text = priceElement.textContent;
 			const match = text.match(priceFilter);
@@ -33,7 +33,7 @@ async function getImagesAsync(page, divSelector, linkSelector, priceSelector, pr
 				price,
 			};
 		});
-	}, divSelector, linkSelector, priceSelector, priceFilter.source);
+	}, divSelector, linkSelector, priceSelector, priceFilter.source, productImageSelector);
 
 	return items;
 }
@@ -77,7 +77,7 @@ async function fetchHervisImages(searchword, page, numberOfItemsToFetch){
 	await cookiedeny.click();
 	await sleep(1500);
 	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;
-	const items = await getImagesAsync(page, hervisWebsite.wholePageSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex);
+	const items = await getImagesAsync(page, hervisWebsite.wholePageSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex, hervisWebsite.productImageSelector);
 
 	const selected = items.slice(0, numberOfItemsToFetch);
 	const finalImages = {

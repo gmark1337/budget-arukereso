@@ -6,7 +6,8 @@
             "shadowCookieDenyButton": ".cmpboxbtn.cmpboxbtnno.cmptxt_btn_no",
             "wholePageSelector":".product-list__list",
             "urlTagSelector":".product-scroll__list.products",
-            "priceTagSelector":".product-panel__summary-price"
+            "priceTagSelector":".product-panel__summary-price",
+            "productImageSelector":".product-panel__image"
         }
     }
 }
