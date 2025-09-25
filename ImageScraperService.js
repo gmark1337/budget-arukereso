@@ -8,11 +8,11 @@ const filters = {
 };
 const hervisWebsite = config.websites["hervis"];
 
-async function sleep(ms){
+export async function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector) {
+export async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector) {
 	const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, imageSelector) => {
 		const priceFilter = new RegExp(pricefilterString, 'i');
 		const item = document.querySelector(tag1).querySelector(tag2).querySelectorAll('a');
@@ -86,8 +86,8 @@ async function fetchHervisImages(searchword, page, numberOfItemsToFetch){
 	}, hervisWebsite.denyCookieSelector, hervisWebsite.shadowCookieDenyButton);
 
 	await cookiedeny.click();
-	await sleep(1500);
-	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;
+	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;	await sleep(1500);
+
 	const items = await getImagesAsync(page, hervisWebsite.wholePageSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex, hervisWebsite.productImageSelector);
 
 	const selected = items.slice(0, numberOfItemsToFetch);
@@ -115,7 +115,7 @@ export async function Search(searchword) {
 	return hervisImages;
 }
 
-console.log(await Search("Kék felső"));
+//console.log(await Search("Kék felső"));
 
 //https://www.hervis.hu/shop/search/kék%20felső?query=kék%20felső::sizesInStockplain:M:price:%5B3999.00%20-%2015870.00%5D
 //https://www.hervis.hu/shop/search/Kék%20felső::sizesInStockplain:M:?query=Kék%20felső::price:%5B3000.00%20-%2016000.00%5D
