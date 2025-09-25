@@ -2,10 +2,11 @@ import puppeteer from 'puppeteer';
 
 import { fetchHervisImages } from './models/Hervis.js';
 import { fetchSportissimoImages } from './models/Sportissimo.js';
+import { fetchSinsayImagesAsync } from './models/Sinsay.js';
 
 export const filters = {
-    minPrice: "23896",
-    maxPrice: "135329",
+    minPrice: "4000",
+    maxPrice: "5000",
 	size:"M"
 };
 
@@ -58,11 +59,20 @@ export async function Search(searchword) {
 	allImages.push(hervisImages);
 	const sportissimoImages = await fetchSportissimoImages(searchword, page, 3);
 	allImages.push(sportissimoImages);
+	const sinsayImages = await fetchSinsayImagesAsync(searchword, page, 3);
+	allImages.push(sinsayImages);
 
+	
 	await browser.close();
-
+	
 	return allImages;
 }
 
 console.log(await Search("Kék felső"));
+
+
+
+
+
+
 

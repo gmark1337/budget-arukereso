@@ -4,7 +4,7 @@ import {config} from '../configuration/config.js'
 
 const sportissmoWebsite = config.websites["sportissimo"];
 
-function encodeURL(searchedword, url, filters = {}){
+function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
     const params = [];
 
     //encode ?products[range][price]=23896:135329
@@ -29,7 +29,7 @@ function encodeURL(searchedword, url, filters = {}){
 }
 
 export async function fetchSportissimoImages(searchword, page, numberOfItemsToFetch){
-    const foundPage = await encodeURL(searchword,sportissmoWebsite.baseUrl, filters);
+    const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportissmoWebsite.baseUrl, filters);
 
     await page.goto(foundPage);
 
