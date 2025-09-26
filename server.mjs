@@ -19,6 +19,7 @@ app.get("/", (_, res) => {
 app.get("/results", async (req, res) => {
     filters.minPrice = req.query.minPrice || "0";
     filters.maxPrice = req.query.maxPrice || "5000";
+    filters.size = req.query.size || "M";
     filters.numberOfPagesToFetch.hervis = parseInt(req.query.count);
     filters.numberOfPagesToFetch.sinsay = parseInt(req.query.count);
     filters.numberOfPagesToFetch.sportissimo = parseInt(req.query.count);
