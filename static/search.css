@@ -1,3 +1,7 @@
 #waitingfield {
     display: none;
 }
+
+details > input {
+    display: block;
+}
