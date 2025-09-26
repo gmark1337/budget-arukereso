@@ -55,17 +55,17 @@ export async function Search(searchword) {
 	const page = await browser.newPage();
 
 
-	const hervisImages = await fetchHervisImages(searchword, page, 3);
-	allImages.push(hervisImages);
-	const sportissimoImages = await fetchSportissimoImages(searchword, page, 3);
-	allImages.push(sportissimoImages);
+	//const hervisImages = await fetchHervisImages(searchword, page, 3);
+	//allImages.push(hervisImages);
+	//const sportissimoImages = await fetchSportissimoImages(searchword, page, 3);
+	//allImages.push(sportissimoImages);
 	const sinsayImages = await fetchSinsayImagesAsync(searchword, page, 3);
-	allImages.push(sinsayImages);
+	//allImages.push(sinsayImages);
 
 	
 	await browser.close();
 	
-	return allImages;
+	return sinsayImages;
 }
 
 console.log(await Search("Kék felső"));

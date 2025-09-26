@@ -1,6 +1,9 @@
 import {sleep, filters} from '../ImageScraperService.js'
+import {config} from '../configuration/config.js'
 
-const baseUrl = "https://www.sinsay.com/hu/hu/";
+const sinsayWebsite = config.websites["sinsay"];
+
+
 function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}, correctPrices){
     const params = [];
 
@@ -12,8 +15,6 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}, cor
         params.push(`sizes=${filters.size}`);
     }
 
-    //TODO 
-    //FIX MAX PRICE BOUNDS!!!
     if(correctPrices.minPrice && correctPrices.maxPrice){
         params.push(`price=${correctPrices.minPrice}%3A`);
     }
@@ -55,8 +56,8 @@ function calculateInRangePriceRange(filterPrice, websitePrice){
 }
 
 async function getImagesAsync(page, tag1, tag2, tag3) {
-    const images = await page.evaluate((containterSelector, elementSelector, priceSelector) => {
-        const container = document.querySelector(containterSelector);
+    const images = await page.evaluate((containerSelector, elementSelector, priceSelector) => {
+        const container = document.querySelector(containerSelector);
         if (!container) return [];
 
         const elements = container.querySelectorAll(elementSelector);
@@ -88,23 +89,29 @@ async function getImagesAsync(page, tag1, tag2, tag3) {
 
 export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFetch){
     
-    await page.goto(await encoderHelperAsync(searchword,baseUrl));
-    console.log(await encoderHelperAsync(searchword,baseUrl));
-    const prices = await getWebsitePricesAsync(page, '.input__InputText-sc-1mxde2b-0.ipFxa.sc-jVKKMF.gmfmmt');
+    await page.goto(await encoderHelperAsync(searchword,sinsayWebsite.baseUrl));
+
+    //console.log(await encoderHelperAsync(searchword,baseUrl));
+
+    const prices = await getWebsitePricesAsync(page, sinsayWebsite.priceRangeSelector);
+
 
     //console.log(`The filters prices are ${filters.minPrice} and ${filters.maxPrice}`);
     //console.log(`The website prices are ${prices.minPrice} and ${prices.maxPrice}`);
 
     const correctPrices = calculateInRangePriceRange(prices, filters);
+
     //console.log(`The corrected prices are ${correctPrices.minPrice} and ${correctPrices.maxPrice}`);
 
-    const foundpage = await encodeSearchItemWithFilteringAsync(searchword, baseUrl, filters, correctPrices);
+    const foundpage = await encodeSearchItemWithFilteringAsync(searchword, sinsayWebsite.baseUrl, filters, correctPrices);
+
     await page.goto(foundpage);
     await sleep(1500);
-    await page.click('#cookiebotDialogOkButton');
+    
+    await page.click(sinsayWebsite.acceptCookieButton);
 
     await sleep(1500);
-    const items = await getImagesAsync(page, '.algolia-products-module__algolia-products-container', '.product-tilestyled__StyledProductTileWrapper-sc-1u901v5-1.jFLCAm','.product-tilestyled__StyledProductTileDetails-sc-1u901v5-2.blUHpA');
+    const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.imageSelector,sinsayWebsite.productPriceSelector);
     const selected = items.slice(0, numberOfItemsToFetch);
     const finalImages = {
         websiteName: 'Sinsay',
