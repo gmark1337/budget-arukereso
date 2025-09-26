@@ -9,7 +9,7 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
     let baseURL = `${url}${searchedItemPart}`;
     
     if(!filters.minPrice && !filters.maxPrice){
-		console.log(`Returning baseURL(no filter): ${baseURL}`);
+		//console.log(`Returning baseURL(no filter): ${baseURL}`);
         return baseURL;
     }
 
@@ -31,7 +31,7 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
     .replace(/%5d/g, "]");
     
     baseURL += `?query=${encodedQuery}`;
-	console.log(`The whole url is: ${baseURL}`);
+	// console.log(`The whole url is: ${baseURL}`);
     return baseURL;
 }
 

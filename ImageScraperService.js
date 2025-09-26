@@ -7,7 +7,12 @@ import { fetchSinsayImagesAsync } from './models/Sinsay.js';
 export const filters = {
     minPrice: "4000",
     maxPrice: "5000",
-	size:"M"
+	size:"M",
+	numberOfPagesToFetch:{
+		hervis: 1,
+		sinsay: 2,
+		sportissimo: 3
+	}
 };
 
 const allImages = [];
@@ -55,20 +60,21 @@ export async function Search(searchword) {
 	const page = await browser.newPage();
 
 
-	//const hervisImages = await fetchHervisImages(searchword, page, 3);
-	//allImages.push(hervisImages);
-	//const sportissimoImages = await fetchSportissimoImages(searchword, page, 3);
-	//allImages.push(sportissimoImages);
-	const sinsayImages = await fetchSinsayImagesAsync(searchword, page, 3);
-	//allImages.push(sinsayImages);
+	const hervisImages = await fetchHervisImages(searchword, page, filters.numberOfPagesToFetch.hervis);
+	allImages.push(hervisImages);
+	const sportissimoImages = await fetchSportissimoImages(searchword, page, filters.numberOfPagesToFetch.sportissimo);
+	allImages.push(sportissimoImages);
+	const sinsayImages = await fetchSinsayImagesAsync(searchword, page, filters.numberOfPagesToFetch.sinsay);
+	allImages.push(sinsayImages);
 
 	
 	await browser.close();
 	
-	return sinsayImages;
+	return allImages;
 }
 
-console.log(await Search("Kék felső"));
+//console.log(await Search("Kék felső"));
+
 
 
 
