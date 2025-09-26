@@ -35,11 +35,11 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
     return baseURL;
 }
 
-export async function fetchHervisImages(searchword, page, numberOfItemsToFetch){
+export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch){
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword, hervisWebsite.baseUrl, filters);
     await page.goto(foundPage);
 
-    await sleep(1500);
+    await sleep(3000);
 
 	const cookiedeny = await page.evaluateHandle((tag1, tag2) => {
 		const host = document.querySelector(tag1);

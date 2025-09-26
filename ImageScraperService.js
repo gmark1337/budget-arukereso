@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 
-import { fetchHervisImages } from './models/Hervis.js';
-import { fetchSportissimoImages } from './models/Sportissimo.js';
+import { fetchHervisImagesAsync } from './models/Hervis.js';
+import { fetchSportissimoImagesAsync } from './models/Sportissimo.js';
 import { fetchSinsayImagesAsync } from './models/Sinsay.js';
 
 export const filters = {
@@ -12,10 +12,12 @@ export const filters = {
 		hervis: 1,
 		sinsay: 2,
 		sportissimo: 3
-	}
+	},
+	blackListedWebsite:[
+		"sinsay"
+	]
 };
 
-const allImages = [];
 
 
 export async function sleep(ms){
@@ -51,6 +53,8 @@ export async function getImagesAsync(page, divSelector, linkSelector, priceSelec
 
 
 export async function Search(searchword) {
+
+	const allImages = [];
 	const browser = await puppeteer.launch({
 		headless: true,
 		defaultViewport: false,
@@ -59,21 +63,26 @@ export async function Search(searchword) {
 
 	const page = await browser.newPage();
 
+	if(!filters.blackListedWebsite.includes("hervis")){
+		const hervisImages = await fetchHervisImagesAsync(searchword, page, filters.numberOfPagesToFetch.hervis);
+		allImages.push(hervisImages);
+	}
+	if(!filters.blackListedWebsite.includes("sportissimo")){
+		const sportissimoImages = await fetchSportissimoImagesAsync(searchword, page, filters.numberOfPagesToFetch.sportissimo);
+		allImages.push(sportissimoImages);
+	}
+	if(!filters.blackListedWebsite.includes("sinsay")){
+		const sinsayImages = await fetchSinsayImagesAsync(searchword, page, filters.numberOfPagesToFetch.sinsay);
+		allImages.push(sinsayImages);
+	}
 
-	const hervisImages = await fetchHervisImages(searchword, page, filters.numberOfPagesToFetch.hervis);
-	allImages.push(hervisImages);
-	const sportissimoImages = await fetchSportissimoImages(searchword, page, filters.numberOfPagesToFetch.sportissimo);
-	allImages.push(sportissimoImages);
-	const sinsayImages = await fetchSinsayImagesAsync(searchword, page, filters.numberOfPagesToFetch.sinsay);
-	allImages.push(sinsayImages);
-
-	
 	await browser.close();
 	
 	return allImages;
 }
 
 //console.log(await Search("Kék felső"));
+
 
 
 

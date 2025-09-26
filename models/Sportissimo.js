@@ -28,7 +28,7 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
 
 }
 
-export async function fetchSportissimoImages(searchword, page, numberOfItemsToFetch){
+export async function fetchSportissimoImagesAsync(searchword, page, numberOfItemsToFetch){
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportissmoWebsite.baseUrl, filters);
 
     await page.goto(foundPage);
