@@ -11,6 +11,26 @@
             <form action="/results" method="get">
                 <input required type="text" id="searchword" name="searchword" />
                 <button type="submit" onclick="startSearch()">🔍</button>
+                <details>
+                    <summary>Advanced search</summary>
+                    <label for="minPrice">Minimum price:</label>
+                    <input type="number" id="minPrice" name="minPrice" placeholder=4000 />
+                    <label for="maxPrice">Maximum price:</label>
+                    <input type="number" id="maxPrice" name="maxPrice" placeholder=5000 />
+                    <label for="size">Size:</label>
+                    <input type="text" id="size" name="size" />
+                    <label for="count">Number of items per site:</label>
+                    <input required type="number" id="count" name="count" value=3 min=1 />
+                    Websites:
+                    <div id="websites">
+                        <input type="checkbox" checked id="hervis" name="hervis">
+                        <label for="hervis">Hervis</label>
+                        <input type="checkbox" checked id="sinsay" name="sinsay">
+                        <label for="vehicle2">Sinsay</label>
+                        <input type="checkbox" checked id="Sportissimo" name="sportissimo">
+                        <label for="vehicle3">Sportissimo</label>
+                    </div>
+                </details>
             </form>
         </fieldset>
         <div id="waitingfield">
