@@ -33,8 +33,19 @@ app.get("/results", async (req, res) => {
     if (req.query.sportissimo != "on") {
         filters.blackListedWebsite.push("sportissimo");
     }
+    let r = await Search(req.query.searchword);
+    for (let i = 0; i < r.length; i++) {
+        r[i].FoundImages.sort((a, b) => {
+            if (req.query.order == "asc") {
+                return parseInt(a.price) - parseInt(b.price);
+            }
+            if (req.query.order == "desc") {
+                return parseInt(b.price) - parseInt(a.price);
+            }
+        })
+    }
     res.render("results", {
-        results: await Search(req.query.searchword)
+        results: r
     })
 })
 
