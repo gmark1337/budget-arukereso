@@ -11,6 +11,10 @@
             <form action="/results" method="get">
                 <input required type="text" id="searchword" name="searchword" />
                 <button type="submit" onclick="startSearch()">🔍</button>
+                <select name="order">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
                 <details>
                     <summary>Advanced search</summary>
                     <label for="minPrice">Minimum price:</label>
