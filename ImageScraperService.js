@@ -1,23 +1,36 @@
 import puppeteer from 'puppeteer';
-import {config} from './configuration/config.js';
 
-const filters = {
-    minPrice: "3000",
-    maxPrice: "16000"
+import { fetchHervisImagesAsync } from './models/Hervis.js';
+import { fetchSportissimoImagesAsync } from './models/Sportissimo.js';
+import { fetchSinsayImagesAsync } from './models/Sinsay.js';
+
+export const filters = {
+    minPrice: "4000",
+    maxPrice: "5000",
+	size:"M",
+	numberOfPagesToFetch:{
+		hervis: 1,
+		sinsay: 2,
+		sportissimo: 3
+	},
+	blackListedWebsite:[
+		"sinsay"
+	]
 };
-const hervisWebsite = config.websites["hervis"];
 
-async function sleep(ms){
+
+
+export async function sleep(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter) {
-	const items = await page.evaluate((tag1, tag2, tag3, pricefilterString) => {
+export async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector) {
+	const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, imageSelector) => {
 		const priceFilter = new RegExp(pricefilterString, 'i');
 		const item = document.querySelector(tag1).querySelector(tag2).querySelectorAll('a');
 		const prices = document.querySelector(tag1).querySelectorAll(tag3);
 		return [...item].map((img, index) => {
-			const imgs = img.querySelector('img');
+			const imgs = img.querySelector(imageSelector).querySelector('img');
 			const priceElement = prices[index];
 			const text = priceElement.textContent;
 			const match = text.match(priceFilter);
@@ -33,75 +46,48 @@ async function getImagesAsync(page, divSelector, linkSelector, priceSelector, pr
 				price,
 			};
 		});
-	}, divSelector, linkSelector, priceSelector, priceFilter.source);
+	}, divSelector, linkSelector, priceSelector, priceFilter.source, productImageSelector);
 
 	return items;
 }
 
-function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
-    const searchedItemPart = encodeURIComponent(searchedItem);
-
-    let baseURL = `${url}${searchedItemPart}`;
-    
-    if(!filters.minPrice && !filters.maxPrice){
-        return baseURL;
-    }
-
-    let queryPart = `${searchedItem}`;
-    if(filters.minPrice && filters.maxPrice){
-        queryPart += `::price:[${filters.minPrice}.00 - ${filters.maxPrice}.00]`;
-    }
-
-    const encodedQuery = encodeURIComponent(queryPart)
-    .replace(/%3A%3A/g, "::")
-    .replace(/%3A/g, ":")
-    .replace(/%5B/g, "[")
-    .replace(/%5d/g, "]");
-    
-    url += `?query=${encodedQuery}`;
-    return url;
-}
-
-async function fetchHervisImages(searchword, page, numberOfItemsToFetch){
-    const foundPage = await encodeSearchItemWithFilteringAsync(searchword, hervisWebsite.baseUrl, filters);
-    await page.goto(foundPage);
-
-    await sleep(1500);
-
-	const cookiedeny = await page.evaluateHandle((tag1, tag2) => {
-		const host = document.querySelector(tag1);
-		const shadow = host.shadowRoot;
-		return shadow.querySelector(tag2);
-	}, hervisWebsite.denyCookieSelector, hervisWebsite.shadowCookieDenyButton);
-
-	await cookiedeny.click();
-	await sleep(1500);
-	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;
-	const items = await getImagesAsync(page, hervisWebsite.wholePageSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex);
-
-	const selected = items.slice(0, numberOfItemsToFetch);
-	const finalImages = {
-		websiteName: 'Hervis',
-		FoundImages: selected,
-	};
-	return finalImages;
-}
 
 export async function Search(searchword) {
+
+	const allImages = [];
 	const browser = await puppeteer.launch({
 		headless: true,
 		defaultViewport: false,
 	});
 
-    //console.log(await encodeSearchItemWithFilteringAsync(testSearchword, hervisWebsite.baseUrl, filters));
 
 	const page = await browser.newPage();
 
-	const hervisImages = await fetchHervisImages(searchword, page, 3);
+	if(!filters.blackListedWebsite.includes("hervis")){
+		const hervisImages = await fetchHervisImagesAsync(searchword, page, filters.numberOfPagesToFetch.hervis);
+		allImages.push(hervisImages);
+	}
+	if(!filters.blackListedWebsite.includes("sportissimo")){
+		const sportissimoImages = await fetchSportissimoImagesAsync(searchword, page, filters.numberOfPagesToFetch.sportissimo);
+		allImages.push(sportissimoImages);
+	}
+	if(!filters.blackListedWebsite.includes("sinsay")){
+		const sinsayImages = await fetchSinsayImagesAsync(searchword, page, filters.numberOfPagesToFetch.sinsay);
+		allImages.push(sinsayImages);
+	}
 
 	await browser.close();
-
-	return hervisImages;
+	
+	return allImages;
 }
 
 //console.log(await Search("Kék felső"));
+
+
+
+
+
+
+
+
+

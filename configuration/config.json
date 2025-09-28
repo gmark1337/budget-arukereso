@@ -4,9 +4,25 @@
             "baseUrl":"https://www.hervis.hu/shop/search/",
             "denyCookieSelector":".cmpwrapper",
             "shadowCookieDenyButton": ".cmpboxbtn.cmpboxbtnno.cmptxt_btn_no",
-            "wholePageSelector":".product-list__list",
+            "containerSelector":".product-list__list",
             "urlTagSelector":".product-scroll__list.products",
-            "priceTagSelector":".product-panel__summary-price"
+            "priceTagSelector":".product-panel__summary-price",
+            "productImageSelector":".product-panel__image"
+        },
+        "sportissimo":{
+            "baseUrl":"https://www.sportisimo.hu/termekkereso-katalogus/",
+            "containerSelector":".zws-main__list",
+            "urlTagSelector":".ais-InfiniteHits-list.zws-infinite-hits__list",
+            "priceTagSelector":".product-box__prices",
+            "productImageSelector":".product-box__image"
+        },
+        "sinsay":{
+            "baseUrl":"https://www.sinsay.com/hu/hu/",
+            "priceRangeSelector":".input__InputText-sc-1mxde2b-0.ipFxa.sc-jVKKMF.gmfmmt",
+            "acceptCookieButton":"#cookiebotDialogOkButton",
+            "containerSelector":".algolia-products-module__algolia-products-container",
+            "imageSelector":".product-tilestyled__StyledProductTileWrapper-sc-1u901v5-1.jFLCAm",
+            "productPriceSelector":".product-tilestyled__StyledProductTileDetails-sc-1u901v5-2.blUHpA"
         }
     }
 }

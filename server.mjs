@@ -1,5 +1,5 @@
 import express from "express";
-import { Search } from "./ImageScraperService.js";
+import { filters, Search } from "./ImageScraperService.js";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -17,8 +17,35 @@ app.get("/", (_, res) => {
 })
 
 app.get("/results", async (req, res) => {
+    filters.minPrice = req.query.minPrice || "0";
+    filters.maxPrice = req.query.maxPrice || "5000";
+    filters.size = req.query.size || "M";
+    filters.numberOfPagesToFetch.hervis = parseInt(req.query.count);
+    filters.numberOfPagesToFetch.sinsay = parseInt(req.query.count);
+    filters.numberOfPagesToFetch.sportissimo = parseInt(req.query.count);
+    filters.blackListedWebsite = [];
+    if (req.query.hervis != "on") {
+        filters.blackListedWebsite.push("hervis");
+    }
+    if (req.query.sinsay != "on") {
+        filters.blackListedWebsite.push("sinsay");
+    }
+    if (req.query.sportissimo != "on") {
+        filters.blackListedWebsite.push("sportissimo");
+    }
+    let r = await Search(req.query.searchword);
+    for (let i = 0; i < r.length; i++) {
+        r[i].FoundImages.sort((a, b) => {
+            if (req.query.order == "asc") {
+                return parseInt(a.price) - parseInt(b.price);
+            }
+            if (req.query.order == "desc") {
+                return parseInt(b.price) - parseInt(a.price);
+            }
+        })
+    }
     res.render("results", {
-        results: [await Search(req.query.searchword)]
+        results: r
     })
 })
 
