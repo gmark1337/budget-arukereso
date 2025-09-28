@@ -96,3 +96,7 @@ details label {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+details > input {
+    display: block;
+}

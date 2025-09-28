@@ -126,3 +126,16 @@ A weboldal 3 különböző nézetből fog állni:
 
 Az oldal meglátogatása esetén a **Keresési nézettel** találkozik a felhasználó, ahol a keresési mező kitöltése és az esetleges feltételek beállítása után az adatokat átadjuk a webscraping részére, aminek a folyamat végeztével beérkező válasza alapján átíránytjuk a felhasználót a **Találat nézethez**.
 Ebben a nézetben listázzuk a találatokat. Abban az esetben ha megtetszik egy termék vagy csak érdekli a felhasználót, a termékre való kattintással átléphet a **Termék nézetbe**, ahol részletesebb információkat talál az adott termékről.
+
+# Frontend terv
+
+### Nézetek
+
+Keresési nézet – keresősáv, gyorsszűrők (ár, méret, webshop), rendezés.
+
+Találat nézet – kártyás lista képpel/árral/forrással, lapozás.
+
+Termék nézet – részletes adatok, „Megnyitás a webshopban” gomb.
+
+### Működés
+A felhasználó a Keresési nézetben megadja a kulcsszót és a szűrőket → a frontend JSON requestet küld a backendnek → betöltésjelző után a találatok megjelennek a Találat nézetben → termékkártyára kattintva a Termék nézet nyílik; hiba/üres találat esetén hiba üzenet és újrapróbálás.
