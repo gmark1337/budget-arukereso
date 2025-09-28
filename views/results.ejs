@@ -1,26 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>budget-arukereso</title>
-        <link rel="stylesheet" href="results.css">
-    </head>
-    <body>
-        <div id="loading">
+  <head>
+    <meta charset="UTF-8" />
+    <title>budget-arukereso</title>
+    <link rel="stylesheet" href="results.css" />
+  </head>
+  <body>
+    <!-- Ez már csak cím, nem spinner -->
+    <div id="loading">Results:</div>
 
-        </div>
-        <div id="results">
-            <% results.map((result) => { %>
-            <fieldset id="result">
-                <legend>Vendor: <%= result.websiteName%></legend>
-                <% result.FoundImages.map((item) => { %>
-                <div id="item">
-                <a href="<%= item.href %>"><img src="<%= item.src%>"></a>
-                Price: <%= item.price %>
+    <div id="results">
+      <% results.map((result) => { %>
+        <fieldset class="result">
+          <legend><%= result.websiteName %></legend>
+
+          <div class="items">
+            <% result.FoundImages.map((item) => { %>
+              <div class="item">
+                <a href="<%= item.href %>" target="_blank" rel="noopener">
+                  <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
+                </a>
+                <div class="meta">
+                  <div class="title"><%= item.title || 'Product' %></div>
+                  <div class="price">
+                    <span class="chip"><%= item.price %> Ft</span>
+                  </div>
                 </div>
-                <% }); %>
-            </fieldset>
-            <% }); %>
-        </div>
-    </body>
+              </div>
+            <% }) %>
+          </div>
+        </fieldset>
+      <% }) %>
+    </div>
+  </body>
 </html>

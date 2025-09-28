@@ -1,27 +1,117 @@
-* {
-    margin: 0;
-    padding: 0;
+:root {
+  --bg: #f6f7fb;
+  --card: #fff;
+  --ink: #111;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --radius: 14px;
+  --shadow: 0 2px 10px rgba(0,0,0,.06);
 }
+
+* { box-sizing: border-box; }
 
 body {
-    display: flex;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
+  margin: 0;
+  font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
 }
 
-img {
-    height: 2em;
+#loading {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  padding: 0 16px;
+  font-weight: 600;
+  color: var(--muted);
 }
 
-#item {
-    margin: 0.5em;
+#results {
+  max-width: 1200px;
+  margin: 16px auto;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
 }
 
-#result {
-    border: thin solid black;
-    padding: 2em;
-    margin: 0.3em;
+.result {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.result:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+}
+
+.result > legend {
+  display: inline-block;
+  padding: 6px 10px;
+  margin: 0 0 10px;
+  background: #eef2ff;
+  color: #3730a3;
+  border-radius: 999px;
+  font-weight: 600;
+  border: 1px solid #e0e7ff;
+}
+
+.items {
+  display: grid;
+  gap: 12px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+}
+
+.item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.item img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #f3f4f6;
+  border: 1px solid #eee;
+}
+
+.meta {
+  display: grid;
+  gap: 6px;
+}
+
+.title {
+  font-weight: 600;
+  line-height: 1.25;
+  max-height: 2.5em;
+  overflow: hidden;
+}
+
+.price {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+.price .chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #ecfeff;
+  color: #0e7490;
+  border: 1px solid #bae6fd;
+  font-weight: 600;
+  font-size: .9rem;
 }
