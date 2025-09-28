@@ -1,22 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Product Search </title>
-  <link rel="stylesheet" href="search.css" />
-</head>
-<body>
-        <fieldset id="searchfield">
-            <legend>Search Hervis</legend>
-            <form action="/results" method="get">
-                <input required type="text" id="searchword" name="searchword" />
-                <button type="submit" onclick="startSearch()">🔍</button>
-            </form>
-        </fieldset>
-        <div id="waitingfield">
-            waiting...
-        </div>
-        <script src="search.js"></script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>budget-arukereso</title>
+    <link rel="stylesheet" href="search.css" />
+  </head>
+  <body>
+    <fieldset id="searchfield">
+      <legend>Search Item</legend>
+      <form action="/results" method="get">
+        <input required type="text" id="searchword" name="searchword" />
+        <button type="submit" onclick="return startSearch()">🔍</button>
+
+        <select name="order" id="order">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
+
+        <details>
+          <summary>Advanced search</summary>
+
+          <label for="minPrice">Minimum price:</label>
+          <input type="number" id="minPrice" name="minPrice" placeholder="4000" min="0" />
+
+          <label for="maxPrice">Maximum price:</label>
+          <input type="number" id="maxPrice" name="maxPrice" placeholder="5000" min="0" />
+
+          <label for="size">Size (S–XL):</label>
+          <input type="text" id="size" name="size" placeholder="S, M, L or XL" />
+
+          <label for="count">Number of items per site:</label>
+          <input required type="number" id="count" name="count" value="3" min="1" />
+
+          Websites:
+          <div id="websites">
+            <input type="checkbox" checked id="hervis" name="hervis" />
+            <label for="hervis">Hervis</label>
+
+            <input type="checkbox" checked id="sinsay" name="sinsay" />
+            <label for="sinsay">Sinsay</label>
+
+            <input type="checkbox" checked id="sportissimo" name="sportissimo" />
+            <label for="sportissimo">Sportissimo</label>
+          </div>
+        </details>
+      </form>
+    </fieldset>
+
+
+    <div id="waitingfield" hidden>waiting...</div>
+
+    <script src="search.js"></script>
+  </body>
 </html>
