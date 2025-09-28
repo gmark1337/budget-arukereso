@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer';
 
-import { fetchHervisImagesAsync } from './models/Hervis.js';
-import { fetchSportissimoImagesAsync } from './models/Sportissimo.js';
-import { fetchSinsayImagesAsync } from './models/Sinsay.js';
+import { fetchHervisImagesAsync } from './modells/Hervis.js';
+import { fetchSportissimoImagesAsync } from './modells/Sportissimo.js';
+import { fetchSinsayImagesAsync } from './modells/Sinsay.js';
 
 export const filters = {
     minPrice: "4000",
