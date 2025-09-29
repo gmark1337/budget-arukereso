@@ -39,7 +39,7 @@ export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFe
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword, hervisWebsite.baseUrl, filters);
     await page.goto(foundPage);
 
-    await sleep(3000);
+    await sleep(4000);
 
 	const cookiedeny = await page.evaluateHandle((tag1, tag2) => {
 		const host = document.querySelector(tag1);

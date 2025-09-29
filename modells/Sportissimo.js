@@ -33,7 +33,7 @@ export async function fetchSportissimoImagesAsync(searchword, page, numberOfItem
 
     await page.goto(foundPage);
 
-    const regex = /^(\d{1,3}(?:[ \u00A0]\d{3})*)\s*Ft/;
+    const regex = /^\s*\d{1,3}(?:[\s\u00A0]\d{3})*/;
     await sleep(1500);
     const images = await getImagesAsync(page, sportissmoWebsite.containerSelector,sportissmoWebsite.urlTagSelector,sportissmoWebsite.priceTagSelector,regex, sportissmoWebsite.productImageSelector);
 
