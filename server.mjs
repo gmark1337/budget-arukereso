@@ -32,7 +32,7 @@ app.get("/", async (req, res) => {
         }
     }
     res.render("index", {
-        results: req.query.searchword == undefined? null: await Search(req.query.searchword)
+        results: req.query.searchword == undefined ? null : await Search(req.query.searchword),
     });
 })
 
