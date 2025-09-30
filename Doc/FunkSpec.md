@@ -79,6 +79,12 @@ A regisztrált felhasználó betud jelentkezni a fiókjába.
 -   Hibaágak:
     - Ha helytelen a jelszó vagy a felhasználó, akkor az üzenet: "The username or password doesn't match"
 
+8. Előzmények
+A felhasználóak eltudják érni más felhasználóak kereséit.
+
+-   Bemenet: adott keresési mező rákattintása
+-   Kimenet: adott keresési találatok
+
 ## Use Case-ek 
 
 #### UC1 - Termék keresése
@@ -115,6 +121,10 @@ A regisztrált felhasználó betud jelentkezni a fiókjába.
 3. Megadja az adatait
 4. A rendszer ellenőrzi sikerességét
 5. A rendszer helyes adatok megadása esetén tovább lépteti a felhasználót a keresési oldalra, ellentétes esetben visszadobja.
+
+#### UC8 - Előzmények
+1. A felhasználó a keresések mező mellett láthatja az előző felhasználóak kereséseit
+2. Rákattintva megmutatja az eredményeket
 
 
 ## Felhasználó felület (UI)
