@@ -1,0 +1,3 @@
+# Frederico a versenyző
+
+Frederico 22 éves rally versenyző. Egy dolgot utál az életben a lassú dolgokat. Egy nap ruhák után kutatva rábukkan a weboldalunkra. Első pillantásra megragadta a weboldal letisztultsága és konkrétsága. A keresőt használva, meglepődve tapasztalta hogy másodpercek alatt több száz ruhát talált,  ami kielégíti az igényeit. Különösen pozitívnak vélte,  mikor a weboldal, hogy a rendszer tájékoztatta hogy nem talált eredményt az adott áruházhoz. Kellemesen böngészhetett, felesleges átirányítások nélkül, ezért a jövőben is szívesen használja weboldalunkat.
