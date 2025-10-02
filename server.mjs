@@ -2,40 +2,45 @@ import express from "express";
 import { filters, Search } from "./ImageScraperService.js";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { readFileSync } from 'fs';
+import { render } from "ejs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
 const app = express();
 const PORT = 8080;
+const resultsTemplate = readFileSync("views/results.ejs", "utf-8")
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 app.use(express.static("static"));
 
-app.get("/", async (req, res) => {
-    if (req.query.searchword != undefined) {
-        filters.minPrice = req.query.minPrice || "0";
-        filters.maxPrice = req.query.maxPrice || "5000";
-        filters.size = req.query.size || "M";
-        filters.numberOfPagesToFetch.hervis = parseInt(req.query.count);
-        filters.numberOfPagesToFetch.sinsay = parseInt(req.query.count);
-        filters.numberOfPagesToFetch.sportissimo = parseInt(req.query.count);
-        filters.blackListedWebsite = [];
-        if (req.query.hervis != "on") {
-            filters.blackListedWebsite.push("hervis");
-        }
-        if (req.query.sinsay != "on") {
-            filters.blackListedWebsite.push("sinsay");
-        }
-        if (req.query.sportissimo != "on") {
-            filters.blackListedWebsite.push("sportissimo");
-        }
+app.get("/", async (_, res) => {
+    res.render("index");
+});
+
+app.get("/search", async (req, res) => {
+    filters.minPrice = req.query.minPrice || "0";
+    filters.maxPrice = req.query.maxPrice || "5000";
+    filters.size = req.query.size || "M";
+    filters.numberOfPagesToFetch.hervis = parseInt(req.query.count);
+    filters.numberOfPagesToFetch.sinsay = parseInt(req.query.count);
+    filters.numberOfPagesToFetch.sportissimo = parseInt(req.query.count);
+    filters.blackListedWebsite = [];
+    if (req.query.hervis != "true") {
+        filters.blackListedWebsite.push("hervis");
     }
-    res.render("index", {
-        results: req.query.searchword == undefined ? null : await Search(req.query.searchword),
-    });
-})
+    if (req.query.sinsay != "true") {
+        filters.blackListedWebsite.push("sinsay");
+    }
+    if (req.query.sportissimo != "true") {
+        filters.blackListedWebsite.push("sportissimo");
+    }
+    res.end(render(resultsTemplate, {
+        results: await Search(req.query.searchword)
+    }))
+});
 
 app.listen(PORT, () => {
     console.log(`running on: http://localhost:${PORT}`);
-})
+});
