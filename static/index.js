@@ -1,25 +1,40 @@
 function startSearch() {
-  const q = document.getElementById("searchword").value.trim();
-  if (!q) return false; // required is set, de biztos ami biztos
+	const q = document.querySelector('#searchword').value.trim();
+	if (!q) {
+		return;
+	} // Required is set, de biztos ami biztos
 
-  // disable submit gomb (UX)
-  const btn = document.querySelector('button[type="submit"]');
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = '…';
-  }
-
-  // kereső elrejtése, waiting megjelenítése
-  const sf = document.getElementById("searchfield");
-  const wf = document.getElementById("waitingfield");
-  if (sf) sf.style.display = "none";
-  if (wf) wf.hidden = false;
-
-  return true; // böngésző mehet tovább /results-ra
+	// Waiting megjelenítése
+	const wf = document.querySelector('#waitingfield');
+	if (wf) {
+		wf.hidden = false;
+	}
+	getResults();
 }
 
 // Autofókusz inputra
-window.addEventListener('DOMContentLoaded', () => {
-  const input = document.getElementById('searchword');
-  if (input) input.focus();
+globalThis.addEventListener('DOMContentLoaded', () => {
+	const input = document.querySelector('#searchword');
+	if (input) {
+		input.focus();
+	}
 });
+
+function getResults() {
+    document.querySelector('#results').innerHTML = "";
+	fetch('/search?' + new URLSearchParams({
+		searchword: document.querySelector('#searchword').value,
+		order: document.querySelector('#order').value,
+		minPrice: document.querySelector('#minPrice').value,
+		maxPrice: document.querySelector('#maxPrice').value,
+		size: document.querySelector('#size').value,
+		count: document.querySelector('#count').value,
+		hervis: document.querySelector('#hervis').checked,
+		sinsay: document.querySelector('#sinsay').checked,
+		sportissimo: document.querySelector('#sportissimo').checked,
+	})).then(response => response.text())
+		.then(text => {
+            document.querySelector('#waitingfield').hidden = true;
+			document.querySelector('#results').innerHTML = text;
+		});
+}
