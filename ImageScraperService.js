@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import pLimit from 'p-limit';
 
 import { fetchHervisImagesAsync } from './modells/Hervis.js';
 import { fetchSportissimoImagesAsync } from './modells/Sportissimo.js';
@@ -53,50 +54,55 @@ export async function getImagesAsync(page, divSelector, linkSelector, priceSelec
 
 export async function Search(searchword) {
 
-	const allImages = [];
 	const browser = await puppeteer.launch({
 		headless: true,
 		defaultViewport: false,
 	});
 
+	const context = browser.defaultBrowserContext();
 
-	const page = await browser.newPage();
+	//Every time a new page is created it automatically blocks the images for faster load. 
 
-	await page.setRequestInterception(true)
-		page.on('request', (request) => {
-  			if (request.resourceType() === 'image') request.abort()
-  			else request.continue()
-	});
-
-	console.log("Started to scrape Hervis website....");
-	const hervisTimeStart = Date.now(); 
-
-	if(!filters.blackListedWebsite.includes("hervis")){
-		const hervisImages = await fetchHervisImagesAsync(searchword, page, filters.numberOfPagesToFetch.hervis);
-		allImages.push(hervisImages);
-	}
-	const hervisTimeEnd = Date.now();
-	console.log(`Finished scraping Hervis website \nRuntime: ${(hervisTimeEnd - hervisTimeStart) / 1000} seconds`);
-
-
-	const sportissimoTimeStart = Date.now(); 
-	if(!filters.blackListedWebsite.includes("sportissimo")){
-		const sportissimoImages = await fetchSportissimoImagesAsync(searchword, page, filters.numberOfPagesToFetch.sportissimo);
-		allImages.push(sportissimoImages);
-	}
-	const sportissimoTimeEnd = Date.now(); 
-	console.log(`Finished scraping sportissimo website \nRuntime: ${(sportissimoTimeEnd - sportissimoTimeStart) / 1000} seconds`);
+	context.on('targetcreated', async target => {
+		if(target.type() === 'page'){
+			const newPage = await target.page();
+			await newPage.setRequestInterception(true);
+			newPage.on('request', request => {
+				if(request.resourceType() === 'image'){
+					request.abort();
+				}else{
+					request.continue();
+				}
+			})
+		}
+	})
 
 
-	const sinsayTimeStart = Date.now(); 
-	if(!filters.blackListedWebsite.includes("sinsay")){
-		const sinsayImages = await fetchSinsayImagesAsync(searchword, page, filters.numberOfPagesToFetch.sinsay);
-		allImages.push(sinsayImages);
-	}
-	const sinsayTimeEnd = Date.now(); 
+	const limit = pLimit(3);
 
-	console.log(`Finished scraping sinsay website \nRuntime: ${(sinsayTimeEnd - sinsayTimeStart) / 1000} seconds`);
-	console.log(`The 3 website runtime took ${(sinsayTimeEnd - hervisTimeStart) / 1000} seconds to execute`)
+	const sites = [
+		{name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.numberOfPagesToFetch.hervis},
+		{name: "sportissimo", function: fetchSportissimoImagesAsync, pagesToFetch: filters.numberOfPagesToFetch.sportissimo},
+		{name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.numberOfPagesToFetch.sinsay}
+	];
+	
+	console.log('Started scraping websites in parallel.');
+	const start = Date.now();
+	const tasks = sites.filter(s => !filters.blackListedWebsite.includes(s.name))
+	.map(site => limit(async () => {
+		const page = await browser.newPage();
+		const start = Date.now();
+		const images = await site.function(searchword, page, site.pagesToFetch);
+		const end = Date.now();
+		console.log(`Finished scraping ${site.name} in ${(end - start) / 1000} seconds`);
+		await page.close();
+		return images;
+	}));
+		
+
+	const allImages = await Promise.all(tasks);
+	const end = Date.now();
+	console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 	
 	await browser.close();
 	
@@ -104,7 +110,7 @@ export async function Search(searchword) {
 }
 
 //console.log(await Search("Kék felső"));
-await Search("Kék felső");
+//await Search("Kék felső");
 
 
 
