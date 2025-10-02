@@ -7,7 +7,6 @@ const sportissmoWebsite = config.websites["sportissimo"];
 function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
     const params = [];
 
-    //encode ?products[range][price]=23896:135329
     if(filters.minPrice && filters.maxPrice){
         const pricePart =  `products[range][price]=${filters.minPrice}:${filters.maxPrice}`;
         params.push(pricePart);
@@ -30,16 +29,17 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
 
 export async function fetchSportissimoImagesAsync(searchword, page, numberOfItemsToFetch){
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportissmoWebsite.baseUrl, filters);
+    console.log(`The created URL is: ${foundPage}`);
 
-    await page.goto(foundPage);
+    await page.goto(foundPage, {waitUntil: "networkidle2"});
 
     const regex = /^\s*\d{1,3}(?:[\s\u00A0]\d{3})*/;
-    await sleep(1500);
     const images = await getImagesAsync(page, sportissmoWebsite.containerSelector,sportissmoWebsite.urlTagSelector,sportissmoWebsite.priceTagSelector,regex, sportissmoWebsite.productImageSelector);
+    
 
     
     const selected = images.slice(0, numberOfItemsToFetch);
-    //console.log(images);
+    //console.log(`Found images for Sportissimo website: ${selected}`);
     const finalImages = {
         websiteName: 'Sportissimo',
         FoundImages: selected

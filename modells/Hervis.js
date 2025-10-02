@@ -37,19 +37,15 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}){
 
 export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch){
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword, hervisWebsite.baseUrl, filters);
-    await page.goto(foundPage);
+    await page.goto(foundPage, {waitUntil: "domcontentloaded"});
 
-    await sleep(4000);
+    console.log(`The created URL is: ${foundPage}`);
 
-	const cookiedeny = await page.evaluateHandle((tag1, tag2) => {
-		const host = document.querySelector(tag1);
-		const shadow = host.shadowRoot;
-		return shadow.querySelector(tag2);
-	}, hervisWebsite.denyCookieSelector, hervisWebsite.shadowCookieDenyButton);
-
-	await cookiedeny.click();
+    
 	const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;
-    await sleep(1500);
+    //await sleep(1500);
+
+    await page.waitForSelector(hervisWebsite.containerSelector, {timeout: 5000})
 
 	const items = await getImagesAsync(page, hervisWebsite.containerSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex, hervisWebsite.productImageSelector);
 

@@ -4,7 +4,7 @@ import {config} from '../configuration/config.js'
 const sinsayWebsite = config.websites["sinsay"];
 
 
-function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}, correctPrices){
+function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
     const params = [];
 
     if(searchedword){
@@ -15,44 +15,11 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}, cor
         params.push(`sizes=${filters.size}`);
     }
 
-    if(correctPrices.minPrice && correctPrices.maxPrice){
-        params.push(`price=${correctPrices.minPrice}%3A`);
+    if(filters.minPrice && filters.maxPrice){
+        params.push(`price=${filters.minPrice}%3A`);
     }
     const queryString = params.join("&"); 
     return `${url}?${queryString}`;
-}
-
-function encoderHelperAsync(searchedword, url){
-    const params = [];
-
-    if(searchedword){
-        params.push(`query=${encodeURIComponent(searchedword).replace(/%20/g, "-")}`);
-    }
-
-    if(filters.size){
-        params.push(`sizes=${filters.size}`);
-    }
-    const queryString = params.join("&"); 
-    return `${url}?${queryString}`;
-}
-
-async function getWebsitePricesAsync(page, priceTagSelector){
-    const prices = await page.evaluate((priceSelector)  => {
-        const elements = document.querySelector(priceSelector);
-        let minPrice = elements.getAttribute('min');
-        let maxPrice = elements.getAttribute('max');
-        return {minPrice, maxPrice};
-    }, priceTagSelector)
-    return prices;
-}
-
-function calculateInRangePriceRange(filterPrice, websitePrice){
-    const corrected = {
-        minPrice: Math.max(filterPrice.minPrice, websitePrice.minPrice),
-        maxPrice: Math.min(filterPrice.maxPrice, websitePrice.maxPrice)
-    };
-    
-    return corrected;
 }
 
 async function getImagesAsync(page, tag1, tag2, tag3) {
@@ -88,30 +55,19 @@ async function getImagesAsync(page, tag1, tag2, tag3) {
 }
 
 export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFetch){
+
+    const foundPage = await encodeSearchItemWithFilteringAsync(searchword, sinsayWebsite.baseUrl, filters);
+
+    console.log(`The created URL is: ${foundPage}`);
+
+    await page.goto(foundPage, {waitUntil: "domcontentloaded"});
     
-    await page.goto(await encoderHelperAsync(searchword,sinsayWebsite.baseUrl));
+    await page.waitForSelector(sinsayWebsite.containerSelector, {timeout: 5000});
 
-    //console.log(await encoderHelperAsync(searchword,baseUrl));
-
-    const prices = await getWebsitePricesAsync(page, sinsayWebsite.priceRangeSelector);
-
-
-    //console.log(`The filters prices are ${filters.minPrice} and ${filters.maxPrice}`);
-    //console.log(`The website prices are ${prices.minPrice} and ${prices.maxPrice}`);
-
-    const correctPrices = calculateInRangePriceRange(prices, filters);
-
-    //console.log(`The corrected prices are ${correctPrices.minPrice} and ${correctPrices.maxPrice}`);
-
-    const foundpage = await encodeSearchItemWithFilteringAsync(searchword, sinsayWebsite.baseUrl, filters, correctPrices);
-
-    await page.goto(foundpage);
-    await sleep(1500);
-    
-    await page.click(sinsayWebsite.acceptCookieButton);
-
-    await sleep(1500);
     const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.imageSelector,sinsayWebsite.productPriceSelector);
+    if(items === null){
+        await page.reload({waitUntil: "networkidle2"})
+    }
     const selected = items.slice(0, numberOfItemsToFetch);
     const finalImages = {
         websiteName: 'Sinsay',

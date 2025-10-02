@@ -14,7 +14,6 @@ export const filters = {
 		sportissimo: 3
 	},
 	blackListedWebsite:[
-		"sinsay"
 	]
 };
 
@@ -63,25 +62,49 @@ export async function Search(searchword) {
 
 	const page = await browser.newPage();
 
+	await page.setRequestInterception(true)
+		page.on('request', (request) => {
+  			if (request.resourceType() === 'image') request.abort()
+  			else request.continue()
+	});
+
+	console.log("Started to scrape Hervis website....");
+	const hervisTimeStart = Date.now(); 
+
 	if(!filters.blackListedWebsite.includes("hervis")){
 		const hervisImages = await fetchHervisImagesAsync(searchword, page, filters.numberOfPagesToFetch.hervis);
 		allImages.push(hervisImages);
 	}
+	const hervisTimeEnd = Date.now();
+	console.log(`Finished scraping Hervis website \nRuntime: ${(hervisTimeEnd - hervisTimeStart) / 1000} seconds`);
+
+
+	const sportissimoTimeStart = Date.now(); 
 	if(!filters.blackListedWebsite.includes("sportissimo")){
 		const sportissimoImages = await fetchSportissimoImagesAsync(searchword, page, filters.numberOfPagesToFetch.sportissimo);
 		allImages.push(sportissimoImages);
 	}
+	const sportissimoTimeEnd = Date.now(); 
+	console.log(`Finished scraping sportissimo website \nRuntime: ${(sportissimoTimeEnd - sportissimoTimeStart) / 1000} seconds`);
+
+
+	const sinsayTimeStart = Date.now(); 
 	if(!filters.blackListedWebsite.includes("sinsay")){
 		const sinsayImages = await fetchSinsayImagesAsync(searchword, page, filters.numberOfPagesToFetch.sinsay);
 		allImages.push(sinsayImages);
 	}
+	const sinsayTimeEnd = Date.now(); 
 
+	console.log(`Finished scraping sinsay website \nRuntime: ${(sinsayTimeEnd - sinsayTimeStart) / 1000} seconds`);
+	console.log(`The 3 website runtime took ${(sinsayTimeEnd - hervisTimeStart) / 1000} seconds to execute`)
+	
 	await browser.close();
 	
 	return allImages;
 }
 
 //console.log(await Search("Kék felső"));
+await Search("Kék felső");
 
 
 
