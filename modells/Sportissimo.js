@@ -28,6 +28,9 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
 }
 
 export async function fetchSportissimoImagesAsync(searchword, page, numberOfItemsToFetch){
+    try{
+
+    
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportissmoWebsite.baseUrl, filters);
     console.log(`The created URL is: ${foundPage}`);
 
@@ -46,4 +49,11 @@ export async function fetchSportissimoImagesAsync(searchword, page, numberOfItem
     };
 
     return finalImages;
+    }catch(error){
+        console.error(`[fetchSportissimoImagesAsync] Failed to fetch images:  ${error.message}`);
+        return {
+            websiteName: 'Sportissimo',
+            FoundImages: []
+        };
+    }
 }
