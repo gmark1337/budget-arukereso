@@ -2,6 +2,9 @@
         <fieldset class="result">
         <legend><%= result.websiteName %></legend>
         <div class="items">
+        <% if (result.FoundImages.length == 0) { %>
+            :(
+        <% } %>
         <% result.FoundImages.map((item) => { %>
                 <div class="item">
                 <a href="<%= item.href %>" target="_blank" rel="noopener">
@@ -14,7 +17,7 @@
                 </div>
                 </div>
                 </div>
-                <% }) %>
+        <% }) %>
         </div>
         </fieldset>
 <% }) %>
