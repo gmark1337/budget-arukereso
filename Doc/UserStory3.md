@@ -1,0 +1,4 @@
+# Glorp a kritikus
+
+Glorp, a mágikus cica hihetetlen sebességgel böngészi az internetet, ezért általában nem vesződik olyan weboldalakkal, amelyek mögé regisztrációt rejtettek.
+Egy nap azonban rátalált a budget-árukeresőre, ahol meglepődve tapasztalta, hogy már regisztráció nélkül is kipróbálhatja a weboldal fő funkcióját: a gyors keresést és az árak összehasonlítását.Glorp viszont feledékeny cica, hiszen egy alanyhal úszkál a fejében. Gyakran elfelejtette, hogy melyik terméket nézte ki korábban. Amikor azonban regisztált, felfedezte a kedvencek funkciót. El tudta tárolni a kedvenc találatait, így többé nem okozott gondot számára a memóriahány.
