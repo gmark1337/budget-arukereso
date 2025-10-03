@@ -3,7 +3,8 @@
 A rendszer egy online platform, amely lehetővé teszi ruházati termékek több webáruházból történő
 keresését, szűrését. A felhasználó más keresését is el tudja érni és megtekinteni a találatokat.
 Emellett, egyes termékeket a kedvencek közé tudja sorolni, hogy ha a jövőben mégis meg szeretné vásárolni, akkor ne kelljen újra keresnie.
-A cél, hogy a felhasználó gyorsan megtalálja a számára megfelelő terméket a legjobb áron, anélkül hogy több áruház oldalát kellene böngésznie. 
+A cél, hogy a felhasználó gyorsan megtalálja a számára megfelelő terméket a legjobb áron, anélkül hogy több áruház oldalát kellene böngésznie.
+Ráadásul, tudjon értékelni az adott oldalt az élményeivel kapcsolatban, esetleg csillagozni is ami idővel elnyeri a megbízható bolt kitüntetést.
 
 ## Felhasználói szerepkörök
 
@@ -85,6 +86,12 @@ A felhasználóak eltudják érni más felhasználóak kereséit.
 -   Bemenet: adott keresési mező rákattintása
 -   Kimenet: adott keresési találatok
 
+9. Értékelések
+A felhasználó tud szövegesen és csillagokkal webárúházat értékelni. 
+
+- Bemenet: szöveg vagy csillag
+- Kimenet: adott értékelési típus megjelenítése a webáruház alatt
+
 ## Use Case-ek 
 
 #### UC1 - Termék keresése
@@ -126,6 +133,15 @@ A felhasználóak eltudják érni más felhasználóak kereséit.
 1. A felhasználó a keresések mező mellett láthatja az előző felhasználóak kereséseit
 2. Rákattintva megmutatja az eredményeket
 
+#### UC9 - Értékelés
+1. A felhasználó minden weboldal mellett tud értékelést tenni szövegesen is meg csilaggal is.
+2. A rendszer elmenti az értékeléseket
+3. A rendszer megmutatja az értékelést weboldalanként lista nézetben
+
+#### UC10 - Nyelv
+1. A felhasználó tud választani 2 nyelv közül a weboldalon. Angol vagy Magyar
+2. Kiválasztja az adott ikont és a weboldal átvált az adott nyelvezetre. 
+
 
 ## Felhasználó felület (UI)
 
@@ -143,6 +159,7 @@ A felhasználóak eltudják érni más felhasználóak kereséit.
 
 3. Kedvencek oldal
 - Elmentett képek listanézetben + árral
+- Törlési lehetőség
 
 4. Regisztrációs oldal
 - Felhasználónév mező
@@ -154,6 +171,11 @@ A felhasználóak eltudják érni más felhasználóak kereséit.
 - Felhasználónév mező
 - Jelszó mező
 - Bejelentkezés gomb
+
+6. Értékelések oldal
+- Weboldalak listanézetben
+- Értékelések felhasználónévvel
+- Csillagértékelések -> megbízható jelvény
 
 # TODO
 UI terveket be lehet ide rakni, ha kész vannak!

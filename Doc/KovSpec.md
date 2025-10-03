@@ -1,11 +1,12 @@
 # Jelenlegi helyzet leírása:
 
-A világgazdaság jelenlegi helyzete és meg nem mondom melyik politikai párt miatt, az emberek pénztárcája zsugorodik össze, míg rohamosan nőnek vele szemben az árak. Az online vásárlás ugyan rohamosan terjed és soha nem látott népszerűségnek örvend, azonban a megfelelő termék megtalálása a legjobb áron sok időt és energiát igényel. A felhasználók gyakran több órát töltenek különböző webáruházak böngészésével, ami frusztráló és nehézkes folyamat. **Ez a "turkálás" folyamat mértéktelenül lecsökkenthető és leegyszerűsíthető egy célzott kereső használatával**, így a vásárlók gyorsan és kényelmesen találhatják meg a számukra legkedvezőbb ajánlatot.  
+A világgazdaság jelenlegi helyzete és meg nem mondom melyik politikai párt miatt, az emberek pénztárcája zsugorodik össze, míg rohamosan nőnek vele szemben az árak. Az online vásárlás ugyan rohamosan terjed és soha nem látott népszerűségnek örvend, azonban a megfelelő termék megtalálása a legjobb áron sok időt és energiát igényel. A felhasználók gyakran több órát töltenek különböző webáruházak böngészésével, ami frusztráló és nehézkes folyamat. **Ez a "turkálás" folyamat mértéktelenül lecsökkenthető és leegyszerűsíthető egy célzott kereső használatával**, így a vásárlók gyorsan és kényelmesen találhatják meg a számukra legkedvezőbb ajánlatot.A bizonytalan vásárlóknak biztosítva lenne a mentési lehetőség hogy a későbbiekben ha meggondolják magukat akkor ne kelljen keresgélni.Ráadásul, nélkülözhetetlen információ a megbízhatóság, mennyire lehet megbízni egy weboldalban ezáltal a felhasználók által értékelések mutatják a weboldal hitelességét.
 
 # Megrendelői igényspecifikáció (megrendelő által megfogalmazott igények, célok, követelmények):
 
 ## Megrendelői vízió (Vágyálom):
 Egy olyan felhasználóbarát online platform, amely elsődleges kiindulóponttá válik mindenki számára, aki ruházati terméket szeretne vásárolni az interneten. Néhány kattintással megtalálhatja a számára tökéletes terméket, összehasonlítva több webáruház ajánlataival, és biztos lehet abban, hogy a legjobb ár-érték arányú döntést hozza.
+Felesleges könyvjelzők használata nélkül, könnyen tud menteni több száz terméket több száz weboldalról amik megkönnyítik a vadászatot. Mellesleg, egy olyan platform jönne létre ahol a felhasználóknak nem kell azon aggódniuk, hogy nem-e veri át az adott weboldal. 
 
 ## Megrendelői cél: 
 1. Biztosítani, hogy a vásárlók gyorsan, egyszerűen és kényelmesen találják meg számukra a ruházati terméket.
@@ -13,8 +14,13 @@ Egy olyan felhasználóbarát online platform, amely elsődleges kiindulópontt�
 3. Az árak, kínálat egy helyen, könnyen szűrhető formájában jelenjen meg.
 4. Kevésbé ismert webáruházak népszerűségének és forgalmának növelése.
 5. Kialakítani egy hosszú távú rendszert, amely fenntartható bevételt termeljen hirdetések és jutalékok révén.
-6. A felhasználók eltudják menteni kedvenc termékeiket.
-7. Megtudják tekinteni más felhasználóaknak a kereséseit.
+6. A felhasználók betudnak regisztrálni a weboldalra, amely elmetni az adatait.
+7. A felhasználók betudnak jelentkezni sikeresen a weboldalra
+8. A felhasználók eltudják menteni kedvenc termékeiket.
+9. Megtudják tekinteni más felhasználóaknak a kereséseit.
+10. A regisztrált felhasználók tudják értékelni az adott weboldalt ami elnyeri a megbízható bolt értékelést.
+11. Az oldal többnyelven is elérhető legyen.
+
 
 ## Megrendelői követelmény:
 1. Az alkalmazásban a termékek kereshetőek legyenek kulcsszavak és kategóriák alapján (pl. póló, kabát).
@@ -25,6 +31,8 @@ Egy olyan felhasználóbarát online platform, amely elsődleges kiindulópontt�
 6. Betudjon lépni a fiókjába a felhasználó.
 7. Eltudja menteni az adott terméket amit majd később is eltud érni.
 8. Újra tudja índitani a keresést ha elbukik. 
+9. Tudja értékelni az áruházat a felhasználó, ami idővel elnyeri a megbízható bolt kitüntetést.
+10. Tud nyelvet választani a felhasználó
 
 ## Funkcionális követelmények
 
@@ -45,6 +53,9 @@ A felhasználó által elérhető funkciók
 - Tud terméket kivenni a kedvencek közül 
 - Eltudja érni az előző keresések elemeit
 - Megtudja jeleníteni az elmúlt kereséseket
+- Tud értékelni weboldalt csillaggal
+- Tud értékelni weboldalt szövegesen
+- Tud nyelvet választani a felhasználó
 
 
 ## A rendszerrel szemben támasztott általános követelmények
@@ -53,6 +64,12 @@ A felhasználó által elérhető funkciók
 - Reszponzív felület, webes funkciókhoz és andoridhoz
 - Gyors keresés
 - Keresési találat megegyezik a keresett darabbal
+- A találatok megegyeznek a szűrési feltétellel
+- Az elmentett termékek megjelennek a "Favorites" menűben
+- Az elmentett termék megegyezik az elmentettel
+- Az elmentett terméket meglehet tekinteni
+- Az elmentett terméknek az eredeti áruló weboldalára el lehet navigálni
+- A kiválasztott nyelv helyesen jelenik meg
 
 
 ## Felülettel szemben támasztott követelmények
@@ -91,6 +108,8 @@ A felhasználó által elérhető funkciók
 **K08 Regisztráció/Bejelentkezés** felhasználónév, email és jelszó, jelszó követelményekkel.    
 **K09 Kedvencek kezelése** termék hozzáadás/eltávolítás, kedvencek menü.
 **K10 Keresési előzmények** megjelenítése, törlés lehetősége.
+**K11 Értékelések** bekérése
+**K12 Megbízhatóság jelvény** megjelenítése adott értékelés szám esetén.
 
 
 ## Felhasználói esetek
@@ -103,6 +122,8 @@ UC5 - Kedvencekhez navigálás
 UC6 - Regisztrálás
 UC7 - Bejelentkezés
 UC8 - Előzmények
+UC9 - Értékelés
+UC10 - Nyelv
 
 
 ## Fogalomtár:
