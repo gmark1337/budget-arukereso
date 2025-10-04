@@ -92,23 +92,16 @@ describe('search-endpoint-edgecases-tests', () => {
 		assert.equal(value, emptyPlaceholderString);
 	});
 	it('empty-string-searchword-test', async () => {
-		const p = genParameters('');
+		const p = genParameters();
+		p.searchword = '';
 		const response = await (await fetch('http://localhost:8080/search?' + new URLSearchParams(p))).text();
-		const $ = load(response);
-		const value = $('fieldset div.items').contents().map((_, e) => $(e).text().trim()).get();
-		for (const i of value) {
-			assert.equal(i, emptyPlaceholderString);
-		}
+		assert.equal(response.trim(), '');
 	});
 	it('empty-searchword-test', async () => {
 		const p = genParameters();
 		p.searchword = undefined;
 		const response = await (await fetch('http://localhost:8080/search?' + new URLSearchParams(p))).text();
-		const $ = load(response);
-		const value = $('fieldset div.items').contents().map((_, e) => $(e).text().trim()).get();
-		for (const i of value) {
-			assert.equal(i, emptyPlaceholderString);
-		}
+		assert.equal(response.trim(), '');
 	});
 	it('gibberish-searchword-test', async () => {
 		const p = genParameters('aggrgeththeasdsdfbafvguvguasrf');
@@ -116,7 +109,7 @@ describe('search-endpoint-edgecases-tests', () => {
 		const $ = load(response);
 		const value = $('fieldset div.items').contents().map((_, e) => $(e).text().trim()).get();
 		for (const i of value) {
-			assert.equal(i, emptyPlaceholderString);
+			assert.equal(i, ':(');
 		}
 	});
 });
@@ -131,11 +124,28 @@ describe('search-response-html-tests', async () => {
 		assert.equal(expectedNumberOfSites, actualNumberOfSites);
 	});
 	it('results-price-test', () => {
-		// I kell hogy mukodjon fuggetlen attol hog_ nem kezdunk vele semmit
 		const prices = $('span.chip').map((_, e) => Number.parseInt($(e).text())).get();
 		for (const price of prices) {
 			assert.ok(price >= p.minPrice);
 			assert.ok(price <= p.maxPrice);
+		}
+	});
+	it('price-order-test', () => {
+		const prices = $('span.chip').map((_, e) => Number.parseInt($(e).text())).get();
+		const expectedNumberOfSites = p.hervis + p.sinsay + p.sportissimo;
+		let head = 0;
+		for (let i = 0; i < expectedNumberOfSites; i++) {
+			const sitePrices = prices.slice(head, head + expectedNumberOfSites);
+			const sorted = structuredClone(sitePrices);
+			if (p.order == 'asc') {
+				sorted.sort((a, b) => a - b);
+			}
+
+			if (p.order == 'desc') {
+				sorted.sort((a, b) => b - a);
+			}
+			assert.deepEqual(sitePrices, sorted);
+			head += expectedNumberOfSites;
 		}
 	});
 });
