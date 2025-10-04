@@ -1,32 +1,32 @@
 **Beállítások:**
 
-  - emptyPlaceholderString = :(
+- emptyPlaceholderString = :(  
 
 # search-function-test
 
 ## results-count-test
 
-  **Beállítások:**
+**Beállítások:**
 
-  - numberOfPagesToFetch.hervis = 4
-  - numberOfPagesToFetch.sinsa = 3
-  - numberOfPagesToFetch.sportissimo = 2
-  - blacklistedWebsite = []
-  - maxPrice = 20000
-  - searchword = kabát
+- numberOfPagesToFetch.hervis = 4
+- numberOfPagesToFetch.sinsa = 3
+- numberOfPagesToFetch.sportissimo = 2
+- blacklistedWebsite = []
+- maxPrice = 20000
+- searchword = kabát
 
-  A teszt végig megy mindhárom weboldalon és ellenőrzni hogy az adott weboldalhoz tartozó
-  FoundImages.length egyenlő-e a meghatározott értékkel
+A teszt végig megy mindhárom weboldalon és ellenőrzni hogy az adott weboldalhoz tartozó
+FoundImages.length egyenlő-e a meghatározott értékkel
 
 ## results-blacklist-test
 
-  **Beállítások:**
+**Beállítások:**
 
-  - blacklistedWebsite = [sinsay, sportissimo]
-  - numberOfPageToFetch.hervis = 3
-  - searchword = kabát
+- blacklistedWebsite = [sinsay, sportissimo]
+- numberOfPageToFetch.hervis = 3
+- searchword = kabát
 
-  A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhető oldalból, 2 letiltva),
+A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhető oldalból, 2 letiltva),
   majd ellenőrzni hogy az egyetlen elem a tömbben a Hervis websiteName-mel rendelkezik.
 
 ## results-price-test
@@ -106,10 +106,8 @@
   - véletlenszerűen generált paraméterek, felülírva az alábbi értékekkel
   - searchword = ''
 
-  A teszt elküldi a /search endpointra a paraméterezett GET requestet, majd a beérkező HTML-t
-  betölti a cheerio könyvtárat használva. Ezután megnézi a következő CSS selectort használva
-  `fieldset div.items`, hogy az értéke megegyezik **emptyPlaceholderString** értékével.
-
+  A teszt elküldi a /search endpointra a paraméterezett GET requestet, majd eltávolít bármilyen
+  whitespace és \n karaktert majd ellenőrzni, hogy a válaszul kapott eredmény egy üres string.
 
 ## empty-searchword-test
 
@@ -118,9 +116,8 @@
   - véletlenszerűen generált paraméterek, felülírva az alábbi értékekkel
   - searchword = undefined
 
-  A teszt elküldi a /search endpointra a paraméterezett GET requestet, majd a beérkező HTML-t
-  betölti a cheerio könyvtárat használva. Ezután megnézi a következő CSS selectort használva
-  `fieldset div.items`, hogy az értéke megegyezik **emptyPlaceholderString** értékével.
+  A teszt elküldi a /search endpointra a paraméterezett GET requestet, majd eltávolít bármilyen
+  whitespace és \n karaktert majd ellenőrzni, hogy a válaszul kapott eredmény egy üres string.
 
 ## gibberish-searchword-test
 
@@ -156,3 +153,11 @@
 
   A teszt ellenőrzni hogy a $-n elvégzett CSS selector (`span.chip`) müvelettel kigyűjtott számok
   a minPrice és a maxPrice között vannak, megengedő módon.
+
+## price-order-test
+
+  - prices = az összes termék ára megjelenési sorrendben
+  - expectedNumberOfSites = keresett weboldalak száma
+
+  A teszt kigyűjti a weboldalon szereplő árakat majd oldalankénti darabszám lépésközzel ellenőrzi, 
+  hogy a tömbrészlet megfelelő módon van rendezve.
