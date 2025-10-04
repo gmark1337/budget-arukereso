@@ -106,11 +106,11 @@ const filters = {
 encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {})
 ```
 
-    - Kereső funckió
-        Itt hívjuk meg a encodeSearchItemWithFilteringAsync, getImageAsync majd az az eredményt tömbösíve visszaadjuk.
-        - searchword -> keresett szó
-        - page -> adott oldal
-        - numberOfItemsToFetch -> mennyi oldalt gyüjtsön be az oldal
+- Kereső funckió<br>
+  Itt hívjuk meg a encodeSearchItemWithFilteringAsync, getImageAsync majd az az eredményt tömbösíve visszaadjuk.
+    - searchword -> keresett szó
+    - page -> adott oldal
+    - numberOfItemsToFetch -> mennyi oldalt gyüjtsön be az oldal
 ```
 fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch)
 ```
