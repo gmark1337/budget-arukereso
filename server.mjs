@@ -10,6 +10,7 @@ const __dirname = dirname(__filename)
 const app = express();
 const PORT = 8080;
 const resultsTemplate = readFileSync("views/results.ejs", "utf-8")
+const shoes = ["cipő", "sneaker", "csizma", "bakancs", "papucs"];
 
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
@@ -22,7 +23,7 @@ app.get("/", async (_, res) => {
 app.get("/search", async (req, res) => {
     filters.minPrice = req.query.minPrice || "0";
     filters.maxPrice = req.query.maxPrice || "5000";
-    filters.size = req.query.size || "M";
+    filters.size = req.query.size == '' ? determineSizeKind(req.query.searchword) : req.query.size;
     filters.numberOfPagesToFetch.hervis = parseInt(req.query.count);
     filters.numberOfPagesToFetch.sinsay = parseInt(req.query.count);
     filters.numberOfPagesToFetch.sportissimo = parseInt(req.query.count);
@@ -55,3 +56,7 @@ app.get("/search", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`running on: http://localhost:${PORT}`);
 });
+
+function determineSizeKind(searchword) {
+    return shoes.includes(searchword) ? 40 : 'M';
+}
