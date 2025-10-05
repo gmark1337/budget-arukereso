@@ -144,8 +144,12 @@ export async function Search(searchword) {
 	return allImages;
 }
 
-//console.log(await Search("addidas"));
-//await Search("Kék felső");
+//console.log(await Search("cumi"));
+await Search("Cumi");
+
+//const testObject = await Search("játékkocsi");
+
+//testObject.forEach(x => console.log(x));
 
 
 

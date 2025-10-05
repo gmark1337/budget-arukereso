@@ -31,7 +31,7 @@ async function getImagesAsync(page, tag1, tag2, tag3) {
 
                 const elements = container.querySelectorAll(elementSelector);
                 const prices = container.querySelectorAll(priceSelector);
-                const priceFilter = /(\d{1,3}(?:[\s\u00A0]\d{3})*)/i;
+                const priceFilter = /([\d\s]+)(?=HUF)/;
 
                 return [...elements].map((div, index) => {
                     const link = div.querySelectorAll('a')[0] || null;
