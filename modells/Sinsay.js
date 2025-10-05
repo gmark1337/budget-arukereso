@@ -22,21 +22,23 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
     return `${url}?${queryString}`;
 }
 
-async function getImagesAsync(page, tag1, tag2, tag3) {
+async function getImagesAsync(page, tag1, tag2, tag3, tag4) {
     try {
-        const images = await page.evaluate((containerSelector, elementSelector, priceSelector) => {
+        const images = await page.evaluate((containerSelector, elementSelector, priceSelector, titleContentSelector) => {
             try {
                 const container = document.querySelector(containerSelector);
                 if (!container) return [];
 
                 const elements = container.querySelectorAll(elementSelector);
                 const prices = container.querySelectorAll(priceSelector);
+                const titles = container.querySelectorAll(titleContentSelector);
                 const priceFilter = /([\d\s]+)(?=HUF)/;
 
                 return [...elements].map((div, index) => {
                     const link = div.querySelectorAll('a')[0] || null;
                     const imgEl = div.querySelector('img');
                     const priceElement = prices[index];
+                    const titleElement = titles[index].textContent;
                     let price = null;
                     try {
                         if (priceElement) {
@@ -47,22 +49,23 @@ async function getImagesAsync(page, tag1, tag2, tag3) {
                             }
                         }
                     } catch (error) {
-                        console.error(`[getImagesAsync] Sudden error occured extracting item data:`, error.message);
+                        console.error(`[getImagesAsync] Sudden error occurred while extracting item data:`, error.message);
                     }
                     return {
                         href: link ? link.href : null,
                         src: imgEl ? imgEl.src : null,
-                        price,
+                        price: price,
+                        title: titleElement
                     };
                 });
             } catch (error) {
                 console.error(`[getImagesAsync] Error inside page.evaluate:`, err.message);
                 return [];
             }
-        }, tag1, tag2, tag3);
+        }, tag1, tag2, tag3, tag4);
         return images;
     } catch (error) {
-        console.error(`[getImagesAsync] Sudden error occured while trying to run getImageSync `, error.message);
+        console.error(`[getImagesAsync] Sudden error occurred while trying to run getImageSync `, error.message);
         return images;
     }
 }
@@ -85,7 +88,7 @@ export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFe
         }
 
 
-        const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.imageSelector, sinsayWebsite.productPriceSelector);
+        const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.imageSelector, sinsayWebsite.productPriceSelector, sinsayWebsite.titleContentSelector);
         if (items === null) {
             await page.reload({ waitUntil: "networkidle2" })
         }

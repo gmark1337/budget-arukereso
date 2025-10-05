@@ -32,9 +32,9 @@ export async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector) {
+export async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector, titleSelector) {
 	try {
-		const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, imageSelector) => {
+		const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, imageSelector, titleSelector) => {
 			try {
 				const priceFilter = new RegExp(pricefilterString, 'i');
 				const item = document.querySelector(tag1).querySelector(tag2).querySelectorAll('a');
@@ -49,12 +49,14 @@ export async function getImagesAsync(page, divSelector, linkSelector, priceSelec
 					
 					let src = null;
 					let price = null;
+					let title = '';
 					try {
 						const imgs = img.querySelector(imageSelector).querySelector('img');
 						src = imgs? imgs.src : null;
 						const priceElement = prices[index];
 						const text = priceElement.textContent;
 						const match = text.match(priceFilter);
+						title  = img.querySelector(titleSelector).textContent;
 						if (match) {
 							price = match[0].replaceAll(/\s/g, '');
 						}
@@ -63,15 +65,16 @@ export async function getImagesAsync(page, divSelector, linkSelector, priceSelec
 					}
 					return {
 						href: img?.href || null,
-						src,
-						price,
+						src: src,
+						price: price,
+						title: title
 					};
 				});
 			} catch (err) {
 				console.error(`[getImagesAsync] Error inside page.evaluate:`, err.message);
 				return [];
 			}
-		}, divSelector, linkSelector, priceSelector, priceFilter.source, productImageSelector);
+		}, divSelector, linkSelector, priceSelector, priceFilter.source, productImageSelector, titleSelector);
 		return items;
 	} catch (error) {
 		console.error(`[getImagesAsync] Sudden error occured while trying to run getImageSync `, error.message);
@@ -145,9 +148,9 @@ export async function Search(searchword) {
 }
 
 //console.log(await Search("cumi"));
-await Search("Cumi");
+//await Search("Cumi");
 
-//const testObject = await Search("játékkocsi");
+//const testObject = await Search("kék felső");
 
 //testObject.forEach(x => console.log(x));
 
