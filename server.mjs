@@ -6,6 +6,8 @@ import { readFileSync } from 'fs';
 import { render } from "ejs";
 import {config} from './configuration/config.js';
 
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
 const app = express();

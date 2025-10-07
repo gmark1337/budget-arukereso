@@ -6,6 +6,7 @@ dotenv.config();
 const configJSON = JSON.parse(fs.readFileSync('./configuration/config.json', 'utf-8'));
 
 export const config = {
+    mongo_uri: process.env.MONGO_URI,
     websites: configJSON.websites,
     tests: configJSON.tests,
     filters: configJSON.filters,
