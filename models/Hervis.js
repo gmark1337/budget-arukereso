@@ -1,8 +1,8 @@
 import { config } from '../configuration/config.js';
-import { filters, sleep, getImagesAsync } from '../ImageScraperService.js';
+import { sleep, getImagesAsync } from '../ImageScraperService.js';
 
 const hervisWebsite = config.websites["hervis"];
-
+const filters = config.filters;
 function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}) {
     const searchedItemPart = encodeURIComponent(searchedItem);
 

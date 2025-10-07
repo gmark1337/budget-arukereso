@@ -2,35 +2,32 @@ import {describe, it} from 'node:test';
 import assert from 'node:assert';
 import {randomInt} from 'node:crypto';
 import {load} from 'cheerio';
-import {filters, Search} from './ImageScraperService.js';
+import {Search} from './ImageScraperService.js';
+import {config} from './configuration/config.js'
 
-const emptyPlaceholderString = ':(';
+const filters = config.filters;
 
 describe('search-function-tests', () => {
 	it('results-count-test', async () => {
-		filters.numberOfPagesToFetch.hervis = 4;
-		filters.numberOfPagesToFetch.sinsay = 3;
-		filters.numberOfPagesToFetch.sportissimo = 2;
+		filters.pagesToFetch = 4;
 		filters.blackListedWebsite = [];
 		filters.maxPrice = 20_000;
 		const r = await Search('kabát');
 		for (const e of r) {
 			const value = e.FoundImages.length;
-			const target = filters.numberOfPagesToFetch[e.websiteName.toLowerCase()];
+			const target = filters.pagesToFetch;
 			assert.equal(value, target);
 		}
 	});
 	it('results-blacklist-test', async () => {
 		filters.blackListedWebsite = ['sinsay', 'sportissimo'];
-		filters.numberOfPagesToFetch.hervis = 3;
+		filters.pagesToFetch = 4;
 		const r = await Search('kabát');
 		assert.equal(r.length, 1);
 		assert.equal(r[0].websiteName, 'Hervis');
 	});
 	it('results-price-test', async () => {
-		filters.numberOfPagesToFetch.hervis = 3;
-		filters.numberOfPagesToFetch.sinsay = 2;
-		filters.numberOfPagesToFetch.sportissimo = 4;
+		filters.pagesToFetch = 4;
 		filters.blackListedWebsite = [];
 		filters.maxPrice = 20_000;
 		filters.minPrice = 4000;
@@ -44,9 +41,7 @@ describe('search-function-tests', () => {
 	});
 	// Sinsay nem ad vissza talalatot adidas keresesre
 	it('empty-result-test', async () => {
-		filters.numberOfPagesToFetch.hervis = 2;
-		filters.numberOfPagesToFetch.sinsay = 2;
-		filters.numberOfPagesToFetch.sportissimo = 2;
+		filters.pagesToFetch = 2;
 		filters.blackListedWebsite = ['hervis', 'sportissimo'];
 		filters.maxPrice = 20_000;
 		filters.minPrice = 4000;
@@ -58,9 +53,7 @@ describe('search-function-tests', () => {
 		}
 	});
 	it('empty-searchword-test', async () => {
-		filters.numberOfPagesToFetch.hervis = 3;
-		filters.numberOfPagesToFetch.sinsay = 3;
-		filters.numberOfPagesToFetch.sportissimo = 3;
+		filters.pagesToFetch = 3;
 		filters.blackListedWebsite = [];
 		filters.maxPrice = 20_000;
 		filters.minPrice = 4000;
@@ -68,9 +61,7 @@ describe('search-function-tests', () => {
 		assert.deepEqual(r, []);
 	});
 	it('empty-string-searchword-test'), async () => {
-		filters.numberOfPagesToFetch.hervis = 3;
-		filters.numberOfPagesToFetch.sinsay = 3;
-		filters.numberOfPagesToFetch.sportissimo = 3;
+		filters.pagesToFetch = 3;
 		filters.blackListedWebsite = [];
 		filters.maxPrice = 20_000;
 		filters.minPrice = 4000;
@@ -89,7 +80,7 @@ describe('search-endpoint-edgecases-tests', () => {
 		const response = await (await fetch('http://localhost:8080/search?' + new URLSearchParams(p))).text();
 		const $ = load(response);
 		const value = $('fieldset div.items').contents().first().text().trim();
-		assert.equal(value, emptyPlaceholderString);
+		assert.equal(value, filters.emptyPlaceholderString);
 	});
 	it('empty-string-searchword-test', async () => {
 		const p = genParameters();
@@ -109,7 +100,7 @@ describe('search-endpoint-edgecases-tests', () => {
 		const $ = load(response);
 		const value = $('fieldset div.items').contents().map((_, e) => $(e).text().trim()).get();
 		for (const i of value) {
-			assert.equal(i, ':(');
+			assert.equal(i, filters.emptyPlaceholderString);
 		}
 	});
 });

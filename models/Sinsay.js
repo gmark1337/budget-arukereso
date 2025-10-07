@@ -1,7 +1,7 @@
-import { sleep, filters } from '../ImageScraperService.js'
 import { config } from '../configuration/config.js'
 
 const sinsayWebsite = config.websites["sinsay"];
+const filters = config.filters;
 
 
 function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
@@ -16,7 +16,7 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
     }
 
     if (filters.minPrice && filters.maxPrice) {
-        params.push(`price=${filters.minPrice}%3A`);
+        params.push(`price=${filters.minPrice}%3A${filters.maxPrice}`);
     }
     const queryString = params.join("&");
     return `${url}?${queryString}`;

@@ -1,31 +1,62 @@
 {
-    "websites":{
-        "hervis":{
-            "baseUrl":"https://www.hervis.hu/shop/search/",
-            "denyCookieSelector":".cmpwrapper",
+    "websites": {
+        "hervis": {
+            "baseUrl": "https://www.hervis.hu/shop/search/",
+            "denyCookieSelector": ".cmpwrapper",
             "shadowCookieDenyButton": ".cmpboxbtn.cmpboxbtnno.cmptxt_btn_no",
-            "containerSelector":".product-list__list",
-            "urlTagSelector":".product-scroll__list.products",
-            "priceTagSelector":".product-panel__summary-price",
-            "productImageSelector":".product-panel__image",
-            "titleContentSelector":".product-panel__summary-name"
+            "containerSelector": ".product-list__list",
+            "urlTagSelector": ".product-scroll__list.products",
+            "priceTagSelector": ".product-panel__summary-price",
+            "productImageSelector": ".product-panel__image",
+            "titleContentSelector": ".product-panel__summary-name"
         },
-        "sportissimo":{
-            "baseUrl":"https://www.sportisimo.hu/termekkereso-katalogus/",
-            "containerSelector":".zws-main__list",
-            "urlTagSelector":".ais-InfiniteHits-list.zws-infinite-hits__list",
-            "priceTagSelector":".product-box__prices",
-            "productImageSelector":".product-box__image",
-            "titleContentSelector":".product-box__title"
+        "sportissimo": {
+            "baseUrl": "https://www.sportisimo.hu/termekkereso-katalogus/",
+            "containerSelector": ".zws-main__list",
+            "urlTagSelector": ".ais-InfiniteHits-list.zws-infinite-hits__list",
+            "priceTagSelector": ".product-box__prices",
+            "productImageSelector": ".product-box__image",
+            "titleContentSelector": ".product-box__title"
         },
-        "sinsay":{
-            "baseUrl":"https://www.sinsay.com/hu/hu/",
-            "priceRangeSelector":".input__InputText-sc-1mxde2b-0.ipFxa.sc-jVKKMF.gmfmmt",
-            "acceptCookieButton":"#cookiebotDialogOkButton",
-            "containerSelector":".algolia-products-module__algolia-products-container",
-            "imageSelector":".product-tilestyled__StyledProductTileWrapper-sc-1u901v5-1.jFLCAm",
-            "productPriceSelector":".product-tilestyled__StyledProductTileDetails-sc-1u901v5-2.blUHpA",
-            "titleContentSelector":".product-namestyled__StyledProductNameText-ygymof-2.ktoODA"
+        "sinsay": {
+            "baseUrl": "https://www.sinsay.com/hu/hu/",
+            "priceRangeSelector": ".input__InputText-sc-1mxde2b-0.ipFxa.sc-jVKKMF.gmfmmt",
+            "acceptCookieButton": "#cookiebotDialogOkButton",
+            "containerSelector": ".algolia-products-module__algolia-products-container",
+            "imageSelector": ".product-tilestyled__StyledProductTileWrapper-sc-1u901v5-1.jFLCAm",
+            "productPriceSelector": ".product-tilestyled__StyledProductTileDetails-sc-1u901v5-2.blUHpA",
+            "titleContentSelector": ".product-namestyled__StyledProductNameText-ygymof-2.ktoODA"
         }
-    }
+    },
+    "tests": {
+        "emptyPlaceholderString": "Failed to find products for this website!"
+    },
+    "filters": {
+        "minPrice": 4000,
+        "maxPrice": 5000,
+        "size": "M",
+        "pagesToFetch": 3,
+        "blackListedWebsite": [],
+        "shoeFilters": [
+            "cipő",
+            "sneaker",
+            "csizma",
+            "bakancs",
+            "papucs",
+            "Mokaszin",
+            "szandál",
+            "mamusz",
+            "klumpa",
+            "platform",
+            "tűsarkú",
+            "stopli",
+            "crocs"
+        ]
+    },
+    "allowedConsoleLogs": [
+        "[getImagesAsync]",
+        "[fetchSportissimoImagesAsync]",
+        "[fetchSinsayImagesAsync]",
+        "[fetchHervisImagesAsync]"
+    ]
 }

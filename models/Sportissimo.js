@@ -1,8 +1,9 @@
-import { getImagesAsync, sleep,filters} from "../ImageScraperService.js";
+import { getImagesAsync} from "../ImageScraperService.js";
 import {config} from '../configuration/config.js'
 
 
 const sportissmoWebsite = config.websites["sportissimo"];
+const filters = config.filters;
 
 function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
     const params = [];

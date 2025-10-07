@@ -1,31 +1,14 @@
 import puppeteer from 'puppeteer';
 import pLimit from 'p-limit';
 
-import { fetchHervisImagesAsync } from './modells/Hervis.js';
-import { fetchSportissimoImagesAsync } from './modells/Sportissimo.js';
-import { fetchSinsayImagesAsync } from './modells/Sinsay.js';
-
-export const filters = {
-	minPrice: "4000",
-	maxPrice: "5000",
-	size: "M",
-	numberOfPagesToFetch: {
-		hervis: 1,
-		sinsay: 2,
-		sportissimo: 3
-	},
-	blackListedWebsite: [
-	]
-};
+import { fetchHervisImagesAsync } from './models/Hervis.js';
+import { fetchSportissimoImagesAsync } from './models/Sportissimo.js';
+import { fetchSinsayImagesAsync } from './models/Sinsay.js';
+import {config} from './configuration/config.js'
 
 
-const allowedConsoleLogs = [
-	"[getImagesAsync]",
-	"[fetchSportissimoImagesAsync]",
-	"[fetchSinsayImagesAsync]",
-	"[fetchHervisImagesAsync]"
-]
-
+const filters = config.filters;
+const allowedConsoleLogs = config.allowedConsoleLogs;
 
 
 export async function sleep(ms) {
@@ -84,7 +67,9 @@ export async function getImagesAsync(page, divSelector, linkSelector, priceSelec
 
 
 export async function Search(searchword) {
-
+	if(searchword == 'undefined' || searchword == undefined || searchword.length == 0 || searchword == ''){
+		return [];
+	}
 	const browser = await puppeteer.launch({
 		headless: true,
 		defaultViewport: false,
@@ -112,9 +97,9 @@ export async function Search(searchword) {
 	const limit = pLimit(3);
 
 	const sites = [
-		{ name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.numberOfPagesToFetch.hervis },
-		{ name: "sportissimo", function: fetchSportissimoImagesAsync, pagesToFetch: filters.numberOfPagesToFetch.sportissimo },
-		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.numberOfPagesToFetch.sinsay }
+		{ name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{ name: "sportissimo", function: fetchSportissimoImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch }
 	];
 
 	console.log('Started scraping websites in parallel.');
@@ -132,7 +117,7 @@ export async function Search(searchword) {
 			const start = Date.now();
 			const images = await site.function(searchword, page, site.pagesToFetch);
 			const end = Date.now();
-			console.log(`Finished scraping ${site.name} in ${(end - start) / 1000} seconds`);
+			//console.log(`Finished scraping ${site.name} in ${(end - start) / 1000} seconds`);
 			await page.close();
 			return images;
 		}));
@@ -140,7 +125,7 @@ export async function Search(searchword) {
 
 	const allImages = await Promise.all(tasks);
 	const end = Date.now();
-	console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
+	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 
 	await browser.close();
 
@@ -148,10 +133,9 @@ export async function Search(searchword) {
 }
 
 //console.log(await Search("cumi"));
-//await Search("Cumi");
+//await Search("Kék felső");
 
 //const testObject = await Search("kék felső");
-
 //testObject.forEach(x => console.log(x));
 
 
