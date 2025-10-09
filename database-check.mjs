@@ -50,12 +50,12 @@ const testData2 = {
 
 
 //TEST TO SEE
-/*
+
 const users = await user.find();
 const capyUser = await user.findOne({ username: 'Capy Bara' });
 
 console.log(capyUser);
-*/
+
 
 
 await mongoose.disconnect();
