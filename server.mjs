@@ -7,7 +7,6 @@ import { render } from "ejs";
 import {config} from './configuration/config.js';
 
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename)
 const app = express();
@@ -25,9 +24,11 @@ app.get("/", async (_, res) => {
 });
 
 app.get("/search", async (req, res) => {
+    //console.log(req.query);
     filters.minPrice = req.query.minPrice || "0";
     filters.maxPrice = req.query.maxPrice || "5000";
     filters.size = req.query.size == '' ? determineSizeKind(req.query.searchword) : req.query.size;
+    filters.pagesToFetch = req.query.count;
     filters.blackListedWebsite = [];
     if (req.query.hervis != "true") {
         filters.blackListedWebsite.push("hervis");
@@ -59,5 +60,5 @@ app.listen(PORT, () => {
 });
 
 function determineSizeKind(searchword) {
-    return config.shoeFilters.includes(searchword) ? 40 : 'M';
+    return filters.shoeFilters.includes(searchword) ? 40 : 'M';
 }
