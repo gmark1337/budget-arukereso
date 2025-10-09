@@ -3,7 +3,7 @@
         <legend><%= result.websiteName %></legend>
         <div class="items">
         <% if (result.FoundImages.length == 0) { %>
-            Failed to find products for this website!
+            <%= emptyStringPlaceholder %>
         <% } %>
         <% result.FoundImages.map((item) => { %>
                 <div class="item">
