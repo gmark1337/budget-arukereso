@@ -39,6 +39,9 @@ app.get("/search", async (req, res) => {
     if (req.query.sportissimo != "true") {
         filters.blackListedWebsite.push("sportissimo");
     }
+    if(req.query.aboutYou != "true"){
+        filters.blackListedWebsite.push("aboutYou")
+    }
     const r = await Search(req.query.searchword)
     for (let i = 0; i < r.length; i ++) {
         r[i].FoundImages.sort((a, b) => {

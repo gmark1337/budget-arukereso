@@ -57,7 +57,7 @@ export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFe
         }
 
 
-        const items = await getImagesAsync(page, hervisWebsite.containerSelector, hervisWebsite.urlTagSelector, hervisWebsite.priceTagSelector, regex, hervisWebsite.productImageSelector, hervisWebsite.titleContentSelector);
+        const items = await getImagesAsync(page, hervisWebsite.containerSelector, hervisWebsite.priceTagSelector, regex, hervisWebsite.productImageSelector, hervisWebsite.titleContentSelector);
 
         const selected = items.slice(0, numberOfItemsToFetch);
         const finalImages = {
