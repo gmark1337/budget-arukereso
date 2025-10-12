@@ -1,11 +1,14 @@
-import {describe, it} from 'node:test';
+import {
+	after, before, describe, it,
+} from 'node:test';
 import assert from 'node:assert';
 import {randomInt} from 'node:crypto';
 import {load} from 'cheerio';
 import {Search} from './ImageScraperService.js';
-import {config} from './configuration/config.js'
+import {config} from './configuration/config.js';
+import {DB, USER} from './db.js';
 
-const filters = config.filters;
+const {filters} = config;
 
 describe('search-function-tests', () => {
 	it('results-count-test', async () => {
@@ -135,9 +138,33 @@ describe('search-response-html-tests', async () => {
 			if (p.order == 'desc') {
 				sorted.sort((a, b) => b - a);
 			}
+
 			assert.deepEqual(sitePrices, sorted);
 			head += expectedNumberOfSites;
 		}
+	});
+});
+
+describe('registration-tests', () => {
+	const {form, p} = genForm();
+	before('remove-test-user-bob', async () => {
+		console.log('removing existing user');
+		await USER.findOneAndDelete({username: p.username});
+	});
+	it('register-test-user-bob', async () => {
+		await fetch('http://localhost:8080/register', {
+			method: 'POST',
+			body: form,
+		});
+		const user = await USER.findOne({username: p.username});
+		console.log(user);
+		assert.equal(user.username, p.username);
+	});
+	after('disconnect-from-db', async () => {
+		console.log('removing existing user');
+		await USER.findOneAndDelete({username: p.username});
+		console.log('DB disconnecting...');
+		await DB.disconnect();
 	});
 });
 
@@ -154,4 +181,28 @@ function genParameters(searchword) {
 	p.sinsay = randomInt(2) == 1;
 	p.sportisimo = randomInt(2) == 1;
 	return p;
+}
+
+function genForm() {
+	const p = {
+		email: 'test-user-bob@test.com',
+		username: 'test-user-bob',
+		password: 'test',
+	};
+	const form = createElement('form');
+	form.method = 'POST';
+	const emailInput = createElement('input');
+	emailInput.name = 'email';
+	emailInput.value = p.email;
+	form.append(emailInput);
+	const usernameInput = createElement('input');
+	usernameInput.name = 'username';
+	usernameInput.value = p.username;
+	form.append(usernameInput);
+	const passwordInput = createElement('input');
+	passwordInput.type = 'password';
+	passwordInput.name = 'password';
+	passwordInput.value = p.password;
+	form.append(passwordInput);
+	return [form, p];
 }

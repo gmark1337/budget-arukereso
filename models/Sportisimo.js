@@ -3,7 +3,7 @@ import {config} from '../configuration/config.js'
 
 
 const sportisimoWebsite = config.websites["sportisimo"];
-console.log(sportisimoWebsite)
+//console.log(sportisimoWebsite)
 const filters = config.filters;
 
 function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
