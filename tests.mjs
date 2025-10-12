@@ -23,7 +23,7 @@ describe('search-function-tests', () => {
 		}
 	});
 	it('results-blacklist-test', async () => {
-		filters.blackListedWebsite = ['sinsay', 'sportisimo'];
+		filters.blackListedWebsite = ['sinsay', 'sportisimo', 'aboutYou'];
 		filters.pagesToFetch = 4;
 		const r = await Search('kabát');
 		assert.equal(r.length, 1);
@@ -31,7 +31,7 @@ describe('search-function-tests', () => {
 	});
 	it('results-price-test', async () => {
 		filters.pagesToFetch = 4;
-		filters.blackListedWebsite = [];
+		filters.blackListedWebsite = ['aboutYou']; //abyout you doesn't have filtering options yet!
 		filters.maxPrice = 20_000;
 		filters.minPrice = 4000;
 		const r = await Search('kabát');
@@ -80,6 +80,7 @@ describe('search-endpoint-edgecases-tests', () => {
 		p.sinsay = true;
 		p.hervis = false;
 		p.sportisimo = false;
+		p.aboutYou = false;
 		const response = await (await fetch('http://localhost:8080/search?' + new URLSearchParams(p))).text();
 		const $ = load(response);
 		const value = $('fieldset div.items').contents().first().text().trim();
