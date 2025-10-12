@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import pLimit from 'p-limit';
 
 import { fetchHervisImagesAsync } from './models/Hervis.js';
-import { fetchSportissimoImagesAsync } from './models/Sportissimo.js';
+import { fetchSportisimoImagesAsync } from './models/Sportisimo.js';
 import { fetchSinsayImagesAsync } from './models/Sinsay.js';
 import { fetchAboutYouImagesAsync } from './models/AboutYou.js';
 import {config} from './configuration/config.js'
@@ -103,7 +103,7 @@ export async function Search(searchword) {
 
 	const sites = [
 		{ name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{ name: "sportissimo", function: fetchSportissimoImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{ name: "sportisimo", function: fetchSportisimoImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch}
 	];
@@ -144,6 +144,9 @@ export async function Search(searchword) {
 
 //const testObject = await Search("kék felső");
 //testObject.forEach(x => console.log(x));
+
+//console.log(decodeURIComponent("https://www.aboutyou.hu/c/noi/ruhazat/polok-es-felsok/felsok-20255?color=38920&prices=397800-3288100&defFemaleInt=39090"))
+//https://www.aboutyou.hu/c/noi/ruhazat/polok-es-felsok/felsok-20255?color=38920
 
 
 

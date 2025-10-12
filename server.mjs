@@ -58,8 +58,8 @@ app.get('/search', async (request, res) => {
 		filters.blackListedWebsite.push('sinsay');
 	}
 
-	if (request.query.sportissimo != 'true') {
-		filters.blackListedWebsite.push('sportissimo');
+	if (request.query.sportisimo != 'true') {
+		filters.blackListedWebsite.push('sportisimo');
 	}
 
     if(request.query.aboutYou != "true"){

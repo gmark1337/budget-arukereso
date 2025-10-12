@@ -2,7 +2,8 @@ import { getImagesAsync} from "../ImageScraperService.js";
 import {config} from '../configuration/config.js'
 
 
-const sportissmoWebsite = config.websites["sportissimo"];
+const sportisimoWebsite = config.websites["sportisimo"];
+console.log(sportisimoWebsite)
 const filters = config.filters;
 
 function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
@@ -28,32 +29,32 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
 
 }
 
-export async function fetchSportissimoImagesAsync(searchword, page, numberOfItemsToFetch){
+export async function fetchSportisimoImagesAsync(searchword, page, numberOfItemsToFetch){
     try{
 
     
-    const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportissmoWebsite.baseUrl, filters);
+    const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportisimoWebsite.baseUrl, filters);
     console.log(`The created URL is: ${foundPage}`);
 
     await page.goto(foundPage, {waitUntil: "networkidle2"});
 
     const regex = /^\s*\d{1,3}(?:[\s\u00A0]\d{3})*/;
-    const images = await getImagesAsync(page, sportissmoWebsite.containerSelector,sportissmoWebsite.priceTagSelector,regex, sportissmoWebsite.productImageSelector, sportissmoWebsite.titleContentSelector);
+    const images = await getImagesAsync(page, sportisimoWebsite.containerSelector,sportisimoWebsite.priceTagSelector,regex, sportisimoWebsite.productImageSelector, sportisimoWebsite.titleContentSelector);
     
 
     
     const selected = images.slice(0, numberOfItemsToFetch);
-    //console.log(`Found images for Sportissimo website: ${selected}`);
+    //console.log(`Found images for Sportisimo website: ${selected}`);
     const finalImages = {
-        websiteName: 'Sportissimo',
+        websiteName: 'Sportisimo',
         FoundImages: selected
     };
 
     return finalImages;
     }catch(error){
-        console.error(`[fetchSportissimoImagesAsync] Failed to fetch images:  ${error.message}`);
+        console.error(`[fetchSportisimoImagesAsync] Failed to fetch images:  ${error.message}`);
         return {
-            websiteName: 'Sportissimo',
+            websiteName: 'Sportisimo',
             FoundImages: []
         };
     }

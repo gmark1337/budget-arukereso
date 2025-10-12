@@ -7,7 +7,7 @@
             "productImageSelector": ".product-panel__image",
             "titleContentSelector": ".product-panel__summary-name"
         },
-        "sportissimo": {
+        "sportisimo": {
             "baseUrl": "https://www.sportisimo.hu/termekkereso-katalogus/",
             "containerSelector": ".ais-InfiniteHits-list.zws-infinite-hits__list",
             "priceTagSelector": ".product-box__prices",
@@ -57,7 +57,7 @@
     },
     "allowedConsoleLogs": [
         "[getImagesAsync]",
-        "[fetchSportissimoImagesAsync]",
+        "[fetchSportisimoImagesAsync]",
         "[fetchSinsayImagesAsync]",
         "[fetchHervisImagesAsync]"
     ]

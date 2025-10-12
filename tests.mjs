@@ -20,7 +20,7 @@ describe('search-function-tests', () => {
 		}
 	});
 	it('results-blacklist-test', async () => {
-		filters.blackListedWebsite = ['sinsay', 'sportissimo'];
+		filters.blackListedWebsite = ['sinsay', 'sportisimo'];
 		filters.pagesToFetch = 4;
 		const r = await Search('kabát');
 		assert.equal(r.length, 1);
@@ -42,7 +42,7 @@ describe('search-function-tests', () => {
 	// Sinsay nem ad vissza talalatot adidas keresesre
 	it('empty-result-test', async () => {
 		filters.pagesToFetch = 2;
-		filters.blackListedWebsite = ['hervis', 'sportissimo'];
+		filters.blackListedWebsite = ['hervis', 'sportisimo'];
 		filters.maxPrice = 20_000;
 		filters.minPrice = 4000;
 		const r = await Search('adidas');
@@ -76,7 +76,7 @@ describe('search-endpoint-edgecases-tests', () => {
 		const p = genParameters('adidas');
 		p.sinsay = true;
 		p.hervis = false;
-		p.sportissimo = false;
+		p.sportisimo = false;
 		const response = await (await fetch('http://localhost:8080/search?' + new URLSearchParams(p))).text();
 		const $ = load(response);
 		const value = $('fieldset div.items').contents().first().text().trim();
@@ -110,7 +110,7 @@ describe('search-response-html-tests', async () => {
 	const response = await (await fetch('http://localhost:8080/search?' + new URLSearchParams(p))).text();
 	const $ = load(response);
 	it('results-count-test', () => {
-		const expectedNumberOfSites = p.hervis + p.sinsay + p.sportissimo;
+		const expectedNumberOfSites = p.hervis + p.sinsay + p.sportisimo;
 		const actualNumberOfSites = $('fieldset').length;
 		assert.equal(expectedNumberOfSites, actualNumberOfSites);
 	});
@@ -123,7 +123,7 @@ describe('search-response-html-tests', async () => {
 	});
 	it('price-order-test', () => {
 		const prices = $('span.chip').map((_, e) => Number.parseInt($(e).text())).get();
-		const expectedNumberOfSites = p.hervis + p.sinsay + p.sportissimo;
+		const expectedNumberOfSites = p.hervis + p.sinsay + p.sportisimo;
 		let head = 0;
 		for (let i = 0; i < expectedNumberOfSites; i++) {
 			const sitePrices = prices.slice(head, head + expectedNumberOfSites);
@@ -152,6 +152,6 @@ function genParameters(searchword) {
 	p.count = randomInt(1, 8);
 	p.hervis = randomInt(2) == 1;
 	p.sinsay = randomInt(2) == 1;
-	p.sportissimo = randomInt(2) == 1;
+	p.sportisimo = randomInt(2) == 1;
 	return p;
 }

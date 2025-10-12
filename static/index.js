@@ -31,7 +31,7 @@ function getResults() {
 		count: document.querySelector('#count').value,
 		hervis: document.querySelector('#hervis').checked,
 		sinsay: document.querySelector('#sinsay').checked,
-		sportissimo: document.querySelector('#sportissimo').checked,
+		sportisimo: document.querySelector('#sportisimo').checked,
 		aboutYou: document.querySelector('#aboutYou').checked
 	})).then(response => response.text())
 		.then(text => {
