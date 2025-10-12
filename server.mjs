@@ -35,11 +35,14 @@ app.get('/', async (request, res) => {
 	if (token) {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
 		const user = jwt.verify(token, secret);
-        username = user.username;
+		username = user.username;
 	}
 
+	const [historyMap, keys] = await getHistory();
 	res.render('index', {
 		username: username || 'Guest',
+		history: username ? historyMap : null,
+		keys: username ? keys : null,
 	});
 });
 
@@ -79,6 +82,15 @@ app.get('/search', async (request, res) => {
 		results: r,
 		emptyStringPlaceholder,
 	}));
+	const token = request.cookies.Authorize;
+	let user = null;
+	if (token) {
+		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
+		user = jwt.verify(token, secret);
+	}
+	if (user) {
+		addToHistory(r, user);
+	}
 });
 
 app.get('/register', (_, res) => {
@@ -208,4 +220,33 @@ process.on('SIGNTERM', async () => {
 
 function determineSizeKind(searchword) {
 	return filters.shoeFilters.includes(searchword) ? 40 : 'M';
+}
+
+async function getHistory() {
+	const historyItems = await HISTORY.find();
+	const historyMap = new Map();
+	for (const item of historyItems) {
+		if (historyMap.has(item.websiteName)) {
+			historyMap.set(item.websiteName, historyMap.get(item.websiteName).concat(item.product));
+		} else {
+			historyMap.set(item.websiteName, item.product);
+		}
+	}
+
+	const keys = [];
+	for (const key of historyMap.keys()) {
+		keys.push(key);
+	}
+
+	return [historyMap, keys];
+}
+
+function addToHistory(search, user) {
+	for (const e of search) {
+		HISTORY.insertOne({
+			websiteName: e.websiteName,
+			product: e.FoundImages,
+			user: user.id,
+		});
+	}
 }
