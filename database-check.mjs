@@ -21,7 +21,7 @@ const testData1 = {
 };
 
 const testData2 = {
-    websiteName: 'Sportissimo',
+    websiteName: 'Sportisimo',
     FoundImages: [
         {
             href: 'https://www.sportisimo.hu/fundango/sahara/1687833/',

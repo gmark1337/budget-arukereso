@@ -22,6 +22,7 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
     return `${url}?${queryString}`;
 }
 
+
 async function getImagesAsync(page, tag1, tag2, tag3, tag4) {
     try {
         const images = await page.evaluate((containerSelector, elementSelector, priceSelector, titleContentSelector) => {

@@ -2,9 +2,11 @@ import puppeteer from 'puppeteer';
 import pLimit from 'p-limit';
 
 import { fetchHervisImagesAsync } from './models/Hervis.js';
-import { fetchSportissimoImagesAsync } from './models/Sportissimo.js';
+import { fetchSportisimoImagesAsync } from './models/Sportisimo.js';
 import { fetchSinsayImagesAsync } from './models/Sinsay.js';
+import { fetchAboutYouImagesAsync } from './models/AboutYou.js';
 import {config} from './configuration/config.js'
+
 
 
 const filters = config.filters;
@@ -15,49 +17,52 @@ export async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function getImagesAsync(page, divSelector, linkSelector, priceSelector, priceFilter, productImageSelector, titleSelector) {
+
+export async function getImagesAsync(page, containerSelector, priceSelector, priceFilter, productImageSelector, titleContentSelector) {
 	try {
-		const items = await page.evaluate((tag1, tag2, tag3, pricefilterString, imageSelector, titleSelector) => {
+		const items = await page.evaluate((containerSelector, priceSelector, pricefilterString, productImageSelector, titleContentSelector) => {
 			try {
+				
 				const priceFilter = new RegExp(pricefilterString, 'i');
-				const item = document.querySelector(tag1).querySelector(tag2).querySelectorAll('a');
-				if(!item){
-					throw new Error(`[getImagesAsync] Selectors not found: ${tag1} or ${tag2}`);
-				}
-				const prices = document.querySelector(tag1).querySelectorAll(tag3);
-				if(!prices){
-					throw new Error(`[getImagesAsync] Price selector not found: ${tag3}`);
-				}
-				return [...item].map((img, index) => {
+
+				const container = document.querySelector(containerSelector);
+				const anchors = container.querySelectorAll('a');
+				const prices = container.querySelectorAll(priceSelector);
+				
+				return [...anchors].map((img, index) => {
 					
-					let src = null;
-					let price = null;
-					let title = '';
 					try {
-						const imgs = img.querySelector(imageSelector).querySelector('img');
-						src = imgs? imgs.src : null;
+						const imageContainer = img.querySelectorAll(productImageSelector)[0] || img;
+						const imageTag = imageContainer.querySelector('img') || imageContainer;
+						const src = imageTag?.src || null;
+
 						const priceElement = prices[index];
-						const text = priceElement.textContent;
+						const text = priceElement?.textContent || '';
 						const match = text.match(priceFilter);
-						title  = img.querySelector(titleSelector).textContent;
-						if (match) {
-							price = match[0].replaceAll(/\s/g, '');
+						const price = match ? match[0].replaceAll(/\s/g, '') : null;
+
+						const title  = img.querySelector(titleContentSelector)?.textContent || '';
+						return {
+							href: img?.href || null,
+							src: src,
+							price: price,
+							title: title
 						}
 					} catch (err) {
 						console.error(`[getImagesAsync] Sudden error occured extracting item data:`, err.message);
+						return {
+							href: null,
+							src: null,
+							price: null,
+							title: ''
+						};
 					}
-					return {
-						href: img?.href || null,
-						src: src,
-						price: price,
-						title: title
-					};
 				});
 			} catch (err) {
 				console.error(`[getImagesAsync] Error inside page.evaluate:`, err.message);
 				return [];
 			}
-		}, divSelector, linkSelector, priceSelector, priceFilter.source, productImageSelector, titleSelector);
+		}, containerSelector, priceSelector, priceFilter.source, productImageSelector, titleContentSelector);
 		return items;
 	} catch (error) {
 		console.error(`[getImagesAsync] Sudden error occured while trying to run getImageSync `, error.message);
@@ -98,8 +103,9 @@ export async function Search(searchword) {
 
 	const sites = [
 		{ name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{ name: "sportissimo", function: fetchSportissimoImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch }
+		{ name: "sportisimo", function: fetchSportisimoImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch}
 	];
 
 	console.log('Started scraping websites in parallel.');
@@ -126,7 +132,8 @@ export async function Search(searchword) {
 	const allImages = await Promise.all(tasks);
 	const end = Date.now();
 	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
-
+	
+	
 	await browser.close();
 
 	return allImages;
@@ -137,6 +144,9 @@ export async function Search(searchword) {
 
 //const testObject = await Search("kék felső");
 //testObject.forEach(x => console.log(x));
+
+//console.log(decodeURIComponent("https://www.aboutyou.hu/c/noi/ruhazat/polok-es-felsok/felsok-20255?color=38920&prices=397800-3288100&defFemaleInt=39090"))
+//https://www.aboutyou.hu/c/noi/ruhazat/polok-es-felsok/felsok-20255?color=38920
 
 
 
