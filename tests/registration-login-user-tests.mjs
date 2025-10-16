@@ -145,7 +145,7 @@ describe('login-edgecases-tests', () => {
 			email: p.email,
 		});
 	});
-	it('incorrect password', async () => {
+	it('incorrect-password', async () => {
         const res = await fetch('http://localhost:8080/login', {
             method: 'POST',
             body: new URLSearchParams({
@@ -160,7 +160,7 @@ describe('login-edgecases-tests', () => {
 			.trim();
 		assert.equal(actual, 'invalid password');
     });
-	it('incorrect username', async () => {
+	it('incorrect-username', async () => {
         const res = await fetch('http://localhost:8080/login', {
             method: 'POST',
             body: new URLSearchParams({
