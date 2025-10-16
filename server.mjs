@@ -65,9 +65,9 @@ app.get('/search', async (request, res) => {
 		filters.blackListedWebsite.push('sportisimo');
 	}
 
-    if(request.query.aboutYou != "true"){
-        filters.blackListedWebsite.push("aboutYou")
-    }
+	if (request.query.aboutYou != 'true') {
+		filters.blackListedWebsite.push('aboutYou');
+	}
 
 	const r = await Search(request.query.searchword);
 	for (const element of r) {
@@ -92,6 +92,7 @@ app.get('/search', async (request, res) => {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
 		user = jwt.verify(token, secret);
 	}
+
 	if (user) {
 		addToHistory(r, user);
 	}
@@ -103,7 +104,7 @@ app.get('/register', (_, res) => {
 	});
 });
 
-app.post('/register', (request, res) => {
+app.post('/register', async (request, res) => {
 	const {email, username, password} = request.body;
 	if (!email) {
 		res.render('register', {
@@ -126,10 +127,12 @@ app.post('/register', (request, res) => {
 		return;
 	}
 
-	if (USER.findOne({username}).query != null) {
+    const user = await USER.findOne({username});
+	if (user != null) {
 		res.render('register', {
 			errorMessage: 'username taken',
 		});
+		return;
 	}
 
 	hash(password, saltRounds, async (error, hash) => {
@@ -140,24 +143,23 @@ app.post('/register', (request, res) => {
 			return;
 		}
 
-		const user = await USER.create({
+		await USER.create({
 			username,
 			email,
 			password: hash,
-		});
-		if (!user) {
-			res.render('login', {
-				errorMessage: 'failed to create user',
-			});
-			return;
-		}
-
+		}).then(async (user) => {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
 		const token = jwt.sign({id: user._id, username: user.username}, secret, {expiresIn: '72h'});
 		res.cookie('Authorize', token, {
 			httpOnly: true,
 		});
 		res.redirect('/');
+        }).catch(() => {
+			res.render('register', {
+				errorMessage: 'failed to create user',
+			});
+            return;
+		});
 	});
 });
 
