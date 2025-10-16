@@ -6,7 +6,7 @@ import {load} from 'cheerio';
 import {DB, USER} from '../db.js';
 
 describe('registration-login-user-tests', () => {
-	const p = genForm();
+	const p = getP();
 	before(async () => {
 		await USER.findOneAndDelete({username: p.username});
 	});
@@ -33,30 +33,163 @@ describe('registration-login-user-tests', () => {
 			redirect: 'manual',
 		});
 		const cookies = res.headers.getSetCookie();
-        const token = getToken(cookies, 'Authorize');
-        res =  await fetch('http://localhost:8080', {
-            headers: {
-                'Cookie': `Authorize=${token}`
-            }
+		const token = getToken(cookies, 'Authorize');
+		res = await fetch('http://localhost:8080', {
+			headers: {
+				Cookie: `Authorize=${token}`,
+			},
 		});
-        const text = await res.text();
-        const $ = load(text);
-        const username = $('div#account').map((_, e) => $(e).text())
-            .get()[0].trim();
-        assert.equal(username, p.username);
+		const text = await res.text();
+		const $ = load(text);
+		const username = $('div#account').map((_, e) => $(e).text())
+			.get()[0].trim();
+		assert.equal(username, p.username);
 	});
 	after(async () => {
 		await USER.findOneAndDelete({username: p.username});
-		await DB.disconnect();
 	});
 });
 
-function genForm(name) {
+describe('registration-edgecases-tests', () => {
+	it('no-username-provided', async () => {
+		const p = getP();
+		p.username = '';
+		const res = await fetch('http://localhost:8080/register', {
+			method: 'POST',
+			body: new URLSearchParams(p),
+		});
+		const text = await res.text();
+		const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'no username provided');
+	});
+	it('no-password-provided', async () => {
+		const p = getP();
+		p.password = '';
+		const res = await fetch('http://localhost:8080/register', {
+			method: 'POST',
+			body: new URLSearchParams(p),
+		});
+		const text = await res.text();
+		const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'no password provided');
+	});
+	it('no-email-provided', async () => {
+		const p = getP();
+		p.email = '';
+		const res = await fetch('http://localhost:8080/register', {
+			method: 'POST',
+			body: new URLSearchParams(p),
+		});
+		const text = await res.text();
+		const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'no email provided');
+	});
+});
+
+describe('taken-username-or-email-tests', () => {
+	const p = getP();
+	before(async () => {
+		await USER.create({
+			username: p.username,
+			password: p.password,
+			email: p.email,
+		});
+	});
+	it('taken-username', async () => {
+		const res = await fetch('http://localhost:8080/register', {
+			method: 'POST',
+			body: new URLSearchParams({
+				username: p.username,
+				password: p.password,
+				email: `a${p.email}`,
+			}),
+		});
+		const text = await res.text();
+		const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'username taken');
+	});
+	it('taken-email', async () => {
+		const res = await fetch('http://localhost:8080/register', {
+			method: 'POST',
+			body: new URLSearchParams({
+				username: `${p.username}1`,
+				password: p.password,
+				email: p.email,
+			}),
+		});
+		const text = await res.text();
+		const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'email taken');
+	});
+	after(async () => {
+		await USER.findOneAndDelete({username: p.username});
+	});
+});
+
+describe('login-edgecases-tests', () => {
+	const p = getP();
+	before(async () => {
+		await USER.create({
+			username: p.username,
+			password: p.password,
+			email: p.email,
+		});
+	});
+	it('incorrect password', async () => {
+        const res = await fetch('http://localhost:8080/login', {
+            method: 'POST',
+            body: new URLSearchParams({
+ 				username: p.username,
+				password: `${p.password}1`,
+				email: p.email,               
+            })
+        });
+        const text = await res.text();
+        const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'invalid password');
+    });
+	it('incorrect username', async () => {
+        const res = await fetch('http://localhost:8080/login', {
+            method: 'POST',
+            body: new URLSearchParams({
+ 				username: `${p.username}1`,
+				password: p.password,
+				email: p.email,               
+            })
+        });
+        const text = await res.text();
+        const $ = load(text);
+		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
+			.trim();
+		assert.equal(actual, 'invalid username');
+    });
+    after(async () => {
+        await USER.findOneAndDelete({username: p.username});
+    });
+});
+
+after(async () => {
+	await DB.disconnect();
+});
+
+function getP(name) {
 	name ||= 'bob';
 	const p = {
 		email: `test-user-${name}@test.com`,
 		username: `test-user-${name}`,
-		password: 'test',
+		password: 'test-C1jzovFk6vU2',
 	};
 	return p;
 }
