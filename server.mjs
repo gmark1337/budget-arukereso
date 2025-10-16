@@ -113,6 +113,14 @@ app.post('/register', async (request, res) => {
 		return;
 	}
 
+    let user = await USER.findOne({email});
+	if (user != null) {
+		res.render('register', {
+			errorMessage: 'email taken',
+		});
+		return;
+	}
+
 	if (!username) {
 		res.render('register', {
 			errorMessage: 'no username provided',
@@ -127,7 +135,7 @@ app.post('/register', async (request, res) => {
 		return;
 	}
 
-    const user = await USER.findOne({username});
+    user = await USER.findOne({username})
 	if (user != null) {
 		res.render('register', {
 			errorMessage: 'username taken',
