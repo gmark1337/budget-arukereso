@@ -47,7 +47,7 @@ function historyListeners() {
 		element.addEventListener('click', e => {
 			const root = e.target.parentElement.parentElement;
 			const image = root.querySelector('img').src;
-			const {href} = root.querySelector('a');
+			const href = root.querySelector('a');
 			const price = Number.parseInt(root.querySelector('.chip').innerText);
 			fetch('/history', {
 				method: 'POST',
