@@ -30,24 +30,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.get('/', async (request, res) => {
-	const token = request.cookies.Authorize;
-	let username = null;
-	if (token) {
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		const user = jwt.verify(token, secret);
-		username = user.username;
-	}
-
-	const [historyMap, keys] = await getHistory();
-	res.render('index', {
-		username: username || 'Guest',
-		history: username ? historyMap : null,
-		keys: username ? keys : null,
+    const user = await getUser(request);
+    res.render('index', {
+        username: user ? user.username : 'Guest',
 	});
 });
 
 app.get('/search', async (request, res) => {
-	// Console.log(req.query);
 	filters.minPrice = request.query.minPrice || '0';
 	filters.maxPrice = request.query.maxPrice || '5000';
 	filters.size = request.query.size == '' ? determineSizeKind(request.query.searchword) : request.query.size;
@@ -86,16 +75,6 @@ app.get('/search', async (request, res) => {
 		results: r,
 		emptyStringPlaceholder,
 	}));
-	const token = request.cookies.Authorize;
-	let user = null;
-	if (token) {
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		user = jwt.verify(token, secret);
-	}
-
-	if (user) {
-		addToHistory(r, user);
-	}
 });
 
 app.get('/register', (_, res) => {
@@ -113,7 +92,7 @@ app.post('/register', async (request, res) => {
 		return;
 	}
 
-    let user = await USER.findOne({email});
+	let user = await USER.findOne({email});
 	if (user != null) {
 		res.render('register', {
 			errorMessage: 'email taken',
@@ -135,7 +114,7 @@ app.post('/register', async (request, res) => {
 		return;
 	}
 
-    user = await USER.findOne({username})
+	user = await USER.findOne({username});
 	if (user != null) {
 		res.render('register', {
 			errorMessage: 'username taken',
@@ -155,18 +134,17 @@ app.post('/register', async (request, res) => {
 			username,
 			email,
 			password: hash,
-		}).then(async (user) => {
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		const token = jwt.sign({id: user._id, username: user.username}, secret, {expiresIn: '72h'});
-		res.cookie('Authorize', token, {
-			httpOnly: true,
-		});
-		res.redirect('/');
-        }).catch(() => {
+		}).then(async user => {
+			const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
+			const token = jwt.sign({id: user._id, username: user.username}, secret, {expiresIn: '72h'});
+			res.cookie('Authorize', token, {
+				httpOnly: true,
+			});
+			res.redirect('/');
+		}).catch(() => {
 			res.render('register', {
 				errorMessage: 'failed to create user',
 			});
-            return;
 		});
 	});
 });
@@ -216,6 +194,43 @@ app.post('/login', async (request, res) => {
 	res.redirect('/');
 });
 
+app.get('/history', async (request, res) => {
+    const user = await getUser(request);
+	res.render('history', {
+        history: await getHistory(user ? user.id : null),
+	});
+});
+
+app.post('/history', async (request, res) => {
+	const {image, href, price} = request.body;
+    const user = await getUser(request);
+    if (!user) {
+        return;
+    }
+	addToHistory({
+		src: image,
+		href,
+		price,
+	}, user.id);
+	res.json({
+		reason: 'success',
+	});
+});
+
+app.delete('/history/:id', async (request, res) => {
+    const user = await getUser(request);
+    if (!user) {
+        res.json({
+            reason: "unauthorized",
+        });
+        return;
+    }
+    await HISTORY.findOneAndDelete({_id: request.params.id});
+    res.json({
+        reason: "ok",
+    });
+});
+
 app.listen(PORT, () => {
 	console.log(`running on: http://localhost:${PORT}`);
 });
@@ -236,31 +251,31 @@ function determineSizeKind(searchword) {
 	return filters.shoeFilters.includes(searchword) ? 40 : 'M';
 }
 
-async function getHistory() {
-	const historyItems = await HISTORY.find();
-	const historyMap = new Map();
-	for (const item of historyItems) {
-		if (historyMap.has(item.websiteName)) {
-			historyMap.set(item.websiteName, historyMap.get(item.websiteName).concat(item.product));
-		} else {
-			historyMap.set(item.websiteName, item.product);
-		}
-	}
-
-	const keys = [];
-	for (const key of historyMap.keys()) {
-		keys.push(key);
-	}
-
-	return [historyMap, keys];
+async function getHistory(userid) {
+    if (!userid) {
+        return [];
+    }
+	return await HISTORY.find({user: userid});
 }
 
-function addToHistory(search, user) {
-	for (const e of search) {
-		HISTORY.insertOne({
-			websiteName: e.websiteName,
-			product: e.FoundImages,
-			user: user.id,
-		});
+async function addToHistory(product, userId) {
+    const entry = await HISTORY.findOne({src: product.src});
+    if (entry) {
+        return;
+    }
+	HISTORY.insertOne({
+		src: product.src,
+		href: product.href,
+		price: product.price,
+		user: userId,
+	});
+}
+
+async function getUser(request) {
+	const token = request.cookies.Authorize;
+	if (token) {
+		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
+		return jwt.verify(token, secret);
 	}
+	return null;
 }
