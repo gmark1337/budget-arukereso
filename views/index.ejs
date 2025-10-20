@@ -44,41 +44,17 @@
                             <label for="sinsay">Sinsay</label>
 
 
-                        <input type="checkbox" checked id="sportisimo" name="sportisimo" />
-                        <label for="sportisimo">Sportisimo</label>
+                            <input type="checkbox" checked id="sportisimo" name="sportisimo" />
+                            <label for="sportisimo">Sportisimo</label>
 
-                        <input type="checkbox" checked id="aboutYou" name="aboutYou"/>
-                        <label for="aboutYou">About You</label>
-                    </div>
-                </details>
-        </fieldset>
-        </form>
-            <% if (keys) { %>
-            <div class="history">
-                <span>
-                    Previous results:
-                </span>
-                <% for (let i = 0; i < keys.length; i++) { %>
-                <div id="key- <%= keys[i] %> ">
-                    <fieldset>
-                        <legend><%= keys[i] %> </legend>
-                        <% history.get(keys[i]).map( (item) => { %>
-                        <div class="history-item">
-                            <div class="item">
-                                <a href="<%= item.href %>" target="_blank" rel="noopener">
-                                    <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
-                                </a>
-                            </div>
-                            <div class="price">
-                                <span class="chip"><%= item.price %> Ft</span>
-                            </div>
+                            <input type="checkbox" checked id="aboutYou" name="aboutYou"/>
+                            <label for="aboutYou">About You</label>
                         </div>
-                        <% }) %>
-                    </fieldset>
-                </div>
-                <% } %>
+                    </details>
+                </fieldset>
+            </form>
+            <div id="history">
             </div>
-            <% } %>
         </div>
         <div id="waitingfield" hidden>
             <div class="spinner"></div>
