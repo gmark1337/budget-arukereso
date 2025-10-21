@@ -205,7 +205,7 @@ app.post('/history', async (request, res) => {
 	const {image, href, price} = request.body;
     const user = await getUser(request);
     if (!user) {
-        c.JSON({
+        res.json({
             reason: "unathorized",
         })
         return;
