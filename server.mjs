@@ -75,15 +75,6 @@ app.get('/search', async (request, res) => {
 		results: r,
 		emptyStringPlaceholder,
 	}));
-	const token = request.cookies.Authorize;
-	let user = null;
-	if (token) {
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		user = jwt.verify(token, secret);
-	}
-	if (user) {
-		addToHistory(r, user);
-	}
 });
 
 app.get('/register', (_, res) => {
@@ -206,7 +197,7 @@ app.post('/login', async (request, res) => {
 app.get('/history', async (request, res) => {
     const user = await getUser(request);
 	res.render('history', {
-        history: await getHistory(user ? user.id : null),
+        history: user ? await getHistory(user.id) : null,
 	});
 });
 
