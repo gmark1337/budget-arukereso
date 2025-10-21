@@ -47,7 +47,7 @@ function historyListeners() {
 		element.addEventListener('click', e => {
 			const root = e.target.parentElement.parentElement;
 			const image = root.querySelector('img').src;
-			const href = root.querySelector('a');
+			const href = root.querySelector('a').href;
 			const price = Number.parseInt(root.querySelector('.chip').innerText);
 			fetch('/history', {
 				method: 'POST',
@@ -65,6 +65,10 @@ async function updateHistory() {
 	const e = document.querySelector('#history');
 	const res = await fetch('/history');
 	e.innerHTML = await res.text();
+	registerButtons();
+}
+
+function registerButtons() {
 	for (const element of document.querySelectorAll('button.remove-history-item')) {
 		element.addEventListener('click', e => {
 			for (const c of e.target.classList) {
