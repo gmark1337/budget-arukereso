@@ -205,7 +205,7 @@ app.post('/history', async (request, res) => {
 	const {image, href, price} = request.body;
     const user = await getUser(request);
     if (!user) {
-        c.JSON({
+        res.json({
             reason: "unathorized",
         })
         return;
@@ -264,6 +264,10 @@ async function getHistory(userid) {
 async function addToHistory(product, userId) {
     const entry = await HISTORY.findOne({src: product.src});
     if (entry) {
+        return;
+    }
+    const items = await HISTORY.find({user: userId});
+    if (items.length >= 10) {
         return;
     }
 	HISTORY.insertOne({
