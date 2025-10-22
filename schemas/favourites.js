@@ -4,8 +4,8 @@ const favouritesSchema = new mongoose.Schema({
 	href: String,
 	src: String,
 	price: String,
-    store: String,
+    vendor: String,
 	user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
 });
 
-export const history = mongoose.model('Favourites', favouritesSchema, 'favourites');
+export const favourites = mongoose.model('Favourites', favouritesSchema, 'favourites');
