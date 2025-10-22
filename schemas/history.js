@@ -1,18 +1,10 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
+const historyRevampSchema = new mongoose.Schema({
     href: String,
-    src: String,
+    src: {type: String, unique: true},
     price: String,
-    title: String
+    user:{type: mongoose.Schema.Types.ObjectId, ref:'User', required: true},
 });
 
-
-const historySchema = new mongoose.Schema({
-    websiteName: {type: String, required: true},
-    product:{type: [productSchema]},
-    user:{type: mongoose.Schema.Types.ObjectId, ref:'User', required: true}
-});
-
-
-export const history = mongoose.model('History', historySchema, 'history')
+export const history = mongoose.model('HistoryRevamp', historyRevampSchema, 'historyrevamp')
