@@ -11,7 +11,9 @@
                 <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
                 </a>
                 <div class="meta">
-                <div class="title"><%= item.title || 'Product' %></div>
+                <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">Favourite</button>
+                <div class="title"><%= item.title || 'Product' %>
+                </div>
                 <div class="price">
                 <span class="chip"><%= item.price %> Ft</span>
                 </div>
