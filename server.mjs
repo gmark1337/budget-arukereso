@@ -275,6 +275,9 @@ app.post('/favourites', async (request, res) => {
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
+    res.json({
+        reason: "success",
+    })
 });
 
 app.delete('/favourites/:id', async (req, res) => {
