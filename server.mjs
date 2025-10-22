@@ -228,7 +228,8 @@ app.delete('/history/:id', async (request, res) => {
         });
         return;
     }
-    await HISTORY.findOneAndDelete({_id: request.params.id});
+    await HISTORY.findOneAndDelete({_id: request.params.id, 
+        user: user.id});
     res.json({
         reason: "ok",
     });
@@ -264,6 +265,10 @@ async function getHistory(userid) {
 async function addToHistory(product, userId) {
     const entry = await HISTORY.findOne({src: product.src});
     if (entry) {
+        return;
+    }
+    const items = await HISTORY.find({user: userId});
+    if (items.length >= 10) {
         return;
     }
 	HISTORY.insertOne({

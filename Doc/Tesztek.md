@@ -294,3 +294,52 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
   Elküldünk egy POST requestet a /login endpointra a beállított értékekkel, majd
   ellenőrizzük hogy a #error-message értéke egyezik a `incorrectUsername`
   értékével.
+
+# history-tests
+
+  A teszt előtt regisztrálunk egy teszt felhasználót, akinek a `userid` és a
+  webszerver által generált autentikációs sütijét (`auth`) elmentjük.
+
+  Minden teszt után töröljük a teszt felhasználó összes **history** rekordját.
+
+  A tesztek végén eltávolítjuk a teszt felhasználót.
+
+  **Beállítások**
+
+  - userid: A tesztek előtt regisztrált felhasználó `id` mező értéke
+  - auth: A tesztek előtt regisztrált felhasználó számára generált autentikációs
+  süti
+
+## save-successful
+
+  A teszt első lépéseként lekérjük a meglévő `history` rekordokat, majd
+  elküldünk egy POST requestet a **/history** endpointra véletlen generált
+  paraméterekkel, majd ismét lekérjük a `history` rekordokat és ellenőrizzük,
+  hogy a második lekérdezés darabszáma eggyel nagyobb.
+
+## shows-after-save
+
+  Generálunk egy példa terméket, amit utána elküldünk a **/history** endpointra
+  egy POST request formájában, majd ellenőrizzük hogy a teszt felhasználó
+  `histrory` rekordjai tartalmazzák-e a generált terméket.
+
+## can-be-deleted
+
+  A teszt előtt elküldünk egy POST requestet a **/history** endpointra, majd
+  lekérünk egy rekordot a `history` táblából, amely rekord `src` mezőjét eküldjük
+  egy DELETE requesttel a **/history** endpointra, ezután ellenőrizzük hogy
+  valóban eltávolítottuk-e a teszt felhasználó `history` rekordjaiból.
+
+## max-10-history
+
+  Elküldünk 15 POST requestet véletlen generált paraméterekkel a **/history**
+  endpointra, majd ellenőrizzük hogy a teszt felhasználónak nincs több mint 10
+  darab rekordja a `history` táblában.
+
+## disallows-duplicates
+
+  Lekérjük a teszt felhasználó összes rekordját a `history` táblából, majd
+  generálunk egy véletlenszerű terméket amit kétszer elküldünk egy POST request
+  formájában a **/history** endpointra, végül ismételten lekérjük a felhasználó
+  összes rekordját és ellenőrizzük, hogy a második állapot darabszáma csak eggyel
+  nagyobb.
