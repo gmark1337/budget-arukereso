@@ -1,0 +1,19 @@
+<% if (favourites) { %>
+    <div class="favourites items">
+        <% favourites.map((item) => { %>
+                <div class="favourite-item item">
+                    <div>
+                    <%= item.vendor %>
+                    </div>
+                    <a href="<%= item.href %>" target="_blank">
+                        <img src="<%= item.src %>" alt="favourite product">
+                    </a>
+                    <div class="price">
+                        <span class="chip">
+                            <%= item.price %>
+                        </span>
+                    </div>
+                </div>
+        <% }); %>
+    </div>
+<% } %>
