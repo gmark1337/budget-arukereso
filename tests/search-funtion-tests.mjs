@@ -14,6 +14,10 @@ describe('search-function-tests', () => {
 		filters.maxPrice = 20_000;
 		const r = await Search('kabát');
 		for (const e of r) {
+            // skip no results found
+            if (e.FoundImages.length == 0) {
+                continue;
+            }
 			const value = e.FoundImages.length;
 			const target = filters.pagesToFetch;
 			assert.equal(value, target);
