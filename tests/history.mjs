@@ -28,7 +28,7 @@ describe('history-tests', () => {
 		}
 
 		const user = await USER.findOne({username: p.username});
-		userid = user._id;
+		userid = user.id;
 	});
 	it('save-successful', async () => {
 		const items = await HISTORY.find({user: userid});
@@ -39,8 +39,8 @@ describe('history-tests', () => {
 			},
 			body: new URLSearchParams(genProduct()),
 		});
-		const historyEntries = await HISTORY.find({user: userid});
-		assert.equal(historyEntries.length, items.length + 1);
+		const historyItems = await HISTORY.find({user: userid});
+		assert.equal(historyItems.length, items.length + 1);
 	});
 	it('shows-after-save', async () => {
 		const product = genProduct();
@@ -73,7 +73,7 @@ describe('history-tests', () => {
 		await fetch(`http://localhost:8080/history/${item.id}`, {
 			method: 'DELETE',
 		});
-		const result = await HISTORY.find({id: item._id});
+		const result = await HISTORY.find({item: item.id});
 		assert.equal(result.length, 0);
 	});
 	it('max-10-history', async () => {
@@ -86,13 +86,14 @@ describe('history-tests', () => {
 				body: new URLSearchParams(genProduct()),
 			});
 		}
-        const items = await HISTORY.find({user: userid});
-        assert.equal(items.length <= 10, true);
+
+		const items = await HISTORY.find({user: userid});
+		assert.equal(items.length < 11, true);
 	});
-    it('disallows-duplicates', async () => {
-        const product = genProduct();
-        const items = await HISTORY.find({user: userid});
-        for (let i = 0; i < 2; i++) {
+	it('disallows-duplicates', async () => {
+		const product = genProduct();
+		const items = await HISTORY.find({user: userid});
+		for (let i = 0; i < 2; i++) {
 			await fetch('http://localhost:8080/history', {
 				method: 'POST',
 				headers: {
@@ -100,11 +101,12 @@ describe('history-tests', () => {
 				},
 				body: new URLSearchParams(product),
 			});
-        }
-        const itemsAfter = await HISTORY.find({user: userid});
-        assert.equal(itemsAfter.length, items.length + 1);
-    });
-    afterEach(async () => {
+		}
+
+		const itemsAfter = await HISTORY.find({user: userid});
+		assert.equal(itemsAfter.length, items.length + 1);
+	});
+	afterEach(async () => {
 		await HISTORY.deleteMany({user: userid});
 	});
 	after(async () => {
