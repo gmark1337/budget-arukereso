@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="index.css" />
         <link rel="stylesheet" href="results.css" />
         <link rel="stylesheet" href="history.css" />
+        <link rel="stylesheet" href="favourites.css" />
     </head>
     <body>
         <div id="menu">
@@ -64,6 +65,13 @@
         <div id="account">
             <%= username %>
         </div>
+        <% if (auth) { %>
+        <div id="top-bar-menu">
+            <button class="favourites-button">Favourites</button>
+        </div>
+        <div id="favourites">
+        </div>
+        <% } %>
         <script src="index.js"></script>
     </body>
 </html>
