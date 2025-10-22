@@ -228,7 +228,8 @@ app.delete('/history/:id', async (request, res) => {
         });
         return;
     }
-    await HISTORY.findOneAndDelete({_id: request.params.id});
+    await HISTORY.findOneAndDelete({_id: request.params.id, 
+        user: user.id});
     res.json({
         reason: "ok",
     });
