@@ -32,7 +32,8 @@ function getResults() {
 		hervis: document.querySelector('#hervis').checked,
 		sinsay: document.querySelector('#sinsay').checked,
 		sportisimo: document.querySelector('#sportisimo').checked,
-		aboutYou: document.querySelector('#aboutYou').checked
+		aboutYou: document.querySelector('#aboutYou').checked,
+		decathlon: document.querySelector('#decathlon').checked
 	})).then(response => response.text())
 		.then(text => {
             document.querySelector('#waitingfield').hidden = true;

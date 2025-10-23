@@ -65,9 +65,13 @@ app.get('/search', async (request, res) => {
 		filters.blackListedWebsite.push('sportisimo');
 	}
 
-    if(request.query.aboutYou != "true"){
-        filters.blackListedWebsite.push("aboutYou")
+    if(request.query.aboutYou != 'true'){
+        filters.blackListedWebsite.push('aboutYou');
     }
+
+	if(request.query.decathlon != 'true'){
+		filters.blackListedWebsite.push('decathlon');
+	}
 
 	const r = await Search(request.query.searchword);
 	for (const element of r) {
