@@ -67,11 +67,12 @@
         </div>
         <% if (auth) { %>
         <div id="top-bar-menu">
-            <button class="favourites-button">Favourites</button>
-        </div>
-        <div id="favourites">
-        </div>
-        <% } %>
-        <script src="index.js"></script>
+            <div class="favourites-bar">
+                <span>Favourites</span>
+                <div id="favourites">
+                </div>
+            </div>
+            <% } %>
+            <script src="index.js"></script>
     </body>
 </html>
