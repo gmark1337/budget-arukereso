@@ -1,4 +1,4 @@
-<% if (favourites) { %>
+<% if (favourites.length != 0) { %>
     <div class="favourites items">
         <% favourites.map((item) => { %>
                 <div class="favourite-item item">
@@ -8,12 +8,19 @@
                     <a href="<%= item.href %>" target="_blank">
                         <img src="<%= item.src %>" alt="favourite product">
                     </a>
+                    <button class="remove-favourites id-<%= item._id %>">
+                        Remove
+                    </button>
                     <div class="price">
                         <span class="chip">
-                            <%= item.price %>
+                            <%= item.price %> Ft
                         </span>
                     </div>
                 </div>
         <% }); %>
+    </div>
+<% } else { %>
+    <div class="favourites items">
+        No favourites.
     </div>
 <% } %>
