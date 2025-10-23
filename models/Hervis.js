@@ -1,5 +1,5 @@
 import { config } from '../configuration/config.js';
-import { sleep, getImagesAsync } from '../ImageScraperService.js';
+import { sleep, getImagesAsync } from '../services/ImageScraperService.js';
 
 const hervisWebsite = config.websites["hervis"];
 const filters = config.filters;

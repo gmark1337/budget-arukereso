@@ -1,4 +1,4 @@
-import {getImagesAsync} from './Sinsay.js'
+import {getImagesWithDoubleAnchorTagAsync} from '../services/ImageScraperService.js'
 import {config} from '../configuration/config.js'
 
 const {filters} = config;
@@ -33,7 +33,7 @@ export async function fetchDecathlonImagesAsync(searchword, page, numberOfItemsT
     
     await page.waitForSelector(decathlonWebsite.elementSelector, { timeout: 5000 });
     const regex = /^.*?(\d[\d\s]*)(?=\s*Ft)/;
-    const images = await getImagesAsync(page, decathlonWebsite.containerSelector, decathlonWebsite.elementSelector, decathlonWebsite.productPriceSelector, decathlonWebsite.titleContentSelector, regex);
+    const images = await getImagesWithDoubleAnchorTagAsync(page, decathlonWebsite.containerSelector, decathlonWebsite.elementSelector, decathlonWebsite.productPriceSelector, decathlonWebsite.titleContentSelector, regex);
     const selected = images.slice(0,numberOfItemsToFetch);
 
     const finalImages = {

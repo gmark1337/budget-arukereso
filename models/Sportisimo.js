@@ -1,4 +1,4 @@
-import { getImagesAsync} from "../ImageScraperService.js";
+import { getImagesAsync} from "../services/ImageScraperService.js";
 import {config} from '../configuration/config.js'
 
 

@@ -4,7 +4,7 @@ import {
 import assert from 'node:assert';
 import {randomInt} from 'node:crypto';
 import {load} from 'cheerio';
-import {Search} from './ImageScraperService.js';
+import {Search} from './services/searchService.js';
 import {config} from './configuration/config.js';
 import {DB, USER} from './db.js';
 

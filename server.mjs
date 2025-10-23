@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import {compare, hash} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-import {Search} from './ImageScraperService.js';
+import {Search} from './services/searchService.js';
 import {config} from './configuration/config.js';
 import {
 	DB, USER, HISTORY, GLOBALS,

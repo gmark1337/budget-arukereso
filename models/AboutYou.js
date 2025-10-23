@@ -1,4 +1,4 @@
-import { sleep, getImagesAsync } from '../ImageScraperService.js';
+import { sleep, getImagesAsync } from '../services/ImageScraperService.js';
 import { config } from '../configuration/config.js';
 const websiteConfig = config.websites["aboutYou"];
 
