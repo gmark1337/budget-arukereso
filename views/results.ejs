@@ -11,7 +11,9 @@
                 <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
                 </a>
                 <div class="meta">
-                <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">Favourite</button>
+                <% if (auth) { %>
+                <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">♥</button>
+                <% } %>
                 <div class="title"><%= item.title || 'Product' %>
                 </div>
                 <div class="price">
