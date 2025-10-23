@@ -71,14 +71,17 @@ app.get('/search', async (request, res) => {
 			}
 		});
 	}
-    //check if result is in favourites
-    const user = await getUser(request);
-    if (user) {
-        await addFavouriteTags(r, user);
-    }
+
+	// Check if result is in favourites
+	const user = await getUser(request);
+	if (user) {
+		await addFavouriteTags(r, user);
+	}
+
 	res.end(render(resultsTemplate, {
 		results: r,
 		emptyStringPlaceholder,
+		auth: Boolean(user),
 	}));
 });
 
@@ -252,7 +255,17 @@ app.get('/favourites', async (request, res) => {
 		});
 		return;
 	}
-
+    //send specific item id to add to button class
+    if (request.query.id) {
+        console.log(request.query.id);
+        const item = await FAVOURITES.findOne({src: request.query.id,
+        user: user.id});
+        res.json({
+            id: item ? item._id : null,
+        });
+        return;
+    }
+    //send rendered view back
 	res.render('favourites', {
 		favourites: await FAVOURITES.find({user: user.id}),
 	});
@@ -268,30 +281,37 @@ app.post('/favourites', async (request, res) => {
 	}
 
 	const {vendor, href, image, price} = request.body;
-    const item = await FAVOURITES.findOne({user: user.id, src: image});
-    if (item) {
-        return;
-    }
+	const item = await FAVOURITES.findOne({user: user.id, src: image});
+	if (item) {
+		res.json({
+			reason: 'duplicate',
+		});
+		return;
+	}
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
-    res.json({
-        reason: "success",
-    })
+	res.json({
+		reason: 'success',
+	});
 });
 
-app.delete('/favourites/:id', async (req, res) => {
-    const user = await getUser(req);
-    if (!user) {
+app.delete('/favourites/:id', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
 		res.json({
 			reason: 'unauthorized',
 		});
 		return;
-    }
-    await FAVOURITES.findOneAndDelete({_id: req.params.id, user: user.id});
-    res.json({
-        reason: "ok",
-    })
+	}
+
+    await FAVOURITES.findOneAndDelete({
+		_id: request.params.id,
+		user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
 });
 
 app.listen(PORT, () => {
@@ -352,20 +372,20 @@ async function getUser(request) {
 }
 
 async function addFavouriteTags(r, user) {
-    const favourites = (await FAVOURITES.find({user: user.id}));
-    const srcs = favourites.map(e => e.src);
-    for (const vendor of r) {
-        const l = vendor.FoundImages;
-        for (let i = 0; i < vendor.FoundImages.length; i++) {
-            if (srcs.includes(l[i].src)) {
-                l[i].fav = "favourited";
-                for (const f of favourites) {
-                    if (f.src == l[i].src) {
-                        l[i].fav_id = f.id;
-                        break;
-                    }
-                }
-            }
-        }
-    }
+	const favourites = (await FAVOURITES.find({user: user.id}));
+	const srcs = new Set(favourites.map(e => e.src));
+	for (const vendor of r) {
+		const l = vendor.FoundImages;
+		for (let i = 0; i < vendor.FoundImages.length; i++) {
+			if (srcs.has(l[i].src)) {
+				l[i].fav = 'favourited';
+				for (const f of favourites) {
+					if (f.src == l[i].src) {
+						l[i].fav_id = f.id;
+						break;
+					}
+				}
+			}
+		}
+	}
 }
