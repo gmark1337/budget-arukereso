@@ -1,10 +1,12 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import pLimit from 'p-limit';
 
 import { fetchHervisImagesAsync } from './models/Hervis.js';
 import { fetchSportisimoImagesAsync } from './models/Sportisimo.js';
 import { fetchSinsayImagesAsync } from './models/Sinsay.js';
 import { fetchAboutYouImagesAsync } from './models/AboutYou.js';
+import { fetchDecathlonImagesAsync } from './models/Decathlon.js';
 import {config} from './configuration/config.js'
 
 
@@ -12,6 +14,12 @@ import {config} from './configuration/config.js'
 const filters = config.filters;
 const allowedConsoleLogs = config.allowedConsoleLogs;
 
+const stealth = StealthPlugin()
+
+stealth.enabledEvasions.delete('navigator.plugins');
+stealth.enabledEvasions.delete('chrome.runtime')
+
+puppeteer.use(stealth);
 
 export async function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
@@ -105,7 +113,8 @@ export async function Search(searchword) {
 		{ name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{ name: "sportisimo", function: fetchSportisimoImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch}
+		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch},
+		{name: "decathlon", function: fetchDecathlonImagesAsync, pagesToFetch: filters.pagesToFetch}
 	];
 
 	console.log('Started scraping websites in parallel.');
@@ -114,6 +123,10 @@ export async function Search(searchword) {
 	const tasks = sites.filter(s => !filters.blackListedWebsite.includes(s.name))
 		.map(site => limit(async () => {
 			const page = await browser.newPage();
+			
+			//await page.setViewport(site.viewPort);
+			//await page.setUserAgent(site.userAgent);
+			//await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36")
 			page.on("console", msg => {
 				const text = msg.text();
 				if(text.includes(allowedConsoleLogs)){
@@ -147,6 +160,10 @@ export async function Search(searchword) {
 
 //console.log(decodeURIComponent("https://www.aboutyou.hu/c/noi/ruhazat/polok-es-felsok/felsok-20255?color=38920&prices=397800-3288100&defFemaleInt=39090"))
 //https://www.aboutyou.hu/c/noi/ruhazat/polok-es-felsok/felsok-20255?color=38920
+
+
+// Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/141.0.0.0 Safari/537.36
+// Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
 
 
 

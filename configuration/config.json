@@ -17,7 +17,7 @@
         "sinsay": {
             "baseUrl": "https://www.sinsay.com/hu/hu/",
             "containerSelector": ".algolia-products-module__algolia-products-container",
-            "imageSelector": ".product-tilestyled__StyledProductTileWrapper-sc-1u901v5-1.jFLCAm",
+            "elementSelector": ".product-tilestyled__StyledProductTileContainer-sc-1u901v5-0.kucTee",
             "productPriceSelector": ".product-tilestyled__StyledProductTileDetails-sc-1u901v5-2.blUHpA",
             "titleContentSelector": ".product-namestyled__StyledProductNameText-ygymof-2.ktoODA"
         },
@@ -28,6 +28,13 @@
             "productPriceSelector":".p1udp918",
             "titleContentSelector":".po1v63h.p10xduha.p1iha8u1",
             "searchBarSelector":".siujxe8.u1iw6b68"
+        },
+        "decathlon":{
+            "baseUrl":"https://www.decathlon.hu/",
+            "containerSelector":".product-list.pl-list.js-first.svelte-u6b5o6",
+            "elementSelector":".product-block-top-main.vtmn-relative.vtmn-flex.vtmn-flex-col.vtmn-w-full.vtmn-items-start",
+            "productPriceSelector":".vtmn-flex.vtmn-flex-col.vtmn-justify-center.vtmn-items-end",
+            "titleContentSelector":".vtmn-p-0.vtmn-m-0.vtmn-font-normal.vtmn-overflow-hidden.vtmn-text-ellipsis.vtmn-typo_caption-1.svelte-lfi7s7"
         }
     },
     "tests": {
@@ -37,7 +44,7 @@
         "minPrice": 2000,
         "maxPrice": 15000,
         "size": "M",
-        "pagesToFetch": 10,
+        "pagesToFetch": 3,
         "blackListedWebsite": [],
         "shoeFilters": [
             "cipő",

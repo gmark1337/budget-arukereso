@@ -2,6 +2,9 @@ import { sleep, getImagesAsync } from '../ImageScraperService.js';
 import { config } from '../configuration/config.js';
 const websiteConfig = config.websites["aboutYou"];
 
+
+import fs from 'node:fs';
+
 //console.log(websiteConfig)
 
 async function inputSearchWordAsync(page, searchword, searchbarSelector) {
@@ -40,11 +43,21 @@ async function setSize(page, size){
 
 export async function fetchAboutYouImagesAsync(searchword, page, numberOfItemsToFetch) {
     try {
-
-
+        await page.setViewport({
+            width: 764,
+            height: 2519,
+            deviceScaleFactor: 1
+        });
         await page.goto(websiteConfig.baseUrl, { waitUntil: "networkidle2" });
+        
+
+
+        //console.log(await page.evaluate(() => navigator.userAgent));
 
         await inputSearchWordAsync(page, searchword, websiteConfig.searchBarSelector);
+        
+        //await page.screenshot({path: "firstTest.png", fullPage: true});
+        //fs.writeFileSync('debug2.html', await page.content());
         try {
             await page.waitForSelector(websiteConfig.titleContentSelector, { timeout: 5000 });
         } catch (error) {

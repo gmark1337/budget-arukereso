@@ -1,4 +1,5 @@
 import { config } from '../configuration/config.js'
+import { sleep } from '../ImageScraperService.js';
 
 const sinsayWebsite = config.websites["sinsay"];
 const filters = config.filters;
@@ -23,17 +24,20 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
 }
 
 
-async function getImagesAsync(page, tag1, tag2, tag3, tag4) {
+export async function getImagesAsync(page, tag1, tag2, tag3, tag4, regex) {
     try {
-        const images = await page.evaluate((containerSelector, elementSelector, priceSelector, titleContentSelector) => {
+        const images = await page.evaluate((containerSelector, elementSelector, priceSelector, titleContentSelector, regex) => {
             try {
                 const container = document.querySelector(containerSelector);
-                if (!container) return [];
+                if (!container){
+                    console.error(`[getImagesAsync] Container selector not found! Skipping loop...`);
+                    return []; 
+                };
 
                 const elements = container.querySelectorAll(elementSelector);
                 const prices = container.querySelectorAll(priceSelector);
                 const titles = container.querySelectorAll(titleContentSelector);
-                const priceFilter = /([\d\s]+)(?=HUF)/;
+                const regexFilter = new RegExp(regex, 'i');
 
                 return [...elements].map((div, index) => {
                     const link = div.querySelectorAll('a')[0] || null;
@@ -44,7 +48,7 @@ async function getImagesAsync(page, tag1, tag2, tag3, tag4) {
                     try {
                         if (priceElement) {
                             const text = priceElement.textContent || '';
-                            const match = text.match(priceFilter);
+                            const match = text.match(regexFilter);
                             if (match) {
                                 price = match[0].replace(/\s/g, '');
                             }
@@ -63,7 +67,7 @@ async function getImagesAsync(page, tag1, tag2, tag3, tag4) {
                 console.error(`[getImagesAsync] Error inside page.evaluate:`, err.message);
                 return [];
             }
-        }, tag1, tag2, tag3, tag4);
+        }, tag1, tag2, tag3, tag4, regex.source);
         return images;
     } catch (error) {
         console.error(`[getImagesAsync] Sudden error occurred while trying to run getImageSync `, error.message);
@@ -88,8 +92,8 @@ export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFe
             }
         }
 
-
-        const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.imageSelector, sinsayWebsite.productPriceSelector, sinsayWebsite.titleContentSelector);
+        const regex = /([\d\s]+)(?=HUF)/;
+        const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.elementSelector, sinsayWebsite.productPriceSelector, sinsayWebsite.titleContentSelector, regex);
         if (items === null) {
             await page.reload({ waitUntil: "networkidle2" })
         }
