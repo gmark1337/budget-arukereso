@@ -63,7 +63,7 @@ export async function fetchAboutYouImagesAsync(searchword, page, numberOfItemsTo
         } catch (error) {
             console.error(`[fetchAboutYouImagesAsync] Timeout waiting for container selector: ${error.message}`);
             return {
-                websiteName: 'aboutYou',
+                websiteName: 'About You',
                 FoundImages: []
             };
         }
@@ -72,14 +72,14 @@ export async function fetchAboutYouImagesAsync(searchword, page, numberOfItemsTo
 
         const selected = images.slice(0, numberOfItemsToFetch);
         const finalImages = {
-            websiteName: 'aboutYou',
+            websiteName: 'About You',
             FoundImages: selected
         };
         return finalImages;
     } catch (error) {
         console.error(`[fetchAboutYouImagesAsync] Failed to fetch images:  ${error.message}`);
         return {
-            websiteName: 'aboutYou',
+            websiteName: 'About You',
             FoundImages: []
         };
     }

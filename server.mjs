@@ -72,6 +72,9 @@ app.get('/search', async (request, res) => {
 	if(request.query.decathlon != 'true'){
 		filters.blackListedWebsite.push('decathlon');
 	}
+	if(request.query.mangoOutlet != 'true'){
+		filters.blackListedWebsite.push('mangoOutlet');
+	}
 
 	const r = await Search(request.query.searchword);
 	for (const element of r) {

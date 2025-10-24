@@ -74,7 +74,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         } catch (error) {
             console.error(`[fetchMangoOutletImagesAsync] Failed to click cookie button`, error.message);
             return {
-                websiteName: 'mangoOutlet',
+                websiteName: 'Mango Outlet',
                 FoundImages: []
             };
         }
@@ -86,7 +86,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         } catch (error) {
             console.error(`[fetchMangoOutletImagesAsync] Timeout waiting for container selector: ${error.message}`);
             return {
-                websiteName: 'mangoOutlet',
+                websiteName: 'Mango Outlet',
                 FoundImages: [],
             }
         }
@@ -97,15 +97,15 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         const selected = images.slice(0, pagesToFetch);
 
         const finalImages = {
-            websiteName: "mangoOutlet",
-            images: selected
+            websiteName: 'Mango Outlet',
+            FoundImages: selected
         };
 
         return finalImages;
     } catch (error) {
         console.error(`[fetchMangoOutletImagesAsync] Failed to fetch images:  ${error.message}`);
         return {
-            websiteName: 'mangoOutlet',
+            websiteName: 'Mango Outlet',
             FoundImages: []
         };
     }

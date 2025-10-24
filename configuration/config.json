@@ -75,6 +75,8 @@
         "[getImagesAsync]",
         "[fetchSportisimoImagesAsync]",
         "[fetchSinsayImagesAsync]",
-        "[fetchHervisImagesAsync]"
+        "[fetchHervisImagesAsync]",
+        "[fetchDecathlonImagesAsync]",
+        "[fetchMangoOutletImagesAsync]"
     ]
 }

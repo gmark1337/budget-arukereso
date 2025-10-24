@@ -87,7 +87,7 @@ export async function Search(searchword) {
 
 	const allImages = await Promise.all(tasks);
 	const end = Date.now();
-	console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
+	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 	
 	
 	await browser.close();
