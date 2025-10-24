@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import {Search} from './ImageScraperService.js';
 import {config} from './configuration/config.js';
 import {
-	DB, USER, HISTORY, GLOBALS,
+	DB, USER, HISTORY, GLOBALS, FAVOURITES,
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,9 +30,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.get('/', async (request, res) => {
-    const user = await getUser(request);
-    res.render('index', {
-        username: user ? user.username : 'Guest',
+	const user = await getUser(request);
+	res.render('index', {
+		username: user ? user.username : 'Guest',
+		auth: Boolean(user),
 	});
 });
 
@@ -71,9 +72,16 @@ app.get('/search', async (request, res) => {
 		});
 	}
 
+	// Check if result is in favourites
+	const user = await getUser(request);
+	if (user) {
+		await addFavouriteTags(r, user);
+	}
+
 	res.end(render(resultsTemplate, {
 		results: r,
 		emptyStringPlaceholder,
+		auth: Boolean(user),
 	}));
 });
 
@@ -195,21 +203,22 @@ app.post('/login', async (request, res) => {
 });
 
 app.get('/history', async (request, res) => {
-    const user = await getUser(request);
+	const user = await getUser(request);
 	res.render('history', {
-        history: user ? await getHistory(user.id) : null,
+		history: user ? await getHistory(user.id) : null,
 	});
 });
 
 app.post('/history', async (request, res) => {
 	const {image, href, price} = request.body;
-    const user = await getUser(request);
-    if (!user) {
-        res.json({
-            reason: "unathorized",
-        })
-        return;
-    }
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unathorized',
+		});
+		return;
+	}
+
 	await addToHistory({
 		src: image,
 		href,
@@ -221,18 +230,88 @@ app.post('/history', async (request, res) => {
 });
 
 app.delete('/history/:id', async (request, res) => {
-    const user = await getUser(request);
-    if (!user) {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	await HISTORY.findOneAndDelete({
+		_id: request.params.id,
+		user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
+});
+
+app.get('/favourites', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+    //send specific item id to add to button class
+    if (request.query.id) {
+        console.log(request.query.id);
+        const item = await FAVOURITES.findOne({src: request.query.id,
+        user: user.id});
         res.json({
-            reason: "unauthorized",
+            id: item ? item._id : null,
         });
         return;
     }
-    await HISTORY.findOneAndDelete({_id: request.params.id, 
-        user: user.id});
-    res.json({
-        reason: "ok",
-    });
+    //send rendered view back
+	res.render('favourites', {
+		favourites: await FAVOURITES.find({user: user.id}),
+	});
+});
+
+app.post('/favourites', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	const {vendor, href, image, price} = request.body;
+	const item = await FAVOURITES.findOne({user: user.id, src: image});
+	if (item) {
+		res.json({
+			reason: 'duplicate',
+		});
+		return;
+	}
+	await FAVOURITES.insertOne({
+		vendor, href, src: image, price, user: user.id,
+	});
+	res.json({
+		reason: 'success',
+	});
+});
+
+app.delete('/favourites/:id', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+    await FAVOURITES.findOneAndDelete({
+		_id: request.params.id,
+		user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
 });
 
 app.listen(PORT, () => {
@@ -256,21 +335,24 @@ function determineSizeKind(searchword) {
 }
 
 async function getHistory(userid) {
-    if (!userid) {
-        return [];
-    }
+	if (!userid) {
+		return [];
+	}
+
 	return await HISTORY.find({user: userid});
 }
 
 async function addToHistory(product, userId) {
-    const entry = await HISTORY.findOne({src: product.src});
-    if (entry) {
-        return;
-    }
-    const items = await HISTORY.find({user: userId});
-    if (items.length >= 10) {
-        return;
-    }
+	const entry = await HISTORY.findOne({src: product.src});
+	if (entry) {
+		return;
+	}
+
+	const items = await HISTORY.find({user: userId});
+	if (items.length >= 10) {
+		return;
+	}
+
 	HISTORY.insertOne({
 		src: product.src,
 		href: product.href,
@@ -285,5 +367,25 @@ async function getUser(request) {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
 		return jwt.verify(token, secret);
 	}
+
 	return null;
+}
+
+async function addFavouriteTags(r, user) {
+	const favourites = (await FAVOURITES.find({user: user.id}));
+	const srcs = new Set(favourites.map(e => e.src));
+	for (const vendor of r) {
+		const l = vendor.FoundImages;
+		for (let i = 0; i < vendor.FoundImages.length; i++) {
+			if (srcs.has(l[i].src)) {
+				l[i].fav = 'favourited';
+				for (const f of favourites) {
+					if (f.src == l[i].src) {
+						l[i].fav_id = f.id;
+						break;
+					}
+				}
+			}
+		}
+	}
 }
