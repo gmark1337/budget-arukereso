@@ -24,22 +24,38 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters ={}){
 }
 
 export async function fetchDecathlonImagesAsync(searchword, page, numberOfItemsToFetch){
-    const fetchedurl = await encodeSearchItemWithFilteringAsync(searchword, decathlonWebsite.baseUrl, filters);
+    try{
+        const fetchedurl = await encodeSearchItemWithFilteringAsync(searchword, decathlonWebsite.baseUrl, filters);
+        
+        console.log(`The created URL is: ${fetchedurl}`)
+        
+        await page.goto(fetchedurl, {waitUntil: "networkidle2"});
 
-    console.log(`The created URL is: ${fetchedurl}`)
-    
-    await page.goto(fetchedurl, {waitUntil: "networkidle2"});
+        try{
+            await page.waitForSelector(decathlonWebsite.elementSelector, { timeout: 5000 });
+        }catch(error){
+            console.error(`[fetchDecathlonImagesAsync] Timeout waiting for container selector: ${error.message}`);
+            return {
+                websiteName: 'Decathlon',
+                FoundImages: [],
+            }
+        }
+        
+        const regex = /^.*?(\d[\d\s]*)(?=\s*Ft)/;
+        const images = await getImagesWithDoubleAnchorTagAsync(page, decathlonWebsite.containerSelector, decathlonWebsite.elementSelector, decathlonWebsite.productPriceSelector, decathlonWebsite.titleContentSelector, regex);
+        const selected = images.slice(0,numberOfItemsToFetch);
 
-    
-    await page.waitForSelector(decathlonWebsite.elementSelector, { timeout: 5000 });
-    const regex = /^.*?(\d[\d\s]*)(?=\s*Ft)/;
-    const images = await getImagesWithDoubleAnchorTagAsync(page, decathlonWebsite.containerSelector, decathlonWebsite.elementSelector, decathlonWebsite.productPriceSelector, decathlonWebsite.titleContentSelector, regex);
-    const selected = images.slice(0,numberOfItemsToFetch);
-
-    const finalImages = {
-        websiteName: 'Decathlon',
-        FoundImages: selected
-    };
-    
-    return finalImages;
+        const finalImages = {
+            websiteName: 'Decathlon',
+            FoundImages: selected
+        };
+        
+        return finalImages;
+    }catch(error){
+        console.error(`[fetchDecathlonImagesAsync] Failed to fetch images:  ${error.message}`);
+        return {
+            websiteName: 'Decathlon',
+            FoundImages: []
+        };
+    }
 }
