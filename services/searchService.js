@@ -7,6 +7,7 @@ import { fetchSportisimoImagesAsync } from '../models/Sportisimo.js';
 import { fetchSinsayImagesAsync } from '../models/Sinsay.js';
 import { fetchAboutYouImagesAsync } from '../models/AboutYou.js';
 import { fetchDecathlonImagesAsync } from '../models/Decathlon.js';
+import { fetchMangoOutletImagesAsync} from '../models/MangoOutlet.js';
 
 
 import {config} from '../configuration/config.js'
@@ -57,7 +58,8 @@ export async function Search(searchword) {
 		{ name: "sportisimo", function: fetchSportisimoImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch},
-		{name: "decathlon", function: fetchDecathlonImagesAsync, pagesToFetch: filters.pagesToFetch}
+		{name: "decathlon", function: fetchDecathlonImagesAsync, pagesToFetch: filters.pagesToFetch},
+        {name: "mangoOutlet", function: fetchMangoOutletImagesAsync, pagesToFetch: filters.pagesToFetch}
 	];
 
 	console.log('Started scraping websites in parallel.');
@@ -85,7 +87,7 @@ export async function Search(searchword) {
 
 	const allImages = await Promise.all(tasks);
 	const end = Date.now();
-	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
+	console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 	
 	
 	await browser.close();

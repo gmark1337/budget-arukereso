@@ -103,8 +103,8 @@ export async function getImagesWithDoubleAnchorTagAsync(page, container, element
         }, container, element, price, title, regex.source);
         return images;
     } catch (error) {
-        console.error(`[getImagesAsync] Sudden error occurred while trying to run getImageSync `, error.message);
-        return images;
+        console.error(`[getImagesAsync] Sudden error occurred while trying to run getImagesWithDoubleAnchorTagAsync `, error.message);
+        return [];
     }
 }
 

@@ -35,6 +35,15 @@
             "elementSelector":".product-block-top-main.vtmn-relative.vtmn-flex.vtmn-flex-col.vtmn-w-full.vtmn-items-start",
             "productPriceSelector":".vtmn-flex.vtmn-flex-col.vtmn-justify-center.vtmn-items-end",
             "titleContentSelector":".vtmn-p-0.vtmn-m-0.vtmn-font-normal.vtmn-overflow-hidden.vtmn-text-ellipsis.vtmn-typo_caption-1.svelte-lfi7s7"
+        },
+        "mangoOutlet":
+        {
+            "baseUrl":"https://www.mangooutlet.com/hu/hu/search",
+            "containerSelector":".Grid_grid__BZHmS.Grid_standard__g9V3s",
+            "elementSelector":".virtual-item",
+            "productImageSelector":".ProductImage_imageWrapper__JfhWa",
+            "productPriceSelector":".Price_wrapper__puOiZ.Price_horizontalWrapper__aVeww.Price_centerWrapper__j0HhG.Price_center___NWQn",
+            "titleContentSelector":".ProductDetails_heading__gYOBc"
         }
     },
     "tests": {
