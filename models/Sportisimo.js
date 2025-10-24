@@ -34,7 +34,7 @@ export async function fetchSportisimoImagesAsync(searchword, page, numberOfItems
 
     
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportisimoWebsite.baseUrl, filters);
-    console.log(`The created URL is: ${foundPage}`);
+    //console.log(`The created URL is: ${foundPage}`);
 
     await page.goto(foundPage, {waitUntil: "networkidle2"});
 

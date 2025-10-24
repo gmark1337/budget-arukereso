@@ -28,7 +28,7 @@ export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFe
     try {
         const foundPage = await encodeSearchItemWithFilteringAsync(searchword, sinsayWebsite.baseUrl, filters);
 
-        console.log(`The created URL is: ${foundPage}`);
+        //console.log(`The created URL is: ${foundPage}`);
 
         await page.goto(foundPage, { waitUntil: "domcontentloaded" });
         try {

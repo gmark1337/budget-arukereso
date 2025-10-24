@@ -27,7 +27,7 @@ export async function fetchDecathlonImagesAsync(searchword, page, numberOfItemsT
     try{
         const fetchedurl = await encodeSearchItemWithFilteringAsync(searchword, decathlonWebsite.baseUrl, filters);
         
-        console.log(`The created URL is: ${fetchedurl}`)
+        //console.log(`The created URL is: ${fetchedurl}`)
         
         await page.goto(fetchedurl, {waitUntil: "networkidle2"});
 

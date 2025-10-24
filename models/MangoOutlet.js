@@ -65,7 +65,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
     try {
         const randomizedUrl = `${mangoOutletWebsite.baseUrl}/${randomTag}`;
         const foundPage = encodeSearchItemWithFilteringAsync(randomizedUrl, searchword, filters);
-        console.log(foundPage);
+        //console.log(foundPage);
 
         await page.goto(foundPage, { waitUntil: "networkidle2" });
 
@@ -74,7 +74,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         } catch (error) {
             console.error(`[fetchMangoOutletImagesAsync] Failed to click cookie button`, error.message);
             return {
-                websiteName: 'Mango Outlet',
+                websiteName: 'mangoOutlet',
                 FoundImages: []
             };
         }
@@ -86,7 +86,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         } catch (error) {
             console.error(`[fetchMangoOutletImagesAsync] Timeout waiting for container selector: ${error.message}`);
             return {
-                websiteName: 'Mango Outlet',
+                websiteName: 'mangoOutlet',
                 FoundImages: [],
             }
         }
@@ -97,7 +97,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         const selected = images.slice(0, pagesToFetch);
 
         const finalImages = {
-            websiteName: 'Mango Outlet',
+            websiteName: 'mangoOutlet',
             FoundImages: selected
         };
 
@@ -105,7 +105,7 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
     } catch (error) {
         console.error(`[fetchMangoOutletImagesAsync] Failed to fetch images:  ${error.message}`);
         return {
-            websiteName: 'Mango Outlet',
+            websiteName: 'mangoOutlet',
             FoundImages: []
         };
     }

@@ -2,7 +2,7 @@ import {
     describe, it,
 } from 'node:test';
 import assert from 'node:assert';
-import {Search} from '../ImageScraperService.js';
+import {Search} from '../services/searchService.js';
 import {config} from '../configuration/config.js';
 
 const {filters} = config;
@@ -24,7 +24,7 @@ describe('search-function-tests', () => {
 		}
 	});
 	it('results-blacklist-test', async () => {
-		filters.blackListedWebsite = ['sinsay', 'sportisimo', 'aboutYou'];
+		filters.blackListedWebsite = ['sinsay', 'sportisimo', 'aboutYou', 'mangoOutlet',  'decathlon'];
 		filters.pagesToFetch = 4;
 		const r = await Search('kabát');
 		assert.equal(r.length, 1);
