@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="index.css" />
         <link rel="stylesheet" href="results.css" />
         <link rel="stylesheet" href="history.css" />
+        <link rel="stylesheet" href="favourites.css" />
     </head>
     <body>
         <div id="menu">
@@ -43,6 +44,8 @@
                             <input type="checkbox" checked id="sinsay" name="sinsay" />
                             <label for="sinsay">Sinsay</label>
 
+                            <input type="checkbox" checked id="sportisimo" name="sportisimo" />
+                            <label for="sportisimo">Sportisimo</label>
 
                         <input type="checkbox" checked id="sportisimo" name="sportisimo" />
                         <label for="sportisimo">Sportisimo</label>
@@ -59,32 +62,8 @@
                 </details>
         </fieldset>
         </form>
-            <% if (keys) { %>
-            <div class="history">
-                <span>
-                    Previous results:
-                </span>
-                <% for (let i = 0; i < keys.length; i++) { %>
-                <div id="key- <%= keys[i] %> ">
-                    <fieldset>
-                        <legend><%= keys[i] %> </legend>
-                        <% history.get(keys[i]).map( (item) => { %>
-                        <div class="history-item">
-                            <div class="item">
-                                <a href="<%= item.href %>" target="_blank" rel="noopener">
-                                    <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
-                                </a>
-                            </div>
-                            <div class="price">
-                                <span class="chip"><%= item.price %> Ft</span>
-                            </div>
-                        </div>
-                        <% }) %>
-                    </fieldset>
-                </div>
-                <% } %>
+            <div id="history">
             </div>
-            <% } %>
         </div>
         <div id="waitingfield" hidden>
             <div class="spinner"></div>
@@ -95,6 +74,14 @@
         <div id="account">
             <%= username %>
         </div>
-        <script src="index.js"></script>
+        <% if (auth) { %>
+        <div id="top-bar-menu">
+            <div class="favourites-bar">
+                <span>Favourites</span>
+                <div id="favourites">
+                </div>
+            </div>
+            <% } %>
+            <script src="index.js"></script>
     </body>
 </html>

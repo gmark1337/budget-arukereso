@@ -1,6 +1,13 @@
 **Beállítások:**
 
-- emptyPlaceholderString = :(  
+- emptyPlaceholderString = Failed to find products for this website!
+- noUsername = no username provided
+- noPassword = no password provided
+- noEmail = no email provided
+- badUsername = username taken
+- badEmail = email taken
+- incorrectUsername = invalid username
+- incorrectPassword = invalid password
 
 # search-function-test
 
@@ -159,5 +166,180 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
   - prices = az összes termék ára megjelenési sorrendben
   - expectedNumberOfSites = keresett weboldalak száma
 
-  A teszt kigyűjti a weboldalon szereplő árakat majd oldalankénti darabszám lépésközzel ellenőrzi, 
+  A teszt kigyűjti a weboldalon szereplő árakat majd oldalankénti darabszám lépésközzel ellenőrzi,
   hogy a tömbrészlet megfelelő módon van rendezve.
+
+# registration-login-user-tests
+
+  **Beállítások**
+
+  - username = test-user-bob
+  - email = test-user-bob@test.com
+  - password = test-C1jzovFk6bU2
+
+  A tesztek előtt kitöröljük a username:`username` felhasználót.
+
+  A tesztek után kitöröljük a username:`username` felhasználót.
+
+## register-test-user-bob
+
+  Elküldünk egy POST requestet a /register endpointra a beállított értékekkel,
+  majd megnézzük, hogy tényleg létezik-e ilyen user a táblában.
+
+## login-user-bob
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel és
+  kikapcsoljuk az automatikus redirect follow-ot, majd megnézzük hogy a response
+  status kódja 302, amit a weboldal sikeres bejelentkezés esetén küld.
+
+## check-if-bob-is-logged-in
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel és
+  kikapcsoljuk az automatikus redirect follow-ot, majd megnézzük a Set-Cookiek
+  között az Authorize értékét, amit továbbküldünk a / endpointra egy GET
+  requestként. Eztuán ellenőrizzük hogy a div#account element a helyes username
+  értéket tartalmazza.
+
+# registration-edgecases-tests
+
+## no-username-provided
+
+  **Beállítások**
+
+  - username =
+  - email = test-user-bob@test.com
+  - password = test-C1jzovFk6bU2
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message element tartalma megegyezik-e a `noUsername`
+  értékével.
+
+## no-password-provided
+
+  **Beállítások**
+
+  - username = test-user-bob
+  - email = test-user-bob@test.com
+  - password =
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message element tartalma megegyezik-e a `noPassword`
+  értékével.
+
+## no-email-provided
+
+  **Beállítások**
+
+  - username = test-user-bob
+  - email =
+  - password = test-C1jzovFk6bU2
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message element tartalma megegyezik-e a `noEmail`
+  értékével.
+
+# taken-username-or-email-tests
+
+  **Beállítások**
+
+  - username = test-user-bob
+  - email = test-user-bob@test.com
+  - password = test-C1jzovFk6bU2
+
+  A tesztek előtt létrehozunk egy user-t a beállított értékekkel.
+  A tesztek után kitöröljük egy user-t a beállított értékekkel.
+
+## taken-username
+
+  **Beállítások**
+
+  - password = test-C1jzovFk6bU21
+
+  Elküldünk egy POST requestet a /register endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message értéke egyezik a `badUsername` értékével.
+
+## taken-email
+
+  **Beállítások**
+
+  - email = atest-user-bob@test.com
+
+  Elküldünk egy POST requestet a /register endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message értéke egyezik a `badEmail` értékével.
+
+# login-edgecases-tests
+
+  **Beállítások**
+
+  - username = test-user-bob
+  - email = test-user-bob@test.com
+  - password = test-C1jzovFk6bU2
+
+## incorrect-password
+
+  **Beállítások**
+
+  - password = test-C1jzovFk6bU21
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message értéke egyezik a `incorrectPassword`
+  értékével.
+
+## incorrect-username
+
+  **Beállítások**
+
+  - username = test-user-bob1
+
+  Elküldünk egy POST requestet a /login endpointra a beállított értékekkel, majd
+  ellenőrizzük hogy a #error-message értéke egyezik a `incorrectUsername`
+  értékével.
+
+# history-tests
+
+  A teszt előtt regisztrálunk egy teszt felhasználót, akinek a `userid` és a
+  webszerver által generált autentikációs sütijét (`auth`) elmentjük.
+
+  Minden teszt után töröljük a teszt felhasználó összes **history** rekordját.
+
+  A tesztek végén eltávolítjuk a teszt felhasználót.
+
+  **Beállítások**
+
+  - userid: A tesztek előtt regisztrált felhasználó `id` mező értéke
+  - auth: A tesztek előtt regisztrált felhasználó számára generált autentikációs
+  süti
+
+## save-successful
+
+  A teszt első lépéseként lekérjük a meglévő `history` rekordokat, majd
+  elküldünk egy POST requestet a **/history** endpointra véletlen generált
+  paraméterekkel, majd ismét lekérjük a `history` rekordokat és ellenőrizzük,
+  hogy a második lekérdezés darabszáma eggyel nagyobb.
+
+## shows-after-save
+
+  Generálunk egy példa terméket, amit utána elküldünk a **/history** endpointra
+  egy POST request formájában, majd ellenőrizzük hogy a teszt felhasználó
+  `histrory` rekordjai tartalmazzák-e a generált terméket.
+
+## can-be-deleted
+
+  A teszt előtt elküldünk egy POST requestet a **/history** endpointra, majd
+  lekérünk egy rekordot a `history` táblából, amely rekord `src` mezőjét eküldjük
+  egy DELETE requesttel a **/history** endpointra, ezután ellenőrizzük hogy
+  valóban eltávolítottuk-e a teszt felhasználó `history` rekordjaiból.
+
+## max-10-history
+
+  Elküldünk 15 POST requestet véletlen generált paraméterekkel a **/history**
+  endpointra, majd ellenőrizzük hogy a teszt felhasználónak nincs több mint 10
+  darab rekordja a `history` táblában.
+
+## disallows-duplicates
+
+  Lekérjük a teszt felhasználó összes rekordját a `history` táblából, majd
+  generálunk egy véletlenszerű terméket amit kétszer elküldünk egy POST request
+  formájában a **/history** endpointra, végül ismételten lekérjük a felhasználó
+  összes rekordját és ellenőrizzük, hogy a második állapot darabszáma csak eggyel
+  nagyobb.
