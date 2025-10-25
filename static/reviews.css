@@ -4,4 +4,28 @@
 
 .reviews-bar span:hover {
     cursor: pointer;
+    font-weight: bold;
+}
+
+#reviews {
+    background-color: white;
+    border: thin solid black;
+    border-radius: 0.5em;
+    padding: 1em;
+    display: none;
+    position: absolute;
+    margin: 0 auto;
+    width: auto;
+}
+
+.review-menu {
+    font-weight: bold;
+}
+
+.trusted-site {
+    color: gold;
+    border: thin solid gold;
+    padding: 0.4em;
+    border-radius: 0.5em;
+    margin: 0.5em;
 }
