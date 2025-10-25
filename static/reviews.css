@@ -1,0 +1,7 @@
+.reviews-bar {
+    position: absolute;
+}
+
+.reviews-bar span:hover {
+    cursor: pointer;
+}
