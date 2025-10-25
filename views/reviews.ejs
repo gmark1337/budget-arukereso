@@ -1,0 +1,43 @@
+<% if (reviews.length == 0) { %>
+    No reviews left yet.
+        <% } else { %>
+            <% reviews.map((site) => { %>
+                    <fieldset class="result review-site">
+                    <legend><%= site._id %></legend>
+                    <% if (site.highQualityCount > threshold) { %>
+                    <div class="trusted-site">
+                    Trusted site.
+                    </div>
+                    <% } %>
+                    <div class="items">
+                    <% site.records.map((review) => { %>
+                            <div class="item">
+                            <div class="review-menu">
+                            <%= review.user %> <%= "⭐".repeat(review.quality) %>
+                            </div>
+                            <span><%= review.review %></span>
+                            </div>
+                            <% }) %>
+                    </div>
+                    </fieldset>
+                    <% }) %>
+                <% } %>
+                <form id="review-submit" action="javascript:void(0)">
+                Site:
+                <select name="vendor" id="review-vendor">
+                <option value="aboutyou">aboutYou</option>
+                <option value="decathlon">Decathlon</option>
+                <option value="hervis">Hervis</option>
+                <option value="mongooutlet">mongoOutlet</option>
+                <option value="sinsay">Sinsay</option>
+                <option value="sportisimo">Sportisimo</option>
+                </select>
+                Review:
+                <textarea required id="review-text"></textarea>
+                Score:
+                <input type="range" id="review-quality" oninput="this.nextElementSibling
+                .value = this.value" min="1" max="5" />
+                <output id="quality-value">3</output>
+                <button id="review-send">Send review</button>
+                <button id="review-cancel">Close</button>
+                </form>
