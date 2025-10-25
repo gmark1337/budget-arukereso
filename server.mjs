@@ -10,7 +10,7 @@ import cookieParser from 'cookie-parser';
 import {Search} from './services/searchService.js';
 import {config} from './configuration/config.js';
 import {
-	DB, USER, HISTORY, GLOBALS, FAVOURITES,
+	DB, USER, HISTORY, GLOBALS, FAVOURITES, REVIEWS,
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -55,14 +55,15 @@ app.get('/search', async (request, res) => {
 		filters.blackListedWebsite.push('sportisimo');
 	}
 
-    if(request.query.aboutYou != 'true'){
-        filters.blackListedWebsite.push('aboutYou');
-    }
+	if (request.query.aboutYou != 'true') {
+		filters.blackListedWebsite.push('aboutYou');
+	}
 
-	if(request.query.decathlon != 'true'){
+	if (request.query.decathlon != 'true') {
 		filters.blackListedWebsite.push('decathlon');
 	}
-	if(request.query.mangoOutlet != 'true'){
+
+	if (request.query.mangoOutlet != 'true') {
 		filters.blackListedWebsite.push('mangoOutlet');
 	}
 
@@ -262,17 +263,20 @@ app.get('/favourites', async (request, res) => {
 		});
 		return;
 	}
-    //send specific item id to add to button class
-    if (request.query.id) {
-        console.log(request.query.id);
-        const item = await FAVOURITES.findOne({src: request.query.id,
-        user: user.id});
-        res.json({
-            id: item ? item._id : null,
-        });
-        return;
-    }
-    //send rendered view back
+
+	// Send specific item id to add to button class
+	if (request.query.id) {
+		const item = await FAVOURITES.findOne({
+			src: request.query.id,
+			user: user.id,
+		});
+		res.json({
+			id: item ? item._id : null,
+		});
+		return;
+	}
+
+	// Send rendered view back
 	res.render('favourites', {
 		favourites: await FAVOURITES.find({user: user.id}),
 	});
@@ -295,6 +299,7 @@ app.post('/favourites', async (request, res) => {
 		});
 		return;
 	}
+
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
@@ -312,9 +317,44 @@ app.delete('/favourites/:id', async (request, res) => {
 		return;
 	}
 
-    await FAVOURITES.findOneAndDelete({
+	await FAVOURITES.findOneAndDelete({
 		_id: request.params.id,
 		user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
+});
+
+app.get('/reviews', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	const reviews = await gatherReviews();
+    const threshold = await GLOBALS.findOne({name: 'trusted-site-threshold'});
+	res.render('reviews', {
+		reviews,
+        threshold: parseInt(threshold.value),
+	});
+});
+
+app.post('/reviews', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	const {vendor, content, quality} = request.body;
+	await REVIEWS.create({
+		vendor, review: content, quality, user: user.id,
 	});
 	res.json({
 		reason: 'ok',
@@ -395,4 +435,31 @@ async function addFavouriteTags(r, user) {
 			}
 		}
 	}
+}
+
+async function gatherReviews() {
+	const reviews = await REVIEWS.aggregate([{
+		$group: {
+			_id: '$vendor',
+			records: {
+				$push: '$$ROOT',
+			},
+            highQualityCount: {
+                $sum: {
+                    $cond: [
+                        { $gt: ["$quality", 3] },
+                        1,
+                        0
+                    ]
+                }
+            }
+		},
+	}]);
+	for (const r of reviews) {
+		for (const rec of r.records) {
+			const user = await USER.findOne({_id: rec.user});
+			rec.user = user.username;
+		}
+	}
+	return reviews;
 }
