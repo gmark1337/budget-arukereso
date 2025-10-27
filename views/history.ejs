@@ -1,0 +1,15 @@
+<% if (history) { %>
+    <div class="items">
+        <% history.map((item) => { %>
+            <div class="item">
+                <a href="<%= item.href %>" target="_blank">
+                    <img src="<%= item.src %>">
+                </a>
+                <div class="price">
+                    <span class="chip"><%= item.price %></span>
+                </div>
+                <button class="remove-history-item id-<%= item.id %>">Remove</button>
+            </div>
+        <% }) %>
+    </div>
+<% } %>

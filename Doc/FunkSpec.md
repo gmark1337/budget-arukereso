@@ -177,8 +177,16 @@ A felhasználó tud szövegesen és csillagokkal webárúházat értékelni.
 - Értékelések felhasználónévvel
 - Csillagértékelések -> megbízható jelvény
 
-# TODO
-UI terveket be lehet ide rakni, ha kész vannak!
+
+
+[Eredmény nézet](assets/eredmeny-nezet.jpeg)
+[Előzmények nézet](assets/history-nezet.png)
+[Kedvencek nézet](assets/kedvencek-nezet.png)
+[Kezdőlap nézet](assets/kezdolap-nezet.png)
+[Bejelentkezési nézet](assets/login-nezet.png)
+[Nyelvi beállítások nézet](assets/nyelvi_beallitas-nezet.png)
+[Vélemények nézet](assets/reviews-nezet.png)
+[Termék információ nézet](assets/reviews-nezet.png)
 
 
 ## Adatmodell

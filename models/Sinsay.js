@@ -1,4 +1,5 @@
 import { config } from '../configuration/config.js'
+import { getImagesWithDoubleAnchorTagAsync } from '../services/ImageScraperService.js';
 
 const sinsayWebsite = config.websites["sinsay"];
 const filters = config.filters;
@@ -23,59 +24,11 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
 }
 
 
-async function getImagesAsync(page, tag1, tag2, tag3, tag4) {
-    try {
-        const images = await page.evaluate((containerSelector, elementSelector, priceSelector, titleContentSelector) => {
-            try {
-                const container = document.querySelector(containerSelector);
-                if (!container) return [];
-
-                const elements = container.querySelectorAll(elementSelector);
-                const prices = container.querySelectorAll(priceSelector);
-                const titles = container.querySelectorAll(titleContentSelector);
-                const priceFilter = /([\d\s]+)(?=HUF)/;
-
-                return [...elements].map((div, index) => {
-                    const link = div.querySelectorAll('a')[0] || null;
-                    const imgEl = div.querySelector('img');
-                    const priceElement = prices[index];
-                    const titleElement = titles[index].textContent;
-                    let price = null;
-                    try {
-                        if (priceElement) {
-                            const text = priceElement.textContent || '';
-                            const match = text.match(priceFilter);
-                            if (match) {
-                                price = match[0].replace(/\s/g, '');
-                            }
-                        }
-                    } catch (error) {
-                        console.error(`[getImagesAsync] Sudden error occurred while extracting item data:`, error.message);
-                    }
-                    return {
-                        href: link ? link.href : null,
-                        src: imgEl ? imgEl.src : null,
-                        price: price,
-                        title: titleElement
-                    };
-                });
-            } catch (error) {
-                console.error(`[getImagesAsync] Error inside page.evaluate:`, err.message);
-                return [];
-            }
-        }, tag1, tag2, tag3, tag4);
-        return images;
-    } catch (error) {
-        console.error(`[getImagesAsync] Sudden error occurred while trying to run getImageSync `, error.message);
-        return images;
-    }
-}
-
 export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFetch) {
     try {
         const foundPage = await encodeSearchItemWithFilteringAsync(searchword, sinsayWebsite.baseUrl, filters);
 
-        console.log(`The created URL is: ${foundPage}`);
+        //console.log(`The created URL is: ${foundPage}`);
 
         await page.goto(foundPage, { waitUntil: "domcontentloaded" });
         try {
@@ -88,8 +41,8 @@ export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFe
             }
         }
 
-
-        const items = await getImagesAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.imageSelector, sinsayWebsite.productPriceSelector, sinsayWebsite.titleContentSelector);
+        const regex = /([\d\s]+)(?=HUF)/;
+        const items = await getImagesWithDoubleAnchorTagAsync(page, sinsayWebsite.containerSelector, sinsayWebsite.elementSelector, sinsayWebsite.productPriceSelector, sinsayWebsite.titleContentSelector, regex);
         if (items === null) {
             await page.reload({ waitUntil: "networkidle2" })
         }

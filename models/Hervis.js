@@ -1,5 +1,5 @@
 import { config } from '../configuration/config.js';
-import { sleep, getImagesAsync } from '../ImageScraperService.js';
+import { sleep, getImagesAsync } from '../services/ImageScraperService.js';
 
 const hervisWebsite = config.websites["hervis"];
 const filters = config.filters;
@@ -40,7 +40,7 @@ export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFe
         const foundPage = await encodeSearchItemWithFilteringAsync(searchword, hervisWebsite.baseUrl, filters);
         await page.goto(foundPage, { waitUntil: "domcontentloaded" });
 
-        console.log(`The created URL is: ${foundPage}`);
+        //console.log(`The created URL is: ${foundPage}`);
 
 
         const regex = /\s+(\d{1,3}(?:\s\d{3})*)/;

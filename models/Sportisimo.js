@@ -1,4 +1,4 @@
-import { getImagesAsync} from "../ImageScraperService.js";
+import { getImagesAsync} from "../services/ImageScraperService.js";
 import {config} from '../configuration/config.js'
 
 
@@ -34,7 +34,7 @@ export async function fetchSportisimoImagesAsync(searchword, page, numberOfItems
 
     
     const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportisimoWebsite.baseUrl, filters);
-    console.log(`The created URL is: ${foundPage}`);
+    //console.log(`The created URL is: ${foundPage}`);
 
     await page.goto(foundPage, {waitUntil: "networkidle2"});
 

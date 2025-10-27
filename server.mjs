@@ -7,10 +7,10 @@ import bodyParser from 'body-parser';
 import {compare, hash} from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-import {Search} from './ImageScraperService.js';
+import {Search} from './services/searchService.js';
 import {config} from './configuration/config.js';
 import {
-	DB, USER, HISTORY, GLOBALS,
+	DB, USER, HISTORY, GLOBALS, FAVOURITES, REVIEWS,
 } from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,24 +30,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 app.get('/', async (request, res) => {
-	const token = request.cookies.Authorize;
-	let username = null;
-	if (token) {
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		const user = jwt.verify(token, secret);
-		username = user.username;
-	}
-
-	const [historyMap, keys] = await getHistory();
+	const user = await getUser(request);
 	res.render('index', {
-		username: username || 'Guest',
-		history: username ? historyMap : null,
-		keys: username ? keys : null,
+		username: user ? user.username : 'Guest',
+		auth: Boolean(user),
 	});
 });
 
 app.get('/search', async (request, res) => {
-	// Console.log(req.query);
 	filters.minPrice = request.query.minPrice || '0';
 	filters.maxPrice = request.query.maxPrice || '5000';
 	filters.size = request.query.size == '' ? determineSizeKind(request.query.searchword) : request.query.size;
@@ -65,9 +55,17 @@ app.get('/search', async (request, res) => {
 		filters.blackListedWebsite.push('sportisimo');
 	}
 
-    if(request.query.aboutYou != "true"){
-        filters.blackListedWebsite.push("aboutYou")
-    }
+	if (request.query.aboutYou != 'true') {
+		filters.blackListedWebsite.push('aboutYou');
+	}
+
+	if (request.query.decathlon != 'true') {
+		filters.blackListedWebsite.push('decathlon');
+	}
+
+	if (request.query.mangoOutlet != 'true') {
+		filters.blackListedWebsite.push('mangoOutlet');
+	}
 
 	const r = await Search(request.query.searchword);
 	for (const element of r) {
@@ -82,19 +80,17 @@ app.get('/search', async (request, res) => {
 		});
 	}
 
+	// Check if result is in favourites
+	const user = await getUser(request);
+	if (user) {
+		await addFavouriteTags(r, user);
+	}
+
 	res.end(render(resultsTemplate, {
 		results: r,
 		emptyStringPlaceholder,
+		auth: Boolean(user),
 	}));
-	const token = request.cookies.Authorize;
-	let user = null;
-	if (token) {
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		user = jwt.verify(token, secret);
-	}
-	if (user) {
-		addToHistory(r, user);
-	}
 });
 
 app.get('/register', (_, res) => {
@@ -103,11 +99,19 @@ app.get('/register', (_, res) => {
 	});
 });
 
-app.post('/register', (request, res) => {
+app.post('/register', async (request, res) => {
 	const {email, username, password} = request.body;
 	if (!email) {
 		res.render('register', {
 			errorMessage: 'no email provided',
+		});
+		return;
+	}
+
+	let user = await USER.findOne({email});
+	if (user != null) {
+		res.render('register', {
+			errorMessage: 'email taken',
 		});
 		return;
 	}
@@ -126,10 +130,12 @@ app.post('/register', (request, res) => {
 		return;
 	}
 
-	if (USER.findOne({username}).query != null) {
+	user = await USER.findOne({username});
+	if (user != null) {
 		res.render('register', {
 			errorMessage: 'username taken',
 		});
+		return;
 	}
 
 	hash(password, saltRounds, async (error, hash) => {
@@ -140,24 +146,22 @@ app.post('/register', (request, res) => {
 			return;
 		}
 
-		const user = await USER.create({
+		await USER.create({
 			username,
 			email,
 			password: hash,
-		});
-		if (!user) {
-			res.render('login', {
+		}).then(async user => {
+			const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
+			const token = jwt.sign({id: user._id, username: user.username}, secret, {expiresIn: '72h'});
+			res.cookie('Authorize', token, {
+				httpOnly: true,
+			});
+			res.redirect('/');
+		}).catch(() => {
+			res.render('register', {
 				errorMessage: 'failed to create user',
 			});
-			return;
-		}
-
-		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		const token = jwt.sign({id: user._id, username: user.username}, secret, {expiresIn: '72h'});
-		res.cookie('Authorize', token, {
-			httpOnly: true,
 		});
-		res.redirect('/');
 	});
 });
 
@@ -206,6 +210,157 @@ app.post('/login', async (request, res) => {
 	res.redirect('/');
 });
 
+app.get('/history', async (request, res) => {
+	const user = await getUser(request);
+	res.render('history', {
+		history: user ? await getHistory(user.id) : null,
+	});
+});
+
+app.post('/history', async (request, res) => {
+	const {image, href, price} = request.body;
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unathorized',
+		});
+		return;
+	}
+
+	await addToHistory({
+		src: image,
+		href,
+		price,
+	}, user.id);
+	res.json({
+		reason: 'success',
+	});
+});
+
+app.delete('/history/:id', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	await HISTORY.findOneAndDelete({
+		_id: request.params.id,
+		user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
+});
+
+app.get('/favourites', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	// Send specific item id to add to button class
+	if (request.query.id) {
+		const item = await FAVOURITES.findOne({
+			src: request.query.id,
+			user: user.id,
+		});
+		res.json({
+			id: item ? item._id : null,
+		});
+		return;
+	}
+
+	// Send rendered view back
+	res.render('favourites', {
+		favourites: await FAVOURITES.find({user: user.id}),
+	});
+});
+
+app.post('/favourites', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	const {vendor, href, image, price} = request.body;
+	const item = await FAVOURITES.findOne({user: user.id, src: image});
+	if (item) {
+		res.json({
+			reason: 'duplicate',
+		});
+		return;
+	}
+
+	await FAVOURITES.insertOne({
+		vendor, href, src: image, price, user: user.id,
+	});
+	res.json({
+		reason: 'success',
+	});
+});
+
+app.delete('/favourites/:id', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	await FAVOURITES.findOneAndDelete({
+		_id: request.params.id,
+		user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
+});
+
+app.get('/reviews', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	const reviews = await gatherReviews();
+    const threshold = await GLOBALS.findOne({name: 'trusted-site-threshold'});
+	res.render('reviews', {
+		reviews,
+        threshold: parseInt(threshold.value),
+	});
+});
+
+app.post('/reviews', async (request, res) => {
+	const user = await getUser(request);
+	if (!user) {
+		res.json({
+			reason: 'unauthorized',
+		});
+		return;
+	}
+
+	const {vendor, content, quality} = request.body;
+	await REVIEWS.create({
+		vendor, review: content, quality, user: user.id,
+	});
+	res.json({
+		reason: 'ok',
+	});
+});
+
 app.listen(PORT, () => {
 	console.log(`running on: http://localhost:${PORT}`);
 });
@@ -226,31 +381,85 @@ function determineSizeKind(searchword) {
 	return filters.shoeFilters.includes(searchword) ? 40 : 'M';
 }
 
-async function getHistory() {
-	const historyItems = await HISTORY.find();
-	const historyMap = new Map();
-	for (const item of historyItems) {
-		if (historyMap.has(item.websiteName)) {
-			historyMap.set(item.websiteName, historyMap.get(item.websiteName).concat(item.product));
-		} else {
-			historyMap.set(item.websiteName, item.product);
-		}
+async function getHistory(userid) {
+	if (!userid) {
+		return [];
 	}
 
-	const keys = [];
-	for (const key of historyMap.keys()) {
-		keys.push(key);
-	}
-
-	return [historyMap, keys];
+	return await HISTORY.find({user: userid});
 }
 
-function addToHistory(search, user) {
-	for (const e of search) {
-		HISTORY.insertOne({
-			websiteName: e.websiteName,
-			product: e.FoundImages,
-			user: user.id,
-		});
+async function addToHistory(product, userId) {
+	const entry = await HISTORY.findOne({src: product.src});
+	if (entry) {
+		return;
 	}
+
+	const items = await HISTORY.find({user: userId});
+	if (items.length >= 10) {
+		return;
+	}
+
+	HISTORY.insertOne({
+		src: product.src,
+		href: product.href,
+		price: product.price,
+		user: userId,
+	});
+}
+
+async function getUser(request) {
+	const token = request.cookies.Authorize;
+	if (token) {
+		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
+		return jwt.verify(token, secret);
+	}
+
+	return null;
+}
+
+async function addFavouriteTags(r, user) {
+	const favourites = (await FAVOURITES.find({user: user.id}));
+	const srcs = new Set(favourites.map(e => e.src));
+	for (const vendor of r) {
+		const l = vendor.FoundImages;
+		for (let i = 0; i < vendor.FoundImages.length; i++) {
+			if (srcs.has(l[i].src)) {
+				l[i].fav = 'favourited';
+				for (const f of favourites) {
+					if (f.src == l[i].src) {
+						l[i].fav_id = f.id;
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+
+async function gatherReviews() {
+	const reviews = await REVIEWS.aggregate([{
+		$group: {
+			_id: '$vendor',
+			records: {
+				$push: '$$ROOT',
+			},
+            highQualityCount: {
+                $sum: {
+                    $cond: [
+                        { $gt: ["$quality", 3] },
+                        1,
+                        0
+                    ]
+                }
+            }
+		},
+	}]);
+	for (const r of reviews) {
+		for (const rec of r.records) {
+			const user = await USER.findOne({_id: rec.user});
+			rec.user = user.username;
+		}
+	}
+	return reviews;
 }

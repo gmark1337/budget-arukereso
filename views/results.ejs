@@ -3,7 +3,7 @@
         <legend><%= result.websiteName %></legend>
         <div class="items">
         <% if (result.FoundImages.length == 0) { %>
-            <%= emptyStringPlaceholder %>
+        <%= emptyStringPlaceholder %>
         <% } %>
         <% result.FoundImages.map((item) => { %>
                 <div class="item">
@@ -11,13 +11,17 @@
                 <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
                 </a>
                 <div class="meta">
-                <div class="title"><%= item.title || 'Product' %></div>
+                <% if (auth) { %>
+                <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">♥</button>
+                <% } %>
+                <div class="title"><%= item.title || 'Product' %>
+                </div>
                 <div class="price">
                 <span class="chip"><%= item.price %> Ft</span>
                 </div>
                 </div>
                 </div>
-        <% }) %>
+                <% }) %>
         </div>
         </fieldset>
-<% }) %>
+        <% }) %>

@@ -1,0 +1,11 @@
+#favourites {
+    display: none;
+}
+
+.favourites-bar {
+    cursor: pointer;
+}
+
+.favourited {
+    color: red;
+}
