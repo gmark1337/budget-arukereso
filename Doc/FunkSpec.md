@@ -9,12 +9,12 @@ Ráadásul, tudjon értékelni az adott oldalt az élményeivel kapcsolatban, es
 ## Felhasználói szerepkörök
 
 - Vendég felhasználó: belépés nélkül kereshet és böngészhet
-- Regisztrált felhasználó: elmentheti a kereséseket, kedvenceket
+- Regisztrált felhasználó: elmentheti a kereséseket, kedvenceket és tud véleményt írni adott weboldalhoz
 
 ## Részletes funkcióleírások
 
 1. Keresés
-A felhasználó kulcsszavak (pl.: póló, kabát) alapján kereshet terméket. Emellett tetszés szerint tud választani mennyi találatot adjon vissza a kereső és melyik oldal mutasson eredményt.
+A felhasználó kulcsszavak (pl.: póló, kabát) alapján kereshet terméket. Emellett, tetszés szerint tud választani mennyi találatot adjon vissza a kereső és melyik oldal mutasson eredményt.
 
 - Bemenet: Szöveges kulcsszó
 - Kimenet: találati lista termékekkel
