@@ -1,4 +1,4 @@
-Feature: Product details
+# Feature: Product details
 
 Scenario: After search each product details can be viewed
     Given the user is on the main page 
@@ -6,7 +6,7 @@ Scenario: After search each product details can be viewed
     After successful search the listed items details can be seen
 
 
-Feature: Multiple Languages 
+# Feature: Multiple Languages 
 
 Scenario: Languages can be set through the whole website
     Given the user can't speak English
@@ -14,7 +14,7 @@ Scenario: Languages can be set through the whole website
     After successful switch the website langauage switches to the desired one
 
 
-Feature: Refactor search system
+# Feature: Refactor search system
 
 Scenario: After search the search time is lower then 6 seconds
     Given the user is on the website
