@@ -34,11 +34,8 @@ export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFe
         try {
             await page.waitForSelector(sinsayWebsite.containerSelector, { timeout: 5000 });
         } catch (error) {
-            console.error(`[fetchSinsayImagesAsync] Timeout waiting for container selector: ${error.message}`);
-            return {
-                websiteName: 'Sinsay',
-                FoundImages: [],
-            }
+            console.error(`[fetchSinsayImagesAsync] Timeout waiting for container selector: ${error.message}\nReloading page...`);
+            await page.reload();
         }
 
         const regex = /([\d\s]+)(?=HUF)/;

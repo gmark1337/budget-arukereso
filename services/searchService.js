@@ -30,6 +30,15 @@ export async function Search(searchword) {
 	const browser = await puppeteer.launch({
 		headless: true,
 		defaultViewport: false,
+		args: [
+			'--no-sandbox',
+			'--disable-setuid-sandbox',
+			'--disable-dev-shm-usage',
+			'--disable-accelerated-2d-canvas',
+			'--no-first-run',
+			'--no-zygote',
+			'--disable-gpu'
+  		]
 	});
 
 	const context = browser.defaultBrowserContext();
@@ -41,7 +50,7 @@ export async function Search(searchword) {
 			const newPage = await target.page();
 			await newPage.setRequestInterception(true);
 			newPage.on('request', request => {
-				if (request.resourceType() === 'image') {
+				if (['image', 'stylesheet', 'font'].includes(request.resourceType())) {
 					request.abort();
 				} else {
 					request.continue();
@@ -51,15 +60,15 @@ export async function Search(searchword) {
 	})
 
 
-	const limit = pLimit(3);
+	const limit = pLimit(6);
 
 	const sites = [
-		{ name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{ name: "sportisimo", function: fetchSportisimoImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{ name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch },
-		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch},
+		{name: "hervis", function: fetchHervisImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{name: "sportisimo", function: fetchSportisimoImagesAsync, pagesToFetch: filters.pagesToFetch },
+		{name: "sinsay", function: fetchSinsayImagesAsync, pagesToFetch: filters.pagesToFetch },
 		{name: "decathlon", function: fetchDecathlonImagesAsync, pagesToFetch: filters.pagesToFetch},
-        {name: "mangoOutlet", function: fetchMangoOutletImagesAsync, pagesToFetch: filters.pagesToFetch}
+        {name: "mangoOutlet", function: fetchMangoOutletImagesAsync, pagesToFetch: filters.pagesToFetch},
+		{name: "aboutYou", function: fetchAboutYouImagesAsync, pagesToFetch: filters.pagesToFetch}
 	];
 
 	console.log('Started scraping websites in parallel.');
@@ -90,7 +99,7 @@ export async function Search(searchword) {
 	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 	
 	
-	await browser.close();
+	//await browser.close();
 
 	return allImages;
 }
@@ -98,5 +107,5 @@ export async function Search(searchword) {
 //console.log(await Search("cumi"));
 //await Search("Kék felső");
 
-//const testObject = await Search("kék felső");
-//testObject.forEach(x => console.log(x));
+/* const testObject = await Search("kék felső");
+testObject.forEach(x => console.log(x)); */

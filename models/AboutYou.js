@@ -45,27 +45,31 @@ export async function fetchAboutYouImagesAsync(searchword, page, numberOfItemsTo
     try {
         await page.setViewport({
             width: 764,
-            height: 2519,
+            height: 2000,
             deviceScaleFactor: 1
         });
-        await page.goto(websiteConfig.baseUrl, { waitUntil: "networkidle2" });
-        
 
+        await page.goto(websiteConfig.baseUrl,{waitUntil: 'domcontentloaded'});
 
         //console.log(await page.evaluate(() => navigator.userAgent));
-
-        await inputSearchWordAsync(page, searchword, websiteConfig.searchBarSelector);
-        
-        //await page.screenshot({path: "firstTest.png", fullPage: true});
-        //fs.writeFileSync('debug2.html', await page.content());
-        try {
-            await page.waitForSelector(websiteConfig.titleContentSelector, { timeout: 5000 });
-        } catch (error) {
-            console.error(`[fetchAboutYouImagesAsync] Timeout waiting for container selector: ${error.message}`);
+        /* try{
+            await page.waitForSelector(websiteConfig.searchBarSelector, {timeout: 5000});
+        }catch(error){
+            console.error(`[fetchAboutYouImagesAsync] Timeout waiting fopr searchbar selector: ${error.message}`);
             return {
                 websiteName: 'aboutYou',
                 FoundImages: []
             };
+        } */
+        await inputSearchWordAsync(page, searchword, websiteConfig.searchBarSelector);
+        
+        //await page.screenshot({path: "secondTest.png", fullPage: true});
+        //fs.writeFileSync('debug2.html', await page.content());
+        try {
+            await page.waitForSelector(websiteConfig.titleContentSelector, { timeout: 5000 });
+        } catch (error) {
+            console.error(`[fetchAboutYouImagesAsync] Timeout waiting for titleContent selector: ${error.message}\n Reloading page...`);
+            await page.reload();
         }
         const regex = /[\d.]+/;
         const images = await getImagesAsync(page, websiteConfig.containerSelector, websiteConfig.productPriceSelector, regex, websiteConfig.productImageSelector, websiteConfig.titleContentSelector);

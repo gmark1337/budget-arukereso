@@ -49,11 +49,8 @@ export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFe
             await page.waitForSelector(hervisWebsite.containerSelector, { timeout: 5000 });
 
         } catch (error) {
-            console.error(`[fetchHervisImagesAsync] Timeout waiting for container selector: ${error.message}`);
-            return {
-                websiteName: 'Hervis',
-                FoundImages: [],
-            }
+            console.error(`[fetchHervisImagesAsync] Timeout waiting for container selector: ${error.message}\nReloading page...`);
+            await page.reload();
         }
 
 

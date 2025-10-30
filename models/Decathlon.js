@@ -34,11 +34,8 @@ export async function fetchDecathlonImagesAsync(searchword, page, numberOfItemsT
         try{
             await page.waitForSelector(decathlonWebsite.elementSelector, { timeout: 5000 });
         }catch(error){
-            console.error(`[fetchDecathlonImagesAsync] Timeout waiting for container selector: ${error.message}`);
-            return {
-                websiteName: 'Decathlon',
-                FoundImages: [],
-            }
+            console.error(`[fetchDecathlonImagesAsync] Timeout waiting for container selector: ${error.message}\n Reloading page...`);
+            await page.reload();
         }
         
         const regex = /^.*?(\d[\d\s]*)(?=\s*Ft)/;

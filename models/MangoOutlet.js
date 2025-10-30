@@ -84,11 +84,8 @@ export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch
         try {
             await page.waitForNavigation(mangoOutletWebsite.containerSelector, { timeout: 5000 });
         } catch (error) {
-            console.error(`[fetchMangoOutletImagesAsync] Timeout waiting for container selector: ${error.message}`);
-            return {
-                websiteName: 'mangoOutlet',
-                FoundImages: [],
-            }
+            console.error(`[fetchMangoOutletImagesAsync] Timeout waiting for container selector: ${error.message}\nReloading page...`);
+            await page.reload();
         }
         const regex = /(\d[\d\s]*)\s*(?!.*\d[\d\s]*\s*)/;
 
