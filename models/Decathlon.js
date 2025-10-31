@@ -5,7 +5,7 @@ const {filters} = config;
 const decathlonWebsite = config.websites["decathlon"];
 
 
-function encodeSearchItemWithFilteringAsync(searchedItem, url, filters ={}){
+function encodeSearchItemWithFiltering(searchedItem, url, filters ={}){
     const params = [];
 
     if(searchedItem){
@@ -25,7 +25,7 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters ={}){
 
 export async function fetchDecathlonImagesAsync(searchword, page, numberOfItemsToFetch){
     try{
-        const fetchedurl = await encodeSearchItemWithFilteringAsync(searchword, decathlonWebsite.baseUrl, filters);
+        const fetchedurl = await encodeSearchItemWithFiltering(searchword, decathlonWebsite.baseUrl, filters);
         
         //console.log(`The created URL is: ${fetchedurl}`)
         

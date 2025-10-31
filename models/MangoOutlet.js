@@ -29,7 +29,7 @@ function getRandomTag() {
     return buttonTags.findIndex(findCategory) + 1;
 }
 
-function encodeSearchItemWithFilteringAsync(url, searchword, filters = {}) {
+function encodeSearchItemWithFiltering(url, searchword, filters = {}) {
     const params = [];
 
     if (searchword) {
@@ -64,7 +64,7 @@ async function clickCookieButton(page, selector) {
 export async function fetchMangoOutletImagesAsync(searchword, page, pagesToFetch) {
     try {
         const randomizedUrl = `${mangoOutletWebsite.baseUrl}/${randomTag}`;
-        const foundPage = encodeSearchItemWithFilteringAsync(randomizedUrl, searchword, filters);
+        const foundPage = encodeSearchItemWithFiltering(randomizedUrl, searchword, filters);
         //console.log(foundPage);
 
         await page.goto(foundPage, { waitUntil: "networkidle2" });

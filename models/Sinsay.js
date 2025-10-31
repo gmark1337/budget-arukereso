@@ -5,7 +5,7 @@ const sinsayWebsite = config.websites["sinsay"];
 const filters = config.filters;
 
 
-function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
+function encodeSearchItemWithFiltering(searchedword, url, filters = {}) {
     const params = [];
 
     if (searchedword) {
@@ -26,7 +26,7 @@ function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}) {
 
 export async function fetchSinsayImagesAsync(searchword, page, numberOfItemsToFetch) {
     try {
-        const foundPage = await encodeSearchItemWithFilteringAsync(searchword, sinsayWebsite.baseUrl, filters);
+        const foundPage = await encodeSearchItemWithFiltering(searchword, sinsayWebsite.baseUrl, filters);
 
         //console.log(`The created URL is: ${foundPage}`);
 

@@ -6,7 +6,7 @@ const sportisimoWebsite = config.websites["sportisimo"];
 //console.log(sportisimoWebsite)
 const filters = config.filters;
 
-function encodeSearchItemWithFilteringAsync(searchedword, url, filters = {}){
+function encodeSearchItemWithFiltering(searchedword, url, filters = {}){
     const params = [];
 
     if(filters.minPrice && filters.maxPrice){
@@ -33,7 +33,7 @@ export async function fetchSportisimoImagesAsync(searchword, page, numberOfItems
     try{
 
     
-    const foundPage = await encodeSearchItemWithFilteringAsync(searchword,sportisimoWebsite.baseUrl, filters);
+    const foundPage = await encodeSearchItemWithFiltering(searchword,sportisimoWebsite.baseUrl, filters);
     //console.log(`The created URL is: ${foundPage}`);
 
     await page.goto(foundPage, {waitUntil: "networkidle2"});

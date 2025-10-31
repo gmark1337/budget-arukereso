@@ -28,7 +28,7 @@ export async function Search(searchword) {
 		return [];
 	}
 	const browser = await puppeteer.launch({
-		headless: true,
+		headless: 'new',
 		defaultViewport: false,
 		args: [
 			'--no-sandbox',
@@ -99,7 +99,7 @@ export async function Search(searchword) {
 	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 	
 	
-	//await browser.close();
+	await browser.close();
 
 	return allImages;
 }
