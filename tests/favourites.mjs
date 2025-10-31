@@ -30,7 +30,7 @@ describe('favourites-tests', () => {
 		const user = await USER.findOne({username: p.username});
 		userid = user.id;
 	});
-	it('succesfully-adds-to-favourites', async () => {
+	it('successfully-adds-to-favourites', async () => {
 		const favouritesBefore = await FAVOURITES.find({user: userid});
 		await fetch('http://localhost:8080/favourites', {
 			method: 'POST',
@@ -42,7 +42,7 @@ describe('favourites-tests', () => {
 		const favouritesAfter = await FAVOURITES.find({user: userid});
 		assert.equal(favouritesBefore.length + 1, favouritesAfter.length);
 	});
-	it('succesfully-deletes-from-favourites', async () => {
+	it('successfully-deletes-from-favourites', async () => {
 		const favouritesBefore = await FAVOURITES.find({user: userid});
 		await fetch('http://localhost:8080/favourites', {
 			method: 'POST',
