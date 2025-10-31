@@ -295,6 +295,13 @@ app.post('/favourites', async (request, res) => {
 		});
 		return;
 	}
+    const favourites = await FAVOURITES.find({user: user.id});
+    if (favourites.length >= 10) {
+        res.json({
+		reason: 'max 10 product allowed',
+        });
+        return;
+    }
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
