@@ -1,6 +1,8 @@
 import * as cheerio from 'cheerio';
 import {config} from '../configuration/config.js';
 
+import { Search } from './searchService.js';
+
 
 const notFoundMessage = 'Failed to find any details for this part';
 
@@ -62,6 +64,14 @@ export async function fetchProductDetailsAsync(url){
 
 console.log(fetchedItems);
  */
+
+
+/* const testRun = await Search("kék felső");
+const allHrefs = testRun.flatMap(site => site.FoundImages.map(url => url.href));
+
+for(const site of allHrefs){
+	console.log(await fetchProductDetailsAsync(site));
+} */
 
 
 

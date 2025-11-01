@@ -100,7 +100,7 @@ export async function fetchAboutYouImagesAsync(searchword, page, numberOfItemsTo
         }
         const currentPageUrl = page.url();
         const filteredUrl = addFilteringToExistUrl(currentPageUrl, filters);
-        console.log(filteredUrl);
+        //console.log(filteredUrl);
 
         await page.goto(filteredUrl, { waitUntil: 'domcontentloaded' });
 
