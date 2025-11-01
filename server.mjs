@@ -21,6 +21,8 @@ const resultsTemplate = readFileSync('views/results.ejs', 'utf-8');
 const saltRounds = 10;
 const emptyStringPlaceholder = (await GLOBALS.findOne({name: 'emptyStringPlaceholder'})).value;
 
+const sites = ['hervis', 'sinsay', 'sportisimo', 'aboutYou', 'decathlon', 'mangoOutlet'];
+
 const {filters} = config;
 
 app.set('view engine', 'ejs');
@@ -43,30 +45,11 @@ app.get('/search', async (request, res) => {
 	filters.size = request.query.size == '' ? determineSizeKind(request.query.searchword) : request.query.size;
 	filters.pagesToFetch = request.query.count;
 	filters.blackListedWebsite = [];
-	if (request.query.hervis != 'true') {
-		filters.blackListedWebsite.push('hervis');
+	for (const site of sites) {
+		if (request.query[site] != 'true') {
+			filters.blackListedWebsite.push(site);
+		}
 	}
-
-	if (request.query.sinsay != 'true') {
-		filters.blackListedWebsite.push('sinsay');
-	}
-
-	if (request.query.sportisimo != 'true') {
-		filters.blackListedWebsite.push('sportisimo');
-	}
-
-	if (request.query.aboutYou != 'true') {
-		filters.blackListedWebsite.push('aboutYou');
-	}
-
-	if (request.query.decathlon != 'true') {
-		filters.blackListedWebsite.push('decathlon');
-	}
-
-	if (request.query.mangoOutlet != 'true') {
-		filters.blackListedWebsite.push('mangoOutlet');
-	}
-
 	const r = await Search(request.query.searchword);
 	for (const element of r) {
 		element.FoundImages.sort((a, b) => {
