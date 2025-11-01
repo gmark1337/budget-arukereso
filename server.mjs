@@ -299,7 +299,13 @@ app.post('/favourites', async (request, res) => {
 		});
 		return;
 	}
-
+    const favourites = await FAVOURITES.find({user: user.id});
+    if (favourites.length >= 10) {
+        res.json({
+		reason: 'max 10 product allowed',
+        });
+        return;
+    }
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
@@ -336,10 +342,10 @@ app.get('/reviews', async (request, res) => {
 	}
 
 	const reviews = await gatherReviews();
-    const threshold = await GLOBALS.findOne({name: 'trusted-site-threshold'});
+	const threshold = await GLOBALS.findOne({name: 'trusted-site-threshold'});
 	res.render('reviews', {
 		reviews,
-        threshold: parseInt(threshold.value),
+		threshold: Number.parseInt(threshold.value),
 	});
 });
 
@@ -412,7 +418,12 @@ async function getUser(request) {
 	const token = request.cookies.Authorize;
 	if (token) {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		return jwt.verify(token, secret);
+   		return jwt.verify(token, secret, (e, user) => {
+            if (e) {
+                return null;
+            }
+            return user;
+        });
 	}
 
 	return null;
@@ -444,15 +455,15 @@ async function gatherReviews() {
 			records: {
 				$push: '$$ROOT',
 			},
-            highQualityCount: {
-                $sum: {
-                    $cond: [
-                        { $gt: ["$quality", 3] },
-                        1,
-                        0
-                    ]
-                }
-            }
+			highQualityCount: {
+				$sum: {
+					$cond: [
+						{$gt: ['$quality', 3]},
+						1,
+						0,
+					],
+				},
+			},
 		},
 	}]);
 	for (const r of reviews) {
@@ -461,5 +472,6 @@ async function gatherReviews() {
 			rec.user = user.username;
 		}
 	}
+
 	return reviews;
 }
