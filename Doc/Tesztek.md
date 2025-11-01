@@ -343,3 +343,56 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
   formájában a **/history** endpointra, végül ismételten lekérjük a felhasználó
   összes rekordját és ellenőrizzük, hogy a második állapot darabszáma csak eggyel
   nagyobb.
+
+# favourites-tests
+
+  A teszt előtt regisztrálunk egy teszt felhasználót, akinek a `userid` és a
+  webszerver által generált autentikációs sütijét (`auth`) elmentjük.
+
+  Minden teszt után töröljük a teszt felhasználó összes **favourites** rekordját.
+
+  A tesztek végén eltávolítjuk a teszt felhasználót.
+
+  **Beállítások**
+
+  - userid: A tesztek előtt regisztrált felhasználó `id` mező értéke
+  - auth: A tesztek előtt regisztrált felhasználó számára generált autentikációs
+  süti
+
+## successfully-adds-to-favourites
+
+  A teszt előtt lekérdezzük a meglévő rekordokat a `favourites` táblából, majd
+  elküldünk egy POST requestet a **/favourites** endpointra egy véletlenszerűen
+  generált példatermékkel, majd ismét lekérdezzük az összes a rekordokat és
+  ellenőrizzük hogy eggyel nagyobb a darabszáma.
+
+## successfully-deletes-from-favourites
+
+  A teszt előtt lekérdezzük a meglévő rekordokat a `favourites` táblából, majd
+  elküldünk egy POST requestet a **/favourites** endpointra egy véletlenszerűen
+  generált példatermékkel, majd lekérdezünk egy rekordot a `favourites` táblából,
+  majd elküldünk egy DELETE requestet a **/favourites** endpointra a lekérdezett
+  termékkel együtt, majd ellenőrizzük hogy a `favourites` tábla rekordjainak száma
+  nem változott.
+
+## added-product-matches-shows-product
+
+**Beállítások**
+
+- product: egy véletlenszerűen generált termék
+
+Elküldünk egy POST requestet a **/favourites** endpointra a `product`
+paramétereivel, majd elküldünk egy GET requestet a **/favourites** endpointra és
+megvizsgáljuk hogy a visszaküldött HTML válasz tartalmazza-e a `product`-ot.
+
+## only-logged-user-can-add-to-favourites
+
+Elküldünk egy POST requestet a **/favourites** endpointra bármi féle
+autentikációs süti nélkül, majd ellenőrizzük hogy a beérkezett válasz indok
+értéke megegyezik-e a `unauthorized` szöveggel.
+
+## maximum-10-favourites
+
+Elküldünk 15 POST requestet a **/favourites** endpointra véletlenszerűen
+generált termékek paramétereivel, majd ellenőrizzük hogy a `favourites` tábla
+10 darab rekordot tartalmaz.
