@@ -50,6 +50,7 @@ app.get('/search', async (request, res) => {
 			filters.blackListedWebsite.push(site);
 		}
 	}
+
 	const r = await Search(request.query.searchword);
 	for (const element of r) {
 		element.FoundImages.sort((a, b) => {
@@ -282,13 +283,15 @@ app.post('/favourites', async (request, res) => {
 		});
 		return;
 	}
-    const favourites = await FAVOURITES.find({user: user.id});
-    if (favourites.length >= 10) {
-        res.json({
-		reason: 'max 10 product allowed',
-        });
-        return;
-    }
+
+	const favourites = await FAVOURITES.find({user: user.id});
+	if (favourites.length >= 10) {
+		res.json({
+			reason: 'max 10 product allowed',
+		});
+		return;
+	}
+
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
@@ -401,12 +404,13 @@ async function getUser(request) {
 	const token = request.cookies.Authorize;
 	if (token) {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-   		return jwt.verify(token, secret, (e, user) => {
-            if (e) {
-                return null;
-            }
-            return user;
-        });
+		return jwt.verify(token, secret, (e, user) => {
+			if (e) {
+				return null;
+			}
+
+			return user;
+		});
 	}
 
 	return null;
@@ -417,16 +421,23 @@ async function addFavouriteTags(r, user) {
 	const srcs = new Set(favourites.map(e => e.src));
 	for (const vendor of r) {
 		const l = vendor.FoundImages;
-		for (let i = 0; i < vendor.FoundImages.length; i++) {
-			if (srcs.has(l[i].src)) {
-				l[i].fav = 'favourited';
-				for (const f of favourites) {
-					if (f.src == l[i].src) {
-						l[i].fav_id = f.id;
-						break;
-					}
-				}
-			}
+		checkForFavouritesTagMatch(l, srcs, favourites);
+	}
+}
+
+function checkForFavouritesTagMatch(l, srcs, favourites) {
+	for (const e of l) {
+		if (srcs.has(e.src)) {
+			e.fav = 'favourited';
+			e.fav_id = findFavId(e, favourites);
+		}
+	}
+}
+
+function findFavId(e, favourites) {
+	for (const f of favourites) {
+		if (f.src == e.src) {
+			return f.id;
 		}
 	}
 }
