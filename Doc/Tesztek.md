@@ -377,22 +377,77 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
 
 ## added-product-matches-shows-product
 
-**Beállítások**
+  **Beállítások**
 
-- product: egy véletlenszerűen generált termék
+  - product: egy véletlenszerűen generált termék
 
-Elküldünk egy POST requestet a **/favourites** endpointra a `product`
-paramétereivel, majd elküldünk egy GET requestet a **/favourites** endpointra és
-megvizsgáljuk hogy a visszaküldött HTML válasz tartalmazza-e a `product`-ot.
+  Elküldünk egy POST requestet a **/favourites** endpointra a `product`
+  paramétereivel, majd elküldünk egy GET requestet a **/favourites** endpointra és
+  megvizsgáljuk hogy a visszaküldött HTML válasz tartalmazza-e a `product`-ot.
 
 ## only-logged-user-can-add-to-favourites
 
-Elküldünk egy POST requestet a **/favourites** endpointra bármi féle
-autentikációs süti nélkül, majd ellenőrizzük hogy a beérkezett válasz indok
-értéke megegyezik-e a `unauthorized` szöveggel.
+  Elküldünk egy POST requestet a **/favourites** endpointra bármi féle
+  autentikációs süti nélkül, majd ellenőrizzük hogy a beérkezett válasz indok
+  értéke megegyezik-e a `unauthorized` szöveggel.
 
 ## maximum-10-favourites
 
-Elküldünk 15 POST requestet a **/favourites** endpointra véletlenszerűen
-generált termékek paramétereivel, majd ellenőrizzük hogy a `favourites` tábla
-10 darab rekordot tartalmaz.
+  Elküldünk 15 POST requestet a **/favourites** endpointra véletlenszerűen
+  generált termékek paramétereivel, majd ellenőrizzük hogy a `favourites` tábla
+  10 darab rekordot tartalmaz.
+
+# reviews-tests
+
+  A teszt előtt regisztrálunk egy teszt felhasználót, akinek a `userid` és a
+  webszerver által generált autentikációs sütijét (`auth`) elmentjük.
+
+  Minden teszt után töröljük a teszt felhasználó összes **reviews** rekordját.
+
+  A tesztek végén eltávolítjuk a teszt felhasználót.
+
+  **Beállítások**
+
+  - userid: A tesztek előtt regisztrált felhasználó `id` mező értéke
+  - auth: A tesztek előtt regisztrált felhasználó számára generált autentikációs
+  süti
+
+## save-successful
+
+  A tesztek előtt lekérdezzük a felhasználó összes rekordját a `reviews` táblából,
+  majd elküldünk egy POST requestet a **/reviews** endpointra, egy véletlenszerűen
+  generált review értékekkel, majd ellenőrizzük hogy a felhasználó rekordjainak
+  darabszáma eggyel nagyobb.
+
+## star-succesful
+
+  **Beállítások**
+
+  - review: Egy előre beállított értékekkel rendelkező példa review
+
+  Elküldünk egy POST requestet a review paramétereivel, majd elküldünk egy GET
+  requestet és ellenőrizzük hogy a felhasználó által hagyott review tartalmazza-e
+  a reviewban elküldött quality értéknek megfelelő darab csillagot.
+
+## name-visible
+
+  **Beállítások**
+
+  - review: Egy előre beállított értékekkel rendelkező példa review
+
+  Elküldünk egy POST requestet a review paramétereivel, majd elküldünk egy GET
+  requestet és ellenőrizzük hogy a felhasználó által hagyott review tartalmazza-e
+  a felhasználó nevét.
+
+
+## trusted-site-visible
+
+Elküldünk 6 darab POST requestet a **/reviews** endpointra, majd ellenőrizzük
+hogy a review.vendor példa weboldal tartalmazza-e a .trused-site osztály
+tartalmazza-e a 'Trused site' stringet.
+
+## only-logged-in-user-can-create-review
+
+Elküldünk egy POST requestet bérmi féle autentikációs süti nélkül majd 
+ellenőrizzük, hogy a válaszul beérkezett JSON reason mező értéke megegyezik-e a
+'unauthorized' stringgel.
