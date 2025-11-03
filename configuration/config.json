@@ -5,14 +5,32 @@
             "containerSelector": ".product-scroll__list.products",
             "priceTagSelector": ".product-panel__summary-price",
             "productImageSelector": ".product-panel__image",
-            "titleContentSelector": ".product-panel__summary-name"
+            "titleContentSelector": ".product-panel__summary-name",
+            "details":{
+                "productName": ".pdp-spi__product-line",
+                "originalPrice": ".product-price__legal-column.product-price__legal-prices",
+                "discountPrice": ".product-price__original-price",
+                "color":".pdp-product-variants__section-text",
+                "shipping":".pdp-del-opt",
+                "material":".pdp-prod-desc__details-row--info",
+                "otherInformation": ".pdp-prod-desc__details-row.pdp-prod-desc__details-row--first-line"
+            }
         },
         "sportisimo": {
             "baseUrl": "https://www.sportisimo.hu/termekkereso-katalogus/",
             "containerSelector": ".ais-InfiniteHits-list.zws-infinite-hits__list",
             "priceTagSelector": ".product-box__prices",
             "productImageSelector": ".product-box__image",
-            "titleContentSelector": ".product-box__title"
+            "titleContentSelector": ".product-box__title",
+            "details":{
+                "productName":".product__title",
+                "originalPrice":".product__price--original strong",
+                "discountPrice":".product__price-value.product__price-value--default",
+                "color":".highlight-text",
+                "shipping":".variant__pls",
+                "material":".table.table--specifications > .tr",
+                "otherInformation":".side-sheet__content-desc"
+            }
         },
         "sinsay": {
             "baseUrl": "https://www.sinsay.com/hu/hu/",
@@ -27,14 +45,32 @@
             "productImageSelector":".s4qvvij",
             "productPriceSelector":".p1udp918",
             "titleContentSelector":".po1v63h.p10xduha.p1iha8u1",
-            "searchBarSelector":".siujxe8.u1iw6b68"
+            "searchBarSelector":".siujxe8.u1iw6b68",
+            "details":{
+                "productName": ".bltqdxw",
+                "originalPrice":".s1d0zer1.tquhlzi",
+                "discountPrice":".p1udp918",
+                "color":".cwxk1bx",
+                "shipping":".c1pm933v",
+                "material":".sef4edx.d1pid1sw",
+                "otherInformation":".s1hz6olp.s13bro5a.d1pid1sw"
+            }
         },
         "decathlon":{
             "baseUrl":"https://www.decathlon.hu/",
             "containerSelector":".product-list.pl-list.js-first.svelte-u6b5o6",
             "elementSelector":".product-block-top-main.vtmn-relative.vtmn-flex.vtmn-flex-col.vtmn-w-full.vtmn-items-start",
             "productPriceSelector":".vtmn-flex.vtmn-flex-col.vtmn-justify-center.vtmn-items-end",
-            "titleContentSelector":".vtmn-p-0.vtmn-m-0.vtmn-font-normal.vtmn-overflow-hidden.vtmn-text-ellipsis.vtmn-typo_caption-1.svelte-lfi7s7"
+            "titleContentSelector":".vtmn-p-0.vtmn-m-0.vtmn-font-normal.vtmn-overflow-hidden.vtmn-text-ellipsis.vtmn-typo_caption-1.svelte-lfi7s7",
+            "details":{
+                "productName":".vtmn-z-\\[2\\].vtmn-relative > section > h1",
+                "originalPrice":".vtmn-flex.vtmn-flex-col.vtmn-justify-center.vtmn-items-end",
+                "discountPrice":".price-discount-informations.vtmn-flex.vtmn-justify-center.vtmn-items-center.vtmn-flex-row",
+                "color":".current-model-selector.current-model-color.vtmn-capitalize.vtmn-truncate.svelte-1o2pzmx",
+                "shipping":".vtmn-bg-background-secondary.vtmn-mt-3.vtmn-px-4.vtmn-pt-4",
+                "material":".svelte-1aqgxy0 > li:nth-child(2)",
+                "otherInformation":".vtmn-text-base.vtmn-mt-2"
+            }
         },
         "mangoOutlet":
         {
@@ -43,7 +79,16 @@
             "elementSelector":".virtual-item",
             "productImageSelector":".ProductImage_imageWrapper__JfhWa",
             "productPriceSelector":".Price_wrapper__puOiZ.Price_horizontalWrapper__aVeww.Price_centerWrapper__j0HhG.Price_center___NWQn",
-            "titleContentSelector":".ProductDetails_heading__gYOBc"
+            "titleContentSelector":".ProductDetails_heading__gYOBc",
+            "details":{
+                "productName":".ProductDetail_title__Go9C2.textHeadingL_className__KQ29Z",
+                "originalPrice":".SinglePrice_crossed__lNWfi.SinglePrice_center__SWK1D.textBodyM_className__v9jW9",
+                "discountPrice":".SinglePrice_center__SWK1D.textBodyM_className__v9jW9.SinglePrice_finalPrice__hZjhM",
+                "color":".ColorsSelector_colorsSelector__AfQrx",
+                "shipping":".ShippingMethod_shippingMethod__34P1a",
+                "material":".PropertiesContent_content__5lI4K",
+                "otherInformation":".Description_descriptionContent__pCRwU"
+            }
         }
     },
     "tests": {

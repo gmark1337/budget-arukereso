@@ -3,7 +3,7 @@ import { sleep, getImagesAsync } from '../services/ImageScraperService.js';
 
 const hervisWebsite = config.websites["hervis"];
 const filters = config.filters;
-function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}) {
+function encodeSearchItemWithFiltering(searchedItem, url, filters = {}) {
     const searchedItemPart = encodeURIComponent(searchedItem);
 
     let baseURL = `${url}${searchedItemPart}`;
@@ -37,7 +37,7 @@ function encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {}) {
 
 export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch) {
     try {
-        const foundPage = await encodeSearchItemWithFilteringAsync(searchword, hervisWebsite.baseUrl, filters);
+        const foundPage = await encodeSearchItemWithFiltering(searchword, hervisWebsite.baseUrl, filters);
         await page.goto(foundPage, { waitUntil: "domcontentloaded" });
 
         //console.log(`The created URL is: ${foundPage}`);
@@ -49,11 +49,8 @@ export async function fetchHervisImagesAsync(searchword, page, numberOfItemsToFe
             await page.waitForSelector(hervisWebsite.containerSelector, { timeout: 5000 });
 
         } catch (error) {
-            console.error(`[fetchHervisImagesAsync] Timeout waiting for container selector: ${error.message}`);
-            return {
-                websiteName: 'Hervis',
-                FoundImages: [],
-            }
+            console.error(`[fetchHervisImagesAsync] Timeout waiting for container selector: ${error.message}\nReloading page...`);
+            await page.reload();
         }
 
 

@@ -21,6 +21,8 @@ const resultsTemplate = readFileSync('views/results.ejs', 'utf-8');
 const saltRounds = 10;
 const emptyStringPlaceholder = (await GLOBALS.findOne({name: 'emptyStringPlaceholder'})).value;
 
+const sites = ['hervis', 'sinsay', 'sportisimo', 'aboutYou', 'decathlon', 'mangoOutlet'];
+
 const {filters} = config;
 
 app.set('view engine', 'ejs');
@@ -43,28 +45,10 @@ app.get('/search', async (request, res) => {
 	filters.size = request.query.size == '' ? determineSizeKind(request.query.searchword) : request.query.size;
 	filters.pagesToFetch = request.query.count;
 	filters.blackListedWebsite = [];
-	if (request.query.hervis != 'true') {
-		filters.blackListedWebsite.push('hervis');
-	}
-
-	if (request.query.sinsay != 'true') {
-		filters.blackListedWebsite.push('sinsay');
-	}
-
-	if (request.query.sportisimo != 'true') {
-		filters.blackListedWebsite.push('sportisimo');
-	}
-
-	if (request.query.aboutYou != 'true') {
-		filters.blackListedWebsite.push('aboutYou');
-	}
-
-	if (request.query.decathlon != 'true') {
-		filters.blackListedWebsite.push('decathlon');
-	}
-
-	if (request.query.mangoOutlet != 'true') {
-		filters.blackListedWebsite.push('mangoOutlet');
+	for (const site of sites) {
+		if (request.query[site] != 'true') {
+			filters.blackListedWebsite.push(site);
+		}
 	}
 
 	const r = await Search(request.query.searchword);
@@ -300,6 +284,14 @@ app.post('/favourites', async (request, res) => {
 		return;
 	}
 
+	const favourites = await FAVOURITES.find({user: user.id});
+	if (favourites.length >= 10) {
+		res.json({
+			reason: 'max 10 product allowed',
+		});
+		return;
+	}
+
 	await FAVOURITES.insertOne({
 		vendor, href, src: image, price, user: user.id,
 	});
@@ -336,10 +328,10 @@ app.get('/reviews', async (request, res) => {
 	}
 
 	const reviews = await gatherReviews();
-    const threshold = await GLOBALS.findOne({name: 'trusted-site-threshold'});
+	const threshold = await GLOBALS.findOne({name: 'trusted-site-threshold'});
 	res.render('reviews', {
 		reviews,
-        threshold: parseInt(threshold.value),
+		threshold: Number.parseInt(threshold.value),
 	});
 });
 
@@ -412,7 +404,13 @@ async function getUser(request) {
 	const token = request.cookies.Authorize;
 	if (token) {
 		const secret = (await GLOBALS.findOne({name: 'SECRET'})).value;
-		return jwt.verify(token, secret);
+		return jwt.verify(token, secret, (e, user) => {
+			if (e) {
+				return null;
+			}
+
+			return user;
+		});
 	}
 
 	return null;
@@ -423,16 +421,23 @@ async function addFavouriteTags(r, user) {
 	const srcs = new Set(favourites.map(e => e.src));
 	for (const vendor of r) {
 		const l = vendor.FoundImages;
-		for (let i = 0; i < vendor.FoundImages.length; i++) {
-			if (srcs.has(l[i].src)) {
-				l[i].fav = 'favourited';
-				for (const f of favourites) {
-					if (f.src == l[i].src) {
-						l[i].fav_id = f.id;
-						break;
-					}
-				}
-			}
+		checkForFavouritesTagMatch(l, srcs, favourites);
+	}
+}
+
+function checkForFavouritesTagMatch(l, srcs, favourites) {
+	for (const e of l) {
+		if (srcs.has(e.src)) {
+			e.fav = 'favourited';
+			e.fav_id = findFavId(e, favourites);
+		}
+	}
+}
+
+function findFavId(e, favourites) {
+	for (const f of favourites) {
+		if (f.src == e.src) {
+			return f.id;
 		}
 	}
 }
@@ -444,15 +449,15 @@ async function gatherReviews() {
 			records: {
 				$push: '$$ROOT',
 			},
-            highQualityCount: {
-                $sum: {
-                    $cond: [
-                        { $gt: ["$quality", 3] },
-                        1,
-                        0
-                    ]
-                }
-            }
+			highQualityCount: {
+				$sum: {
+					$cond: [
+						{$gt: ['$quality', 3]},
+						1,
+						0,
+					],
+				},
+			},
 		},
 	}]);
 	for (const r of reviews) {
@@ -461,5 +466,6 @@ async function gatherReviews() {
 			rec.user = user.username;
 		}
 	}
+
 	return reviews;
 }
