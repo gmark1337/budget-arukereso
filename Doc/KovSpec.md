@@ -17,7 +17,7 @@ Felesleges könyvjelzők használata nélkül, könnyen tud menteni több száz 
 6. A felhasználók betudnak regisztrálni a weboldalra, amely elmetni az adatait.
 7. A felhasználók betudnak jelentkezni sikeresen a weboldalra
 8. A felhasználók eltudják menteni kedvenc termékeiket.
-9. Megtudják tekinteni más felhasználóaknak a kereséseit.
+9. Megtudják tekinteni a meglátogatott oldalakat az előzményeknél
 10. A regisztrált felhasználók tudják értékelni az adott weboldalt ami elnyeri a megbízható bolt értékelést.
 11. Az oldal többnyelven is elérhető legyen.
 
