@@ -1,11 +1,54 @@
-#favourites {
-    display: none;
+#favourites { 
+  display: none;
+  position: absolute;
+  top: 48px;
+  right: 0;
+  min-width: 360px;
+  max-width: 520px;
+  background: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 24px 48px rgba(2,6,23,.18);
+  z-index: 100;
 }
 
-.favourites-bar {
-    cursor: pointer;
+.favourites-bar { cursor: pointer; }
+.favourited { color: #ef4444; }
+
+.favourites.items { display: grid; gap: 12px; }
+
+.favourite-item.item {
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e6eaf0;
+  border-radius: 14px;
+  background: #fff;
 }
 
-.favourited {
-    color: red;
+.favourite-item img {
+  width: 84px; height: 84px; object-fit: contain;
+  border-radius: 10px; background: #f3f4f6; border: 1px solid #eee;
 }
+
+.favourite-item .chip {
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #ecfeff;
+  color: #0e7490;
+  border: 1px solid #bae6fd;
+  font-weight: 800;
+}
+
+.favourite-item button {
+  border: 1px solid #fee2e2;
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.favourite-item button:hover { background: #fee2e2; }

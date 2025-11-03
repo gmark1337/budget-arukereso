@@ -1,31 +1,66 @@
-.reviews-bar {
-    position: absolute;
-}
-
-.reviews-bar span:hover {
-    cursor: pointer;
-    font-weight: bold;
-}
+.reviews-bar { position: absolute; }
+.reviews-bar span:hover { cursor: pointer; font-weight: bold; }
 
 #reviews {
-    background-color: white;
-    border: thin solid black;
-    border-radius: 0.5em;
-    padding: 1em;
-    display: none;
-    position: absolute;
-    margin: 0 auto;
-    width: auto;
+  background-color: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 16px;
+  padding: 16px;
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  width: min(900px, 92vw);
+  box-shadow: 0 28px 60px rgba(2,6,23,.25);
+  z-index: 200;
 }
 
-.review-menu {
-    font-weight: bold;
-}
+.review-menu { font-weight: 800; margin-bottom: 6px; }
 
 .trusted-site {
-    color: gold;
-    border: thin solid gold;
-    padding: 0.4em;
-    border-radius: 0.5em;
-    margin: 0.5em;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+  background: #fffbeb;
+  padding: 0.5em 0.7em;
+  border-radius: 10px;
+  margin: 0.5em 0;
+}
+
+/* Inside review site cards */
+.review-site .items { display: grid; gap: 12px; }
+.review-site .item {
+  border: 1px solid #e6eaf0;
+  border-radius: 12px;
+  padding: 10px;
+  background: #ffffff;
+}
+
+/* Submit area */
+#review-submit {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 10px 12px;
+  margin-top: 12px;
+}
+#review-submit textarea {
+  min-height: 120px;
+  border: 1px solid #e6eaf0;
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+#review-submit button {
+  border: 1px solid #0f172a;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 800;
+}
+#review-submit button#review-cancel {
+  border: 1px solid #e6eaf0;
+  background: #f1f5f9;
+  color: #0f172a;
 }
