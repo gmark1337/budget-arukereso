@@ -50,7 +50,7 @@ async function removeFromFavourites(b) {
 	}
 }
 
-// Needed when not logged in user is viewing the page
+/*// Needed when not logged in user is viewing the page
 if (document.querySelector('.favourites-bar')) {
 	document.querySelector('.favourites-bar').addEventListener('mouseenter', async () => {
 		const favourites = document.querySelector('#favourites');
@@ -63,7 +63,7 @@ if (document.querySelector('.favourites-bar')) {
 		const favourites = document.querySelector('#favourites');
 		favourites.style.display = 'none';
 	});
-}
+} */
 
 async function updateFavourites(favourites) {
 	const res = await fetch('http://localhost:8080/favourites');
@@ -88,3 +88,46 @@ function registerFavouriteRemoveButtons() {
 		});
 	}
 }
+// --- Click toggle + outside/Escape close ---
+const favBar = document.querySelector('.favourites-bar');
+const favPanel = document.querySelector('#favourites');
+
+function openFav() {
+  favPanel.style.display = 'block';
+  favBar?.classList.add('active');
+}
+function closeFav() {
+  favPanel.style.display = 'none';
+  favBar?.classList.remove('active');
+}
+async function toggleFav() {
+  const visible = favPanel.style.display === 'block';
+  if (visible) {
+    closeFav();
+  } else {
+    await updateFavourites(favPanel);
+    registerFavouriteRemoveButtons();
+    openFav();
+  }
+}
+
+if (favBar && favPanel) {
+  // gomb kattintás
+  favBar.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleFav();
+  });
+
+  // bárhová kattintásra zár
+  document.addEventListener('click', (e) => {
+    if (!favPanel.contains(e.target) && !favBar.contains(e.target)) {
+      closeFav();
+    }
+  });
+
+  // Esc-re zár
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeFav();
+  });
+}
+
