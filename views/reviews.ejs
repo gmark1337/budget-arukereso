@@ -1,43 +1,72 @@
-<% if (reviews.length == 0) { %>
-    No reviews left yet.
-        <% } else { %>
-            <% reviews.map((site) => { %>
-                    <fieldset class="result review-site">
-                    <legend><%= site._id %></legend>
-                    <% if (site.highQualityCount > threshold) { %>
-                    <div class="trusted-site">
-                    Trusted site.
-                    </div>
-                    <% } %>
-                    <div class="items">
-                    <% site.records.map((review) => { %>
-                            <div class="item">
-                            <div class="review-menu">
-                            <%= review.user %> <%= "⭐".repeat(review.quality) %>
-                            </div>
-                            <span><%= review.review %></span>
-                            </div>
-                            <% }) %>
-                    </div>
-                    </fieldset>
-                    <% }) %>
-                <% } %>
-                <form id="review-submit" action="javascript:void(0)">
-                Site:
-                <select name="vendor" id="review-vendor">
-                <option value="aboutyou">aboutYou</option>
-                <option value="decathlon">Decathlon</option>
-                <option value="hervis">Hervis</option>
-                <option value="mongooutlet">mongoOutlet</option>
-                <option value="sinsay">Sinsay</option>
-                <option value="sportisimo">Sportisimo</option>
-                </select>
-                Review:
-                <textarea required id="review-text"></textarea>
-                Score:
-                <input type="range" id="review-quality" oninput="this.nextElementSibling
-                .value = this.value" min="1" max="5" />
-                <output id="quality-value">3</output>
-                <button id="review-send">Send review</button>
-                <button id="review-cancel">Close</button>
-                </form>
+<div id="reviews">
+  <!-- === TOOLBAR (egy sorban) === -->
+  <form id="review-submit" class="reviews-toolbar" action="javascript:void(0)">
+    <label>Site:
+      <select name="vendor" id="review-vendor">
+        <option value="hervis">Hervis</option>
+        <option value="sinsay">Sinsay</option>
+        <option value="aboutyou">aboutYou</option>
+        <option value="sportisimo">Sportisimo</option>
+        <option value="decathlon">Decathlon</option>
+        <option value="mangooutlet">mangoOutlet</option>
+      </select>
+    </label>
+
+    <label>Review:
+      <textarea required id="review-text" placeholder="Write your review..."></textarea>
+    </label>
+
+    <label class="score">Score:
+      <input type="range" id="review-quality" min="1" max="5" value="3"
+             oninput="this.nextElementSibling.value = this.value" />
+      <output id="quality-value">3</output>
+    </label>
+
+    <button id="review-send" class="btn primary" type="button">Send</button>
+    <button id="review-cancel" class="btn" type="button">Close</button>
+  </form>
+
+  <!-- === FŐ TARTALOM: boltok oszlopokban (6) === -->
+  <% if (reviews.length === 0) { %>
+    <div class="reviews-content">
+      <fieldset class="review-site">
+        <legend>Reviews</legend>
+        <div class="items">
+          <div class="item">
+            <div class="review-menu">No reviews left yet.</div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  <% } else { %>
+    <div class="reviews-content">
+      <% reviews.map((site) => { %>
+        <fieldset class="review-site">
+          <legend><%= site._id %></legend>
+
+          <% if (site.highQualityCount > threshold) { %>
+            <div class="trusted-site">Trusted site.</div>
+          <% } %>
+
+          <div class="items">
+            <% if (site.records && site.records.length) { %>
+              <% site.records.map((review) => { %>
+                <div class="item">
+                  <div class="review-menu">
+                    <strong><%= review.user %></strong>
+                    <span><%= "⭐".repeat(review.quality) %></span>
+                  </div>
+                  <p class="review-text"><%= review.review %></p>
+                </div>
+              <% }) %>
+            <% } else { %>
+              <div class="item">
+                <div class="review-menu">No reviews yet.</div>
+              </div>
+            <% } %>
+          </div>
+        </fieldset>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
