@@ -1,0 +1,184 @@
+{
+    "placeholders" : {
+	"search": {
+		"title": {
+			"en": "Search products",
+			"hu": "Termékkereső"
+		},
+		"notfound": {
+			"en": "Failed to find products for this website!",
+			"hu": "Nem sikerült termékeket találni a weboldalon."
+		},
+		"inputField": {
+			"en": "Enter product name...",
+			"hu": "Keresett termék..."
+		},
+		"order": {
+			"asc": {
+				"en": "Ascending",
+				"hu": "Növekvő"
+			},
+			"desc": {
+				"en": "Descending",
+				"hu": "Csökkenő"
+			}
+		},
+		"loading": {
+			"en": "Loading results...",
+			"hu": "Találatok betöltése..."
+		},
+		"advanced": {
+			"toggle": {
+				"en": "Advanced search",
+				"hu": "Haladó beállítások"
+			},
+			"price": {
+				"min": {
+					"en": "Minimum price",
+					"hu": "Minimum ár"
+				},
+				"max": {
+					"en": "Maximum price",
+					"hu": "Maximum ár"
+				}
+			},
+			"size": {
+				"en": "Size",
+				"hu": "Méret"
+			},
+			"number": {
+				"en": "Number of items per site",
+				"hu": "Oldalankénti termék darabszám"
+			},
+			"websites": {
+				"en": "Websites",
+				"hu": "Weboldalak"
+			}
+		}
+	},
+	"user": {
+		"guest": {
+			"en": "Guest",
+			"hu": "Vendég"
+		},
+		"email": {
+			"en": "Email",
+			"hu": "E-mail"
+		},
+		"username": {
+			"en": "Username",
+			"hu": "Felhasználónév"
+		},
+		"password": {
+			"en": "Password",
+			"hu": "Jelszó"
+		},
+		"login": {
+			"en": "Login",
+			"hu": "Bejelentkezés"
+		},
+		"register": {
+			"en": "Register",
+			"hu": "Regisztráció"
+		}
+	},
+	"errormessage": {
+		"noemail": {
+			"en": "No email provided",
+			"hu": "Nem adott meg e-mail címet"
+		},
+		"nousername": {
+			"en": "No username provided",
+			"hu": "Nem adott meg felhasználónevet"
+		},
+		"nopassword": {
+			"en": "No password provided",
+			"hu": "Nem adott meg jelszót"
+		},
+		"usernametaken": {
+			"en": "Username taken",
+			"hu": "Felhasználónév foglalt"
+		},
+		"emailtaken": {
+			"en": "Email taken",
+			"hu": "E-mail cím foglalt"
+		},
+		"hashfail": {
+			"en": "Failed to hash password",
+			"hu": "Nem sikerült hashelni a jelszót"
+		},
+		"usercreatefail": {
+			"en": "Failed to create user",
+			"hu": "Nem sikerült létrehozni a felhasználót"
+		},
+		"invalidusername": {
+			"en": "Invalid username",
+			"hu": "Helytelen felhasználónév"
+		},
+		"invalidpassword": {
+			"en": "Invalid password",
+			"hu": "Helytelen jelszó"
+		}
+	},
+	"history": {
+		"remove": {
+			"en": "Remove",
+			"hu": "Eltávolít"
+		}
+	},
+	"favourites": {
+		"title": {
+			"en": "Favourites",
+			"hu": "Kedvencek"
+		},
+		"remove": {
+			"en": "Remove",
+			"hu": "Eltávolít"
+		},
+        "empty": {
+            "en": "No favourites",
+            "hu": "Nincs kedvenc"
+        }
+	},
+	"reviews": {
+		"title": {
+			"en": "Reviews",
+			"hu": "Vélemények"
+		},
+		"trusted": {
+			"en": "Trusted site",
+			"hu": "Megbízható bolt"
+		},
+        "empty": {
+            "en": "No reviews yet...",
+            "hu": "Még nincsenek értékelések..."
+        },
+		"form": {
+			"site": {
+				"en": "Site",
+				"hu": "Weboldal"
+			},
+			"review": {
+				"en": "Review",
+				"hu": "Vélemény"
+			},
+            "placeholder": {
+                "en": "Write your review...",
+                "hu": "Véleménye a boltról..."
+            },
+			"score": {
+				"en": "Score",
+				"hu": "Értékelés"
+			},
+			"send": {
+				"en": "Send review",
+				"hu": "Vélemény elküldése"
+			}
+		},
+		"close": {
+			"en": "Close",
+			"hu": "Bezár"
+		    }
+	    }
+    }
+}

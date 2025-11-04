@@ -12,7 +12,6 @@ import {config} from './configuration/config.js';
 import {
 	DB, USER, HISTORY, GLOBALS, FAVOURITES, REVIEWS,
 } from './db.js';
-import {placeholders} from './services/languages.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,6 +24,7 @@ const emptyStringPlaceholder = (await GLOBALS.findOne({name: 'emptyStringPlaceho
 const sites = ['hervis', 'sinsay', 'sportisimo', 'aboutYou', 'decathlon', 'mangoOutlet'];
 
 const {filters} = config;
+const placeholders = config.placeHolders;
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
