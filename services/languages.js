@@ -15,7 +15,7 @@ export const placeholders = {
 		order: {
 			asc: {
 				en: 'Ascending',
-				hU: 'Növekvő',
+				hu: 'Növekvő',
 			},
 			desc: {
 				en: 'Descending',
@@ -134,6 +134,10 @@ export const placeholders = {
 			en: 'Remove',
 			hu: 'Eltávolít',
 		},
+        empty: {
+            en: 'No favourites',
+            hu: 'Nincs kedvenc',
+        },
 	},
 	reviews: {
 		title: {
@@ -144,6 +148,10 @@ export const placeholders = {
 			en: 'Trusted site',
 			hu: 'Megbízható bolt',
 		},
+        empty: {
+            en: 'No reviews yet...',
+            hu: 'Még nincsenek értékelések...',
+        },
 		form: {
 			site: {
 				en: 'Site',
@@ -153,6 +161,10 @@ export const placeholders = {
 				en: 'Review',
 				hu: 'Vélemény',
 			},
+            placeholder: {
+                en: 'Write your review...',
+                hu: 'Véleménye a boltról...'
+            },
 			score: {
 				en: 'Score',
 				hu: 'Értékelés',
