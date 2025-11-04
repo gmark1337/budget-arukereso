@@ -1,3 +1,5 @@
+let lang = document.querySelector('select.language-bar').value;
+
 function startSearch() {
 	const q = document.querySelector('#searchword').value.trim();
 	if (!q) {
@@ -35,10 +37,15 @@ function getResults() {
 		sportisimo: document.querySelector('#sportisimo').checked,
 		aboutYou: document.querySelector('#aboutYou').checked,
 		decathlon: document.querySelector('#decathlon').checked,
-		mangoOutlet: document.querySelector('#mangoOutlet').checked
+		mangoOutlet: document.querySelector('#mangoOutlet').checked,
+        lang: lang,
 	})).then(response => response.text())
 		.then(text => {
 			document.querySelector('#waitingfield').hidden = true;
 			document.querySelector('#results').innerHTML = text;
 		}).then(historyListeners).then(favouritesListeners);
 }
+
+document.querySelector('select.language-bar').addEventListener('change', (e) => {
+    window.location.href = `?lang=${e.target.value}`;
+});

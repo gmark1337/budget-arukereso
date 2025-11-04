@@ -50,23 +50,9 @@ async function removeFromFavourites(b) {
 	}
 }
 
-/*// Needed when not logged in user is viewing the page
-if (document.querySelector('.favourites-bar')) {
-	document.querySelector('.favourites-bar').addEventListener('mouseenter', async () => {
-		const favourites = document.querySelector('#favourites');
-		await updateFavourites(favourites);
-		registerFavouriteRemoveButtons();
-		favourites.style.display = 'block';
-	});
-
-	document.querySelector('.favourites-bar').addEventListener('mouseleave', async () => {
-		const favourites = document.querySelector('#favourites');
-		favourites.style.display = 'none';
-	});
-} */
-
 async function updateFavourites(favourites) {
-	const res = await fetch('http://localhost:8080/favourites');
+	const res = await fetch('http://localhost:8080/favourites?' + 
+        new URLSearchParams({lang: lang}));
 	favourites.innerHTML = await res.text();
 }
 

@@ -7,7 +7,8 @@ document.querySelector('.reviews-bar')?.addEventListener('click', () => {
 async function updateReviews() {
   try {
     const container = document.querySelector('#reviews');
-    const res = await fetch('/reviews', { credentials: 'same-origin' });
+    const res = await fetch('/reviews?' + new URLSearchParams({lang: lang}),
+        { credentials: 'same-origin' });
     container.innerHTML = await res.text();
     container.style.display = 'block';
     registerToolbar();

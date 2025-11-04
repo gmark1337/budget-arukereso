@@ -20,7 +20,7 @@ function historyListeners() {
 
 async function updateHistory() {
 	const e = document.querySelector('#history');
-	const res = await fetch('/history');
+	const res = await fetch('/history?' + new URLSearchParams({lang: lang}));
 	e.innerHTML = await res.text();
 	registerButtons();
 }
