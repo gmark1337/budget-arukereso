@@ -8,7 +8,8 @@
                 <div class="price">
                     <span class="chip"><%= item.price %></span>
                 </div>
-                <button class="remove-history-item id-<%= item.id %>">Remove</button>
+                <button class="remove-history-item id-<%= item.id %>"><%=
+p.history.remove[lang] %></button>
             </div>
         <% }) %>
     </div>

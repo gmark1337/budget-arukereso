@@ -3,7 +3,7 @@
         <legend><%= result.websiteName %></legend>
         <div class="items">
         <% if (result.FoundImages.length == 0) { %>
-        <%= emptyStringPlaceholder %>
+        <%= p.search.notfound[lang] %>
         <% } %>
         <% result.FoundImages.map((item) => { %>
                 <div class="item">

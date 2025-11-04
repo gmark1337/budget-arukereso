@@ -12,6 +12,7 @@ import {config} from './configuration/config.js';
 import {
 	DB, USER, HISTORY, GLOBALS, FAVOURITES, REVIEWS,
 } from './db.js';
+import {placeholders} from './services/languages.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -33,9 +34,12 @@ app.use(cookieParser());
 
 app.get('/', async (request, res) => {
 	const user = await getUser(request);
+	const lang = request.query.lang || 'en';
 	res.render('index', {
-		username: user ? user.username : 'Guest',
+		username: user ? user.username : placeholders.user.guest[lang],
 		auth: Boolean(user),
+		p: placeholders,
+		lang,
 	});
 });
 
@@ -70,24 +74,33 @@ app.get('/search', async (request, res) => {
 		await addFavouriteTags(r, user);
 	}
 
+	const lang = request.query.lang || 'en';
 	res.end(render(resultsTemplate, {
 		results: r,
 		emptyStringPlaceholder,
 		auth: Boolean(user),
+		lang,
+		p: placeholders,
 	}));
 });
 
-app.get('/register', (_, res) => {
+app.get('/register', (request, res) => {
+	const lang = request.query.lang || 'en';
 	res.render('register', {
 		errorMessage: null,
+		p: placeholders,
+		lang,
 	});
 });
 
 app.post('/register', async (request, res) => {
 	const {email, username, password} = request.body;
+	const lang = request.body.lang || 'en';
 	if (!email) {
 		res.render('register', {
-			errorMessage: 'no email provided',
+			errorMessage: placeholders.errormessage.noemail[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -95,21 +108,27 @@ app.post('/register', async (request, res) => {
 	let user = await USER.findOne({email});
 	if (user != null) {
 		res.render('register', {
-			errorMessage: 'email taken',
+			errorMessage: placeholders.errormessage.emailtaken[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
 
 	if (!username) {
 		res.render('register', {
-			errorMessage: 'no username provided',
+			errorMessage: placeholders.errormessage.nousername[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
 
 	if (!password) {
 		res.render('register', {
-			errorMessage: 'no password provided',
+			errorMessage: placeholders.errormessage.nopassword[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -117,7 +136,9 @@ app.post('/register', async (request, res) => {
 	user = await USER.findOne({username});
 	if (user != null) {
 		res.render('register', {
-			errorMessage: 'username taken',
+			errorMessage: placeholders.errormessage.usernametaken[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -125,7 +146,9 @@ app.post('/register', async (request, res) => {
 	hash(password, saltRounds, async (error, hash) => {
 		if (error != null) {
 			res.render('register', {
-				errorMessage: 'failed to hash password',
+				errorMessage: placeholders.errormessage.hashfail[lang],
+				p: placeholders,
+				lang,
 			});
 			return;
 		}
@@ -143,37 +166,49 @@ app.post('/register', async (request, res) => {
 			res.redirect('/');
 		}).catch(() => {
 			res.render('register', {
-				errorMessage: 'failed to create user',
+				errorMessage: placeholders.errormessage.usercreatefail[lang],
+				p: placeholders,
+				lang,
 			});
 		});
 	});
 });
 
-app.get('/login', (_, res) => {
+app.get('/login', (request, res) => {
+	const lang = request.query.lang || 'en';
 	res.render('login', {
 		errorMessage: null,
+		p: placeholders,
+		lang,
 	});
 });
 
 app.post('/login', async (request, res) => {
 	const {username, password} = request.body;
+	const lang = request.body.lang || 'en';
 	if (!username) {
 		res.render('login', {
-			errorMessage: 'no username provided',
+			errorMessage: placeholders.errormessage.nousername[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
 
 	if (!password) {
 		res.render('login', {
-			errorMessage: 'no password provided',
+			errorMessage: placeholders.errormessage.nopassword[lang],
+			p: placeholders,
+			lang,
 		});
 	}
 
 	const user = await USER.findOne({username});
 	if (!user) {
 		res.render('login', {
-			errorMessage: 'invalid username',
+			errorMessage: placeholders.errormessage.invalidusername[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -181,7 +216,9 @@ app.post('/login', async (request, res) => {
 	const match = await compare(password, user.password);
 	if (!match) {
 		res.render('login', {
-			errorMessage: 'invalid password',
+			errorMessage: placeholders.errormessage.invalidpassword[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -196,8 +233,11 @@ app.post('/login', async (request, res) => {
 
 app.get('/history', async (request, res) => {
 	const user = await getUser(request);
+	const lang = request.query.lang || 'en';
 	res.render('history', {
 		history: user ? await getHistory(user.id) : null,
+		p: placeholders,
+		lang,
 	});
 });
 
@@ -241,6 +281,7 @@ app.delete('/history/:id', async (request, res) => {
 
 app.get('/favourites', async (request, res) => {
 	const user = await getUser(request);
+	const lang = request.query.lang || 'en';
 	if (!user) {
 		res.json({
 			reason: 'unauthorized',
@@ -263,6 +304,8 @@ app.get('/favourites', async (request, res) => {
 	// Send rendered view back
 	res.render('favourites', {
 		favourites: await FAVOURITES.find({user: user.id}),
+		p: placeholders,
+		lang,
 	});
 });
 
@@ -320,6 +363,7 @@ app.delete('/favourites/:id', async (request, res) => {
 
 app.get('/reviews', async (request, res) => {
 	const user = await getUser(request);
+	const lang = request.query.lang || 'en';
 	if (!user) {
 		res.json({
 			reason: 'unauthorized',
@@ -332,6 +376,8 @@ app.get('/reviews', async (request, res) => {
 	res.render('reviews', {
 		reviews,
 		threshold: Number.parseInt(threshold.value),
+		p: placeholders,
+		lang,
 	});
 });
 
