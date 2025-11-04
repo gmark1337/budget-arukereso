@@ -1,11 +1,89 @@
-#favourites {
-    display: none;
+
+#favourites { display: none; }
+.favourites-bar { cursor: pointer; }
+.favourited { color: red; }
+
+/* Panel: fix, görgetés, ~4 elem */
+:root { --brand:#2f296a; --line:#e5e7eb; --hover:#eef2ff; }
+
+#favourites{
+  position: fixed;
+  top: 64px; right: 16px;
+  width: 360px; max-height: 440px;         /* ~4 elem */
+  overflow: auto; -webkit-overflow-scrolling: touch;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  z-index: 1000;
 }
 
-.favourites-bar {
-    cursor: pointer;
+/* Lista és kártyák */
+#favourites .favourites.items{ display: grid; gap: 8px; }
+
+#favourites .favourite-item.item{
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 8px; padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px; background: #fff;
+  align-items: start;
+  transition: transform .1s, box-shadow .12s, background .12s, border-color .12s;
+}
+#favourites .favourite-item.item:hover{
+  transform: translateY(-2px);
+  background: var(--hover);
+  border-color: #d6daf0;
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
 }
 
-.favourited {
-    color: red;
+/* Kép balra, középre */
+#favourites .favourite-item.item > a{ grid-column:1; grid-row:1 / span 2; align-self:center; }
+#favourites .favourite-item img{
+  width: 64px; height: 64px; object-fit: contain;
+  border-radius: 8px; background:#f3f4f6;
+}
+
+/* Név felül, ár alatta */
+#favourites .favourite-item.item > div:first-child{
+  grid-column:2; grid-row:1; font-weight:600; color:#1f2937; line-height:1.2;
+}
+#favourites .price{ grid-column:2; grid-row:2; }
+#favourites .price .chip{
+  padding: 3px 8px; border-radius:999px;
+  background:#edf2ff; color:#1e40af; font-weight:700; font-size:.9rem; border:0;
+}
+
+/* Remove jobbra, középen */
+#favourites button.remove-favourites{
+  grid-column:3; grid-row:1 / span 2;
+  align-self:center; justify-self:end;
+  padding:6px 10px; border-radius:8px;
+  border:1px solid var(--brand); background:#fff; color:var(--brand);
+  font-weight:600; cursor:pointer;
+  transition: background .12s, color .12s, box-shadow .12s, transform .08s;
+}
+#favourites button.remove-favourites:hover{
+  background:var(--brand); color:#fff;
+  box-shadow:0 6px 14px rgba(47,41,106,.25);
+  transform:translateY(-1px);
+}
+
+#top-bar-menu > div span{
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+#top-bar-menu > div span:hover{
+  font-weight: 600;             /* ugyanaz, mint a Reviews */
+  cursor: pointer;
+}
+
+/* A doboz-méret is egységes (mindkét gombra hat) */
+#top-bar-menu > div{
+  padding: 6px 14px;            /* ugyanaz mindkét címkén */
+  border-radius: 8px;
 }

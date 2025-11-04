@@ -128,3 +128,5 @@ div#account {
     background-color: white;
     display: inline-block;
 }
+/* top bar mindig a panelek fölött legyen */
+#top-bar-menu { z-index: 1200; position: absolute; }
