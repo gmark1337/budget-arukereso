@@ -34,12 +34,12 @@ app.use(cookieParser());
 
 app.get('/', async (request, res) => {
 	const user = await getUser(request);
-    const lang = request.query.lang || 'en';
+	const lang = request.query.lang || 'en';
 	res.render('index', {
 		username: user ? user.username : placeholders.user.guest[lang],
 		auth: Boolean(user),
-        p: placeholders,
-        lang: lang,
+		p: placeholders,
+		lang,
 	});
 });
 
@@ -73,31 +73,34 @@ app.get('/search', async (request, res) => {
 	if (user) {
 		await addFavouriteTags(r, user);
 	}
-    const lang = request.query.lang || 'en';
+
+	const lang = request.query.lang || 'en';
 	res.end(render(resultsTemplate, {
 		results: r,
 		emptyStringPlaceholder,
 		auth: Boolean(user),
-        lang: lang,
-        p: placeholders,
+		lang,
+		p: placeholders,
 	}));
 });
 
-app.get('/register', (req, res) => {
-    const lang = req.query.lang || 'en';
+app.get('/register', (request, res) => {
+	const lang = request.query.lang || 'en';
 	res.render('register', {
 		errorMessage: null,
-        p: placeholders,
-        lang: lang,
+		p: placeholders,
+		lang,
 	});
 });
 
 app.post('/register', async (request, res) => {
 	const {email, username, password} = request.body;
-    const lang = request.body.lang || 'en';
+	const lang = request.body.lang || 'en';
 	if (!email) {
 		res.render('register', {
 			errorMessage: placeholders.errormessage.noemail[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -106,6 +109,8 @@ app.post('/register', async (request, res) => {
 	if (user != null) {
 		res.render('register', {
 			errorMessage: placeholders.errormessage.emailtaken[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -113,6 +118,8 @@ app.post('/register', async (request, res) => {
 	if (!username) {
 		res.render('register', {
 			errorMessage: placeholders.errormessage.nousername[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -120,6 +127,8 @@ app.post('/register', async (request, res) => {
 	if (!password) {
 		res.render('register', {
 			errorMessage: placeholders.errormessage.nopassword[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -128,6 +137,8 @@ app.post('/register', async (request, res) => {
 	if (user != null) {
 		res.render('register', {
 			errorMessage: placeholders.errormessage.usernametaken[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -136,6 +147,8 @@ app.post('/register', async (request, res) => {
 		if (error != null) {
 			res.render('register', {
 				errorMessage: placeholders.errormessage.hashfail[lang],
+				p: placeholders,
+				lang,
 			});
 			return;
 		}
@@ -154,26 +167,30 @@ app.post('/register', async (request, res) => {
 		}).catch(() => {
 			res.render('register', {
 				errorMessage: placeholders.errormessage.usercreatefail[lang],
+				p: placeholders,
+				lang,
 			});
 		});
 	});
 });
 
-app.get('/login', (req, res) => {
-    const lang = req.query.lang || 'en';
+app.get('/login', (request, res) => {
+	const lang = request.query.lang || 'en';
 	res.render('login', {
 		errorMessage: null,
-        p: placeholders,
-        lang: lang,
+		p: placeholders,
+		lang,
 	});
 });
 
 app.post('/login', async (request, res) => {
 	const {username, password} = request.body;
-    const lang = request.body.lang || 'en';
+	const lang = request.body.lang || 'en';
 	if (!username) {
 		res.render('login', {
 			errorMessage: placeholders.errormessage.nousername[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -181,6 +198,8 @@ app.post('/login', async (request, res) => {
 	if (!password) {
 		res.render('login', {
 			errorMessage: placeholders.errormessage.nopassword[lang],
+			p: placeholders,
+			lang,
 		});
 	}
 
@@ -188,6 +207,8 @@ app.post('/login', async (request, res) => {
 	if (!user) {
 		res.render('login', {
 			errorMessage: placeholders.errormessage.invalidusername[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -196,6 +217,8 @@ app.post('/login', async (request, res) => {
 	if (!match) {
 		res.render('login', {
 			errorMessage: placeholders.errormessage.invalidpassword[lang],
+			p: placeholders,
+			lang,
 		});
 		return;
 	}
@@ -210,11 +233,11 @@ app.post('/login', async (request, res) => {
 
 app.get('/history', async (request, res) => {
 	const user = await getUser(request);
-    const lang = request.query.lang || 'en';
+	const lang = request.query.lang || 'en';
 	res.render('history', {
 		history: user ? await getHistory(user.id) : null,
-        p: placeholders,
-        lang: lang,
+		p: placeholders,
+		lang,
 	});
 });
 
@@ -258,7 +281,7 @@ app.delete('/history/:id', async (request, res) => {
 
 app.get('/favourites', async (request, res) => {
 	const user = await getUser(request);
-    const lang = request.query.lang || 'en';
+	const lang = request.query.lang || 'en';
 	if (!user) {
 		res.json({
 			reason: 'unauthorized',
@@ -281,8 +304,8 @@ app.get('/favourites', async (request, res) => {
 	// Send rendered view back
 	res.render('favourites', {
 		favourites: await FAVOURITES.find({user: user.id}),
-        p: placeholders,
-        lang: lang,
+		p: placeholders,
+		lang,
 	});
 });
 
@@ -340,7 +363,7 @@ app.delete('/favourites/:id', async (request, res) => {
 
 app.get('/reviews', async (request, res) => {
 	const user = await getUser(request);
-    const lang = request.query.lang || 'en';
+	const lang = request.query.lang || 'en';
 	if (!user) {
 		res.json({
 			reason: 'unauthorized',
@@ -353,8 +376,8 @@ app.get('/reviews', async (request, res) => {
 	res.render('reviews', {
 		reviews,
 		threshold: Number.parseInt(threshold.value),
-        p: placeholders,
-        lang: lang,
+		p: placeholders,
+		lang,
 	});
 });
 
