@@ -2,13 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Login</title>
+        <title><%= p.user.login[lang] %></title>
     </head>
     <body>
         <form method="POST" action="">
-            <label for="username">Username</label>
+            <label for="username"><%= p.user.username[lang] %></label>
             <input type="text" id="username" name="username">
-            <label for="password">Password</label>
+            <label for="password"><%= p.user.password[lang] %></label>
             <input type="password" id="password" name="password">
             <input type="submit" value="Login">
         </form>

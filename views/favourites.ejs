@@ -9,7 +9,7 @@
                         <img src="<%= item.src %>" alt="favourite product">
                     </a>
                     <button class="remove-favourites id-<%= item._id %>">
-                        Remove
+                    <%= p.favourites.remove[lang] %>
                     </button>
                     <div class="price">
                         <span class="chip">
@@ -21,6 +21,6 @@
     </div>
 <% } else { %>
     <div class="favourites items">
-        No favourites.
+        <%= p.favourites.empty[lang] %>
     </div>
 <% } %>
