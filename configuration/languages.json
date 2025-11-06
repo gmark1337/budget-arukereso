@@ -124,6 +124,10 @@
 		"remove": {
 			"en": "Remove",
 			"hu": "Eltávolít"
+		},
+		"empty":{
+			"en" :"Empty history",
+			"hu" : "Üres az előzmények"
 		}
 	},
 	"favourites": {
