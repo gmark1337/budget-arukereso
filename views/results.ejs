@@ -1,27 +1,26 @@
 <% results.map((result) => { %>
-        <fieldset class="result">
-        <legend><%= result.websiteName %></legend>
-        <div class="items">
-        <% if (result.FoundImages.length == 0) { %>
+  <fieldset class="result">
+    <legend><%= result.websiteName %></legend>
+    <div class="items">
+      <% if (result.FoundImages.length == 0) { %>
         <%= p.search.notfound[lang] %>
-        <% } %>
-        <% result.FoundImages.map((item) => { %>
-                <div class="item">
-                <a href="<%= item.href %>" target="_blank" rel="noopener">
-                <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
-                </a>
-                <div class="meta">
-                <% if (auth) { %>
-                <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">♥</button>
-                <% } %>
-                <div class="title"><%= item.title || 'Product' %>
-                </div>
-                <div class="price">
-                <span class="chip"><%= item.price %> Ft</span>
-                </div>
-                </div>
-                </div>
-                <% }) %>
+      <% } %>
+
+      <% result.FoundImages.map((item) => { %>
+        <div class="item">
+          <a href="<%= item.href %>" target="_blank" rel="noopener">
+            <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
+            <% if (auth) { %>
+              <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">♥</button>
+            <% } %>
+          </a>
+
+          <div class="meta">
+            <div class="title"><%= item.title || 'Product' %></div>
+            <div class="price"><span class="chip"><%= item.price %> Ft</span></div>
+          </div>
         </div>
-        </fieldset>
-        <% }) %>
+      <% }) %>
+    </div>
+  </fieldset>
+<% }) %>

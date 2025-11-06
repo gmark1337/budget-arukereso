@@ -1,18 +1,100 @@
 .history {
-    width: 100%;
+  width: 100%;
 }
 
 .history img {
-    width: 80px;
-    height: 80px;
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f3f4f6;
 }
 
 #historykey > * {
-    display: inline-block;
+  display: inline-block;
 }
 
 .history-item {
-    display: inline-block;
-    overflow: visible;
-    height: 100%;
+  display: inline-block;
+  overflow: visible;
+  height: 100%;
+}
+
+/* ===== ÚJ: viewed product kártyák modernizálva ===== */
+#history .items {
+  display: grid;
+  gap: 8px;
+}
+
+#history .item {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line, #e5e7eb);
+  border-radius: 10px;
+  background: var(--card, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform .1s, box-shadow .12s, background .12s;
+}
+
+#history .item:hover {
+  transform: translateY(-2px);
+  background: var(--hover, #eef2ff);
+  border-color: #d6daf0;
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+}
+
+/* Kép */
+#history .item > a {
+  grid-column: 1;
+}
+#history .item img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #f3f4f6;
+}
+
+/* Ár + Ft */
+#history .price {
+  grid-column: 2;
+}
+#history .price .chip{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #edf2ff;
+  color: #1e40af;
+  font-weight: 700;
+  font-size: .9rem;       
+  border: 0;
+  white-space: nowrap;    /* mindig egy sorban marad */
+}
+
+
+/* Remove gomb – ugyanaz mint favourites */
+#history button.remove-history-item {
+  grid-column: 3;
+  justify-self: end;
+  align-self: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--brand, #2f296a);
+  background: #fff;
+  color: var(--brand, #2f296a);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s, color .12s, box-shadow .12s, transform .08s;
+}
+
+#history button.remove-history-item:hover {
+  background: var(--brand, #2f296a);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(47,41,106,.25);
+  transform: translateY(-1px);
 }
