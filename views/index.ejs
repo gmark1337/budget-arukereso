@@ -1,102 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>budget-arukereso</title>
-        <link rel="stylesheet" href="index.css" />
-        <link rel="stylesheet" href="results.css" />
-        <link rel="stylesheet" href="history.css" />
-        <link rel="stylesheet" href="favourites.css" />
-        <link rel="stylesheet" href="reviews.css" />
-    </head>
-    <body>
-        <div id="menu">
-            <form action="javascript:void(0);">
-                <fieldset id="searchfield">
-                    <legend><%= p.search.title[lang] %></legend>
-                    <input required type="text" id="searchword" name="searchword" placeholder="<%= p.search.inputField[lang] %>" />
-                    <button type="submit" onclick="return startSearch()">🔍</button>
+  <head>
+    <meta charset="UTF-8" />
+    <title>budget-arukereso</title>
 
-                    <select name="order" id="order">
-                        <option value="asc"><%= p.search.order.asc[lang] %></option>
-                        <option value="desc"><%= p.search.order.desc[lang] %></option>
-                    </select>
+    <!-- 1) Globál téma -->
+    <link rel="stylesheet" href="theme.css" />
 
-                    <details>
-                        <summary><%= p.search.advanced.toggle[lang] %></summary>
+    <!-- 2) Oldalspecifikus CSS-ek -->
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="results.css" />
+    <link rel="stylesheet" href="history.css" />
+    <link rel="stylesheet" href="favourites.css" />
+    <link rel="stylesheet" href="reviews.css" />
+  </head>
+  <body>
+    <!-- FELSŐ JOBB SÁV: fav / reviews / nyelv / user -->
+    <div id="top-bar-menu">
+      <% if (auth) { %>
+      <div class="favourites-bar">
+        <span><%= p.favourites.title[lang] %></span>
+        <div id="favourites"></div>
+      </div>
+      <div class="reviews-bar">
+        <span><%= p.reviews.title[lang] %></span>
+      </div>
+      <% } %>
+      <div>
+        <select class="language-bar" id="language">
+          <option value="en" <% if (lang==='en') { %> selected <% } %>>🇬🇧</option>
+          <option value="hu" <% if (lang==='hu') { %> selected <% } %>>🇭🇺</option>
+        </select>
+      </div>
+      <div id="account"><%= username %></div>
+    </div>
 
-                        <label for="minPrice"><%= p.search.advanced.price.min[lang] %>:</label>
-                        <input type="number" id="minPrice" name="minPrice" placeholder="4000" min="0" />
+    <!-- HÁROMSÁVOS ELRENDEZÉS -->
+    <div id="page">
 
-                        <label for="maxPrice"><%= p.search.advanced.price.max[lang] %>:</label>
-                        <input type="number" id="maxPrice" name="maxPrice" placeholder="10000" min="0" />
-
-                        <label for="size"><%= p.search.advanced.size[lang] %> (S–XL):</label>
-                        <input type="text" id="size" name="size" placeholder="S, M, L, XL" />
-
-                        <label for="count"><%= p.search.advanced.number[lang] %>:</label>
-                        <input required type="number" id="count" name="count" value="3" min="1" />
-
-                        <%=  p.search.advanced.websites[lang] %>:
-                        <div id="websites">
-                            <input type="checkbox" checked id="hervis" name="hervis" />
-                            <label for="hervis">Hervis</label>
-
-                            <input type="checkbox" checked id="sinsay" name="sinsay" />
-                            <label for="sinsay">Sinsay</label>
-
-                            <input type="checkbox" checked id="sportisimo" name="sportisimo" />
-                            <label for="sportisimo">Sportisimo</label>
-
-                            <input type="checkbox" checked id="aboutYou" name="aboutYou"/>
-                            <label for="aboutYou">aboutYou</label>
-
-                            <input type="checkbox" checked id="decathlon" name="decathlon"/>
-                            <label for="decathlon">Decathlon</label>
-
-                            <input type="checkbox" checked id="mangoOutlet" name="mangoOutlet"/>
-                            <label for="mangoOutlet">mangoOutlet</label>
-                        </div>
-                    </details>
-                </fieldset>
-            </form>
-            <div id="history">
-            </div>
+      <!-- BAL: HISTORY -->
+      <aside id="left-col">
+        <div id="historyfield">
+          <fieldset>
+            <legend><%= (p.history && p.history.title && p.history.title[lang]) || 'Viewed products' %></legend>
+            <div id="history"></div>
+          </fieldset>
         </div>
+      </aside>
+
+      <!-- KÖZÉP: KERESŐ + TALÁLATOK -->
+      <main id="center-col">
+        <!-- Felső keresősáv (pill) -->
+        <div id="searchbar-shell">
+          <form id="searchbar" action="javascript:void(0);">
+            <input
+              required
+              type="text"
+              id="searchword"
+              name="searchword"
+              placeholder="<%= p.search.inputField[lang] %>"
+            />
+            <button type="submit" onclick="return startSearch()">🔍</button>
+          </form>
+        </div>
+
+        <!-- Loading -->
         <div id="waitingfield" hidden>
-            <div class="spinner"></div>
-            <%= p.search.loading[lang] %>
+          <div class="spinner"></div>
+          <%= p.search.loading[lang] %>
         </div>
-        <div id="results">
+
+        <!-- Találatok -->
+        <div id="results"></div>
+      </main>
+
+      <!-- JOBB: FILTERS (Order + Advanced) -->
+      <aside id="right-col">
+        <div id="filtersfield">
+          <fieldset id="filters">
+            <legend><%= p.search.filtersTitle ? p.search.filtersTitle[lang] : 'Filters' %></legend>
+
+            <fieldset>
+              <label for="order"><%= p.search.orderTitle ? p.search.orderTitle[lang] : 'Sort order' %></label>
+              <select name="order" id="order">
+                <option value="asc"><%= p.search.order.asc[lang] %></option>
+                <option value="desc"><%= p.search.order.desc[lang] %></option>
+              </select>
+            </fieldset>
+
+            <fieldset>
+              <legend style="margin-bottom:6px;"><%= p.search.advanced.toggle[lang] %></legend>
+
+              <label for="minPrice"><%= p.search.advanced.price.min[lang] %></label>
+              <input type="number" id="minPrice" name="minPrice" placeholder="4000" min="0" />
+
+              <label for="maxPrice"><%= p.search.advanced.price.max[lang] %></label>
+              <input type="number" id="maxPrice" name="maxPrice" placeholder="10000" min="0" />
+
+              <label for="size"><%= p.search.advanced.size[lang] %> (S–XL)</label>
+              <input type="text" id="size" name="size" placeholder="S, M, L, XL" />
+
+              <label for="count"><%= p.search.advanced.number[lang] %></label>
+              <input required type="number" id="count" name="count" value="3" min="1" />
+
+              <div style="margin-top:8px; font-weight:600;"><%=  p.search.advanced.websites[lang] %></div>
+              <div id="websites" style="margin-top:6px;">
+                <input type="checkbox" checked id="hervis" name="hervis" />
+                <label for="hervis">Hervis</label>
+
+                <input type="checkbox" checked id="sinsay" name="sinsay" />
+                <label for="sinsay">Sinsay</label>
+
+                <input type="checkbox" checked id="sportisimo" name="sportisimo" />
+                <label for="sportisimo">Sportisimo</label>
+
+                <input type="checkbox" checked id="aboutYou" name="aboutYou"/>
+                <label for="aboutYou">aboutYou</label>
+
+                <input type="checkbox" checked id="decathlon" name="decathlon"/>
+                <label for="decathlon">Decathlon</label>
+
+                <input type="checkbox" checked id="mangoOutlet" name="mangoOutlet"/>
+                <label for="mangoOutlet">mangoOutlet</label>
+              </div>
+            </fieldset>
+          </fieldset>
         </div>
-        <div id="account">
-            <%= username %>
-        </div>
-        <div id="top-bar-menu">
-            <% if (auth) { %>
-            <div class="favourites-bar">
-                <span><%= p.favourites.title[lang] %></span>
-                <div id="favourites">
-                </div>
-            </div>
-            <div class="reviews-bar">
-                <span><%= p.reviews.title[lang] %></span>
-            </div>
-            <% } %>
-            <div>
-                <select class="language-bar" id="language">
-                    <option value="en" <% if (lang=='en') { %> selected <% } %>
-                    >  🇬🇧</option>
-                    <option value="hu" <% if (lang=='hu') {  %> selected <% } %>
-                    > 🇭🇺 </option>
-                </select>
-            </div>
-        </div>
-        <div id="reviews">
-        </div>
-        <script src="index.js"></script>
-        <script src="reviews.js"></script>
-        <script src="favourites.js"></script>
-        <script src="history.js"></script>
-    </body>
+      </aside>
+    </div>
+
+    <!-- Rejtett Reviews panel -->
+    <div id="reviews"></div>
+
+    <!-- Scripts -->
+    <script>
+      // NE redeklaráljuk a lang-ot a külső index.js-ben
+      window.lang = "<%= lang %>";
+    </script>
+    <script src="index.js"></script>
+    <script src="reviews.js"></script>
+    <script src="favourites.js"></script>
+    <script src="history.js"></script>
+  </body>
 </html>
