@@ -1,74 +1,74 @@
 /* ====== LAYOUT SHELL (bal – közép – jobb) ====== */
 body {
-  background: var(--background);
-  color: var(--foreground);
+    background: var(--background);
+    color: var(--foreground);
 }
 
 #page {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 20px 24px 40px;
-  display: grid;
-  grid-template-columns: 260px 1fr 280px; /* BAL | KÖZÉP | JOBB – karcsúsítva */
-  gap: 18px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 20px 24px 40px;
+    display: grid;
+    grid-template-columns: 260px 1fr 280px; /* BAL | KÖZÉP | JOBB – karcsúsítva */
+    gap: 18px;
 }
 
 /* Bal és jobb oszlop a tetejére tapad + fix látható magasság */
 #left-col,
 #right-col {
-  position: sticky;
-  top: 84px;
-  align-self: start;
-  height: calc(100vh - 84px);
-  z-index: 1;
+    position: sticky;
+    top: 84px;
+    align-self: start;
+    height: calc(100vh - 84px);
+    z-index: 1;
 }
 
 /* Az oszlopokban a KERETEN BELÜLI tartalom görget */
 #left-col > * ,
 #right-col > * {
-  height: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+    height: 100%;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* ===== TOP BAR ===== */
 #top-bar-menu {
-  position: fixed;        /* jobb felső sarok */
-  top: 12px;
-  right: 12px;
-  z-index: 1200;
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
+    position: fixed;        /* jobb felső sarok */
+    top: 12px;
+    right: 12px;
+    z-index: 1200;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
 }
 
 /* top bar dobozstílus */
 #top-bar-menu > div {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  background: var(--card, #fff);
-  border: 1px solid var(--border, #e5e7eb);
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: var(--card, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
 
 /* nyelvváltó */
 #top-bar-menu select.language-bar {
-  appearance: none;
-  border: 1px solid var(--border, #e5e7eb);
-  background: var(--card, #fff);
-  border-radius: 6px;
-  padding: 4px 8px;
-  cursor: pointer;
+    appearance: none;
+    border: 1px solid var(--border, #e5e7eb);
+    background: var(--card, #fff);
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
 }
 
 /* username badge */
 #account {
-  border: none;
-  background: transparent;
-  padding: 0;
+    border: none;
+    background: transparent;
+    padding: 0;
 }
 
 /* top bar alatti rések */
@@ -79,56 +79,56 @@ body {
 /* ====== BAL OSZLOP / HISTORY ====== */
 #historyfield,
 #historyfield fieldset {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
 }
 
 #historyfield fieldset { padding: 12px; }   /* kicsit kisebb padding */
 
 /* LEGEND rögzítve felül, hogy ne csússzon rá */
 #historyfield legend {
-  display: inline-block;
-  padding: 6px 10px;
-  background: var(--secondary);
-  color: var(--secondary-foreground);
-  border: 1px solid #e0e7ff;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: .95rem;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+    display: inline-block;
+    padding: 6px 10px;
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    border: 1px solid #e0e7ff;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .95rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 /* A valódi lista görget – nem a teljes fieldset */
 #history {
-  margin-top: 10px;
-  max-height: calc(100% - 40px);
-  overflow: auto;
-  padding-right: 6px; /* hogy a scroll ne takarjon */
+    margin-top: 10px;
+    max-height: calc(100% - 40px);
+    overflow: auto;
+    padding-right: 6px; /* hogy a scroll ne takarjon */
 }
 
 #history .items { display: grid; gap: 12px; }
 #history .item {
-  display: grid;
-  grid-template-columns: 64px 1fr auto;
-  gap: 10px;
-  align-items: center;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--card);
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
 }
 #history .item img {
-  width: 64px; height: 64px; object-fit: contain;
-  border-radius: 8px; background: var(--muted);
+    width: 64px; height: 64px; object-fit: contain;
+    border-radius: 8px; background: var(--muted);
 }
 #history .price .chip {
-  padding: 2px 8px; border-radius: 999px;
-  background: var(--accent); color: var(--accent-foreground);
-  border: 1px solid #bae6fd; font-weight: 600; font-size: .85rem;
+    padding: 2px 8px; border-radius: 999px;
+    background: var(--accent); color: var(--accent-foreground);
+    border: 1px solid #bae6fd; font-weight: 600; font-size: .85rem;
 }
 
 /* ====== KÖZÉP: FELSŐ KERESŐ SÁV ====== */
@@ -136,66 +136,66 @@ body {
 
 /* Keresősáv „card” burkoló – KISEBB + sticky */
 #searchbar-shell {
-  max-width: 760px;                 /* 980 -> 760 */
-  margin: 0 auto 18px;
-  padding: 4px;                     /* 6 -> 4 */
-  border-radius: 999px;
-  background: #f4f6fa;
-  box-shadow: 0 1px 0 rgba(0,0,0,.02) inset;
-  position: sticky;
-  top: 12px;
-  z-index: 1100;                    /* top bar alatt, mindenen felül */
+    max-width: 760px;                 /* 980 -> 760 */
+    margin: 0 auto 18px;
+    padding: 4px;                     /* 6 -> 4 */
+    border-radius: 999px;
+    background: #f4f6fa;
+    box-shadow: 0 1px 0 rgba(0,0,0,.02) inset;
+    position: sticky;
+    top: 12px;
+    z-index: 1100;                    /* top bar alatt, mindenen felül */
 }
 
 /* Keresősáv */
 #searchbar {
-  display: grid;
-  grid-template-columns: 1fr 42px;  /* fixebb jobboldali gomb */
-  align-items: center;
-  gap: 8px;                         /* 10 -> 8 */
-  padding: 6px 8px;                 /* 10 -> 6/8 */
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  box-shadow: var(--shadow);
-  transition: box-shadow .15s ease, border-color .15s ease, transform .05s ease;
+    display: grid;
+    grid-template-columns: 1fr 42px;  /* fixebb jobboldali gomb */
+    align-items: center;
+    gap: 8px;                         /* 10 -> 8 */
+    padding: 6px 8px;                 /* 10 -> 6/8 */
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    transition: box-shadow .15s ease, border-color .15s ease, transform .05s ease;
 }
 
 #searchbar:focus-within {
-  border-color: #cfd5e3;
-  box-shadow: 0 4px 18px rgba(0,0,0,.08);
+    border-color: #cfd5e3;
+    box-shadow: 0 4px 18px rgba(0,0,0,.08);
 }
 
 /* Input – kisebb */
 #searchbar input[type="text"] {
-  width: 100%;
-  border: none;
-  outline: none;
-  padding: 8px 12px;                /* 12/14 -> 8/12 */
-  border-radius: 999px;
-  background: #eef4ff;
-  color: var(--ink);
-  font-size: 15px;                  /* 16 -> 15 */
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 8px 12px;                /* 12/14 -> 8/12 */
+    border-radius: 999px;
+    background: #eef4ff;
+    color: var(--ink);
+    font-size: 15px;                  /* 16 -> 15 */
 }
 #searchbar input::placeholder { color: #96a0b2; }
 
 /* Jobb oldali kerek ikon-gomb – kisebb */
 #searchbar button[type="submit"] {
-  display: inline-grid;
-  place-items: center;
-  width: 38px;                      /* 44 -> 38 */
-  height: 38px;                     /* 44 -> 38 */
-  border: none;
-  border-radius: 999px;
-  background: #6b7280;
-  color: #fff;
-  cursor: pointer;
-  transition: transform .06s ease, box-shadow .15s ease, background .15s ease;
+    display: inline-grid;
+    place-items: center;
+    width: 38px;                      /* 44 -> 38 */
+    height: 38px;                     /* 44 -> 38 */
+    border: none;
+    border-radius: 999px;
+    background: #6b7280;
+    color: #fff;
+    cursor: pointer;
+    transition: transform .06s ease, box-shadow .15s ease, background .15s ease;
 }
 #searchbar button[type="submit"]:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(0,0,0,.16);
-  background: #5d6470;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(0,0,0,.16);
+    background: #5d6470;
 }
 #searchbar button[type="submit"]:active { transform: translateY(0); }
 
@@ -207,69 +207,69 @@ body {
 /* A külső keret; a MAGASSÁGOT az oszlop adja, ez itt csak kitölti */
 #filtersfield,
 #filtersfield fieldset {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
 }
 
 /* a teljes oszlop-magasságot vegye át és azon belül görgessen */
 #filtersfield {
-  height: 100%;
-  max-height: none;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+    height: 100%;
+    max-height: none;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 #filtersfield fieldset { padding: 12px; }      /* 14 -> 12 */
 
 /* LEGEND rögzítve felül */
 #filtersfield legend {
-  display: inline-block;
-  padding: 6px 10px;
-  background: var(--secondary);
-  color: var(--secondary-foreground);
-  border: 1px solid #e0e7ff;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: .95rem;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+    display: inline-block;
+    padding: 6px 10px;
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    border: 1px solid #e0e7ff;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .95rem;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 #filters {
-  margin-top: 10px;
-  max-height: calc(100% - 40px);
-  overflow: auto;
-  padding-right: 6px;
+    margin-top: 10px;
+    max-height: calc(100% - 40px);
+    overflow: auto;
+    padding-right: 6px;
 }
 
 #filters fieldset + fieldset { margin-top: 12px; }
 
 #filters fieldset > label {
-  display: block;
-  margin: 8px 0 4px;
-  color: var(--muted-foreground);
-  font-size: .9rem;                 /* kisebb label */
+    display: block;
+    margin: 8px 0 4px;
+    color: var(--muted-foreground);
+    font-size: .9rem;                 /* kisebb label */
 }
 #filters input[type="number"],
 #filters input[type="text"],
 #filters select {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 6px 8px;                 /* 10/12 -> 6/8 */
-  background: var(--input-background);
-  font-size: .9rem;                 /* 1.0 -> .9 */
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px 8px;                 /* 10/12 -> 6/8 */
+    background: var(--input-background);
+    font-size: .9rem;                 /* 1.0 -> .9 */
 }
 
 /* ====== TALÁLATOK ====== */
-#results { 
-  margin-top: 12px;
-  max-width: 1100px;                /* középsáv ne legyen túl széles */
-  margin-left: auto;
-  margin-right: auto;
+#results {
+    margin-top: 12px;
+    max-width: 1100px;                /* középsáv ne legyen túl széles */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* kártya hover */
@@ -286,11 +286,18 @@ body {
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 1200px) {
-  #left-col, #right-col { display: none; }   /* kisebb kijelzőn csak közép */
-  #center-col { padding: 0 12px; }
-  #page { grid-template-columns: 1fr; gap: 12px; }
+    #left-col, #right-col { display: none; }   /* kisebb kijelzőn csak közép */
+    #center-col { padding: 0 12px; }
+    #page { grid-template-columns: 1fr; gap: 12px; }
 }
 
 #product-details {
     display: none;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card, #fff);
+    border: 1px solid var(--border, #e5e7eb);
 }
