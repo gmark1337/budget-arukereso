@@ -1,118 +1,160 @@
 :root{
-  --bg:#f6f7fb; --card:#fff; --ink:#111; --muted:#6b7280; --line:#e5e7eb;
-  --radius:14px; --shadow:0 2px 10px rgba(0,0,0,.06);
+  --bg:#f6f7fb;
+  --card:#fff;
+  --ink:#111;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --radius:14px;
+  --shadow:0 2px 10px rgba(0,0,0,.06);
+  --hover-shadow:0 8px 18px rgba(0,0,0,.08);
 }
 
-/* ===== FŐ RÁCS: rugalmas oszlopszám ===== */
-#results {
-  max-width: 1400px;
-  margin: 16px auto;
-  padding: 0 16px;
+/* ===== RESULTS GRID ===== */
+#results{
+  max-width:1100px;
+  margin:16px auto 0;
+  padding:0 16px;
 
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:18px;
 }
 
-/* nagyobb nézetekben sűrűbb minmax, hogy 4 oszlop biztosabban kiférjen */
-@media (min-width: 1200px) {
-  #results { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+/* nagyobb view-n sűrűbb oszlop, hogy 4+ bolt is kiférjen */
+@media (min-width:1200px){
+  #results{
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  }
 }
-@media (min-width: 1600px) {
-  #results { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+@media (min-width:1600px){
+  #results{
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  }
 }
 
-/* ===== WEBÁRUHÁZ KÁRTYA ===== */
+/* ===== BOLT KÁRTYA (oszlop) ===== */
 .result{
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 14px;
-  height: max-content;
-  position: relative;
-  transition: transform .12s ease, box-shadow .12s ease;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:14px;
+  height:max-content;
+  position:relative;
 }
-.result:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
-
-.result > legend{
-  display: inline-block;
-  padding: 6px 10px;
-  margin: 0 0 10px;
-  background: #eef2ff; color:#3730a3;
-  border:1px solid #e0e7ff; border-radius:999px; font-weight:600;
+.result>legend{
+  display:inline-block;
+  padding:6px 10px;
+  margin:0 0 10px;
+  background:#eef2ff;
+  color:#3730a3;
+  border:1px solid #e0e7ff;
+  border-radius:999px;
+  font-weight:600;
 }
 
-/* ===== EGY BOLTON BELÜLI LISTA: ~3 elem látszik, a többi scroll ===== */
+/* a bolt alatti termékkártyák függőlegesen egymás alatt */
 .items{
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 520px;           /* ~3 kompakt kártya + gap-ek */
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-right: 2px;          /* keskeny scroll ne takarjon tartalmat */
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-/* ===== TERMÉKKÁRTYA: kép felül, meta alatta ===== */
+/* ===== TERMÉK KÁRTYA ===== */
 .item{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  align-items: start;
-  padding: 10px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--card);
-  transition: transform .12s, box-shadow .12s;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+  align-items:flex-start;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:var(--card);
+  transition:transform .12s, box-shadow .12s;
+  position:relative;             /* a szív ehhez fog igazodni */
 }
-.item:hover{ transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,.08); }
+.item:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--hover-shadow);
+}
 
-.item a{ position: relative; display:block; }
+/* kép felül, teljes szélességben */
+.item a{
+  display:block;
+}
 .item img{
-  width: 100%;
-  height: 120px;              /* kompaktabb, hogy 3 könnyen kiférjen */
-  object-fit: cover;
-  border-radius: 10px;
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:10px;
   background:#f3f4f6;
   border:1px solid #eee;
 }
 
-/* Szív (favourite) a kép jobb felső sarkában */
+/* ===== KEDVENC SZÍV – nagyobb + jobb alsó sarok ===== */
 .favourite-add{
-  position: absolute; top:8px; right:8px;
-  width: 28px; height: 28px; border-radius: 999px;
-  display: grid; place-items: center;
-  background: #fff; border: 1px solid #e5e7eb;
-  cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  position:absolute;
+  right:10px;
+  bottom:10px;                  /* <<< lehozva a kártya aljára */
+  width:32px;
+  height:32px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  font-size:18px;               /* nagyobb ikon */
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.10);
+  color:#9ca3af;                /* alap halvány */
+  transition:background .15s, color .15s, box-shadow .15s, transform .08s;
 }
-.favourited{ color: #dc2626; }
+.favourite-add:hover{
+  background:#111;
+  color:#fff;
+  box-shadow:0 4px 10px rgba(0,0,0,.18);
+  transform:translateY(-1px);
+}
+.favourite-add:active{
+  transform:translateY(0);
+  box-shadow:0 2px 4px rgba(0,0,0,.12);
+}
 
-/* Meta rész: cím + ár chip */
-.meta{ display: grid; gap: 6px; }
+/* aktív (kedvenc) állapot */
+.favourited{
+  color:#dc2626 !important;
+  background:#fff5f5 !important;
+  border-color:#fecaca !important;
+  box-shadow:0 3px 8px rgba(220,38,38,.25) !important;
+}
+
+/* ===== META RÉSZ: név + ár ===== */
+.meta{
+  display:grid;
+  gap:6px;
+  padding-right:40px;           /* hogy a szív ne takarja a szöveget */
+}
 
 .title{
-  font-weight: 600;
-  line-height: 1.25;
-  max-height: 2.6em;
-  overflow: hidden;
-  font-size: 0.95rem;
+  font-weight:600;
+  line-height:1.25;
+  max-height:2.6em;
+  overflow:hidden;
 }
 
+/* ár + Ft chip */
 .price{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 700;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
 }
-
 .price .chip{
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #ecfeff;
-  color: #0e7490;
-  border: 1px solid #bae6fd;
-  font-weight: 600;
-  font-size: .85rem;          /* picit kisebb */
-  white-space: nowrap;        /* „Ft” mindig kifér egy sorban */
+  padding:2px 8px;
+  border-radius:999px;
+  background:#ecfeff;
+  color:#0e7490;
+  border:1px solid #bae6fd;
+  font-weight:600;
+  font-size:.9rem;
 }

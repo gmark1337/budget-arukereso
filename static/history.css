@@ -20,7 +20,7 @@
   height: 100%;
 }
 
-/* ===== ÚJ: viewed product kártyák modernizálva ===== */
+/* ===== ÚJ: viewed product kártyák ===== */
 #history .items {
   display: grid;
   gap: 8px;
