@@ -75,8 +75,8 @@ function getResults() {
       if (wf) wf.hidden = true;
       if (resultsEl) resultsEl.innerHTML = html;
     })
-    .then(historyListeners)
     .then(favouritesListeners)
+    .then(detailsListeners)
     .catch(err => {
       console.error('Search failed:', err);
       const wf = document.querySelector('#waitingfield');
