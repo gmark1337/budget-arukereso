@@ -290,3 +290,7 @@ body {
   #center-col { padding: 0 12px; }
   #page { grid-template-columns: 1fr; gap: 12px; }
 }
+
+#product-details {
+    display: none;
+}
