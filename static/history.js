@@ -1,11 +1,11 @@
 // Register events for each item
 function historyListeners() {
-	for (const element of document.querySelectorAll('#product-details img')) {
+	for (const element of document.querySelectorAll('.item img')) {
 		element.addEventListener('click', e => {
 			const root = e.target.parentElement.parentElement;
 			const image = root.querySelector('img').src;
 			const {href} = root.querySelector('a');
-			const price = getPrice(root);
+			const price = Number.parseInt(root.querySelector('.chip').innerText);
 			fetch('/history', {
 				method: 'POST',
 				body: new URLSearchParams({
@@ -20,7 +20,7 @@ function historyListeners() {
 
 async function updateHistory() {
 	const e = document.querySelector('#history');
-	const res = await fetch('/history?' + new URLSearchParams({lang}));
+	const res = await fetch('/history?' + new URLSearchParams({lang: lang}));
 	e.innerHTML = await res.text();
 	registerButtons();
 }
@@ -40,11 +40,4 @@ function registerButtons() {
 			}
 		});
 	}
-}
-
-function getPrice(e) {
-    if (document.querySelector('#discountPrice')) {
-        return e.querySelector('#discountPrice').innerText.split(' ')[0];
-    }
-    return e.querySelector('#originalPrice').innerText.split(' ')[0];
 }

@@ -12,7 +12,6 @@ import {config} from './configuration/config.js';
 import {
 	DB, USER, HISTORY, GLOBALS, FAVOURITES, REVIEWS,
 } from './db.js';
-import {fetchProductDetailsAsync} from './services/productDetailFetchService.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -398,16 +397,6 @@ app.post('/reviews', async (request, res) => {
 	res.json({
 		reason: 'ok',
 	});
-});
-
-app.get('/details', async (req, res) => {
-    if (!req.query.url) {
-        res.json({
-            reason: 'no url',
-        });
-    }
-    const details = await fetchProductDetailsAsync(req.query.url);
-    res.send(details);
 });
 
 app.listen(PORT, () => {

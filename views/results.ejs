@@ -8,10 +8,13 @@
 
       <% result.FoundImages.map((item) => { %>
         <div class="item">
-            <img class="path-<%= item.href %>" src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
+          <a href="<%= item.href %>" target="_blank" rel="noopener">
+            <img src="<%= item.src || 'https://via.placeholder.com/300x300?text=Image' %>" alt="">
             <% if (auth) { %>
               <button class="favourite-add <%= item.fav %> id-<%= item.fav_id %>">♥</button>
             <% } %>
+          </a>
+
           <div class="meta">
             <div class="title"><%= item.title || 'Product' %></div>
             <div class="price"><span class="chip"><%= item.price %> Ft</span></div>
