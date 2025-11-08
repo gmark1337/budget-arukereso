@@ -407,9 +407,7 @@ app.get('/details', async (req, res) => {
         });
     }
     const details = await fetchProductDetailsAsync(req.query.url);
-    res.send({
-        details: details,
-    });
+    res.send(details);
 });
 
 app.listen(PORT, () => {
