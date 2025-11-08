@@ -4,7 +4,7 @@
   --card: #fff;
 }
 
-/* Panel – fix oldalnézet */
+/* Panel – fix oldalnézet, ALAPBÓL REJTETT */
 #reviews {
   position: fixed;
   top: 64px;
@@ -12,9 +12,9 @@
   left: calc(420px + 48px);
   right: 16px;
 
-  display: grid;
-  grid-template-rows: auto 1fr;  /* felül toolbar, alatta a 6 oszlop */
-  gap: 16px;
+  /* !!! csak EZ: alapból rejtve, nem blokkol */
+  display: none;
+
 
   background: transparent;
   border: none;
@@ -137,9 +137,9 @@
 .review-site .items {
   display: grid;
   gap: 10px;
-  max-height: 320px;              /* ~3 kártya + 2x gap */
-  overflow-y: auto;               /* csak függőleges görgetés */
-  overflow-x: hidden;             /* vízszintes görgetés OFF */
+  max-height: 320px;
+  overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
