@@ -53,14 +53,16 @@
     <div id="page">
       <!-- BAL: Viewed products -->
       <aside id="left-col">
+        <% if (auth) { %>
         <div id="historyfield">
           <fieldset>
             <legend>
-              <%= (p.history && p.history.title && p.history.title[lang]) || 'Viewed products' %>
+              <%= p.history.title[lang] %>
             </legend>
             <div id="history"></div>
           </fieldset>
         </div>
+        <% } %>
       </aside>
 
       <!-- KÖZÉP: Loader + Results -->
@@ -76,11 +78,11 @@
       <aside id="right-col">
         <div id="filtersfield">
           <fieldset id="filters">
-            <legend><%= p.search.filtersTitle ? p.search.filtersTitle[lang] : 'Filters' %></legend>
+            <legend><%= p.search.filters.title[lang] %></legend>
 
             <fieldset>
               <label for="order">
-                <%= p.search.orderTitle ? p.search.orderTitle[lang] : 'Sort order' %>
+                <%= p.search.order.title[lang] %>
               </label>
               <select name="order" id="order">
                 <option value="asc"><%= p.search.order.asc[lang] %></option>
