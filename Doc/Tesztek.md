@@ -1,13 +1,14 @@
 **Beállítások:**
 
 - emptyPlaceholderString = Failed to find products for this website!
-- noUsername = no username provided
-- noPassword = no password provided
-- noEmail = no email provided
-- badUsername = username taken
-- badEmail = email taken
-- incorrectUsername = invalid username
-- incorrectPassword = invalid password
+- p = placeholders.json
+- noUsername = p.errormessage.nousername.en
+- noPassword = p.errormessage.nopassword.en
+- noEmail = p.errormessage.noemail.en
+- badUsername = p.errormessage.badusername.en
+- badEmail = p.errormessage.bademail.en
+- incorrectUsername = p.errormessage.invalidusername.en
+- incorrectPassword = p.errormessage.invalidpassword.en
 
 # search-function-test
 
