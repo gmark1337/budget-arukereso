@@ -13,10 +13,9 @@ function favouritesListeners() {
 
 async function addTofavourites(b) {
 	b.classList.add('favourited');
-	const root = b.parentElement.parentElement;
-	const vendor = root.parentElement.parentElement
-		.querySelector('legend').innerText;
-	const {href} = root.querySelector('a');
+	const root = b.parentElement;
+	const vendor = root.parentElement.parentElement.querySelector('legend').innerText;
+	const href = root.querySelector('img').classList;
 	const image = root.querySelector('img').src;
 	const price = Number.parseInt(root.querySelector('span.chip').innerText);
 	await fetch('/favourites', {
@@ -43,6 +42,7 @@ async function removeFromFavourites(b) {
 	for (const c of b.classList) {
 		if (c.startsWith('id-')) {
 			const id = c.split('id-')[1];
+            b.classList.remove(c);
 			await fetch(`/favourites/${id}`, {
 				method: 'DELETE',
 			});
