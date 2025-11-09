@@ -321,3 +321,14 @@ body {
     display: none;
   }
 }
+
+#product-details {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card, #fff);
+    border: 1px solid var(--border, #e5e7eb);
+}
