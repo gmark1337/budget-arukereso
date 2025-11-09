@@ -4,6 +4,9 @@ import {
 import assert from 'node:assert';
 import {load} from 'cheerio';
 import {DB, USER} from '../db.js';
+import {config} from '../configuration/config.js';
+
+const placeholders = config.placeHolders;
 
 describe('registration-login-user-tests', () => {
 	const p = getP();
@@ -62,7 +65,7 @@ describe('registration-edgecases-tests', () => {
 		const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'no username provided');
+		assert.equal(actual, placeholders.errormessage.nousername.en);
 	});
 	it('no-password-provided', async () => {
 		const p = getP();
@@ -75,7 +78,7 @@ describe('registration-edgecases-tests', () => {
 		const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'no password provided');
+		assert.equal(actual, placeholders.errormessage.nopassword.en);
 	});
 	it('no-email-provided', async () => {
 		const p = getP();
@@ -88,7 +91,7 @@ describe('registration-edgecases-tests', () => {
 		const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'no email provided');
+		assert.equal(actual, placeholders.errormessage.noemail.en);
 	});
 });
 
@@ -114,7 +117,7 @@ describe('taken-username-or-email-tests', () => {
 		const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'username taken');
+		assert.equal(actual, placeholders.errormessage.usernametaken.en);
 	});
 	it('taken-email', async () => {
 		const res = await fetch('http://localhost:8080/register', {
@@ -129,7 +132,7 @@ describe('taken-username-or-email-tests', () => {
 		const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'email taken');
+		assert.equal(actual, placeholders.errormessage.emailtaken.en);
 	});
 	after(async () => {
 		await USER.findOneAndDelete({username: p.username});
@@ -158,7 +161,7 @@ describe('login-edgecases-tests', () => {
         const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'invalid password');
+		assert.equal(actual, placeholders.errormessage.invalidpassword.en);
     });
 	it('incorrect-username', async () => {
         const res = await fetch('http://localhost:8080/login', {
@@ -173,7 +176,7 @@ describe('login-edgecases-tests', () => {
         const $ = load(text);
 		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
 			.trim();
-		assert.equal(actual, 'invalid username');
+		assert.equal(actual, placeholders.errormessage.invalidusername.en);
     });
     after(async () => {
         await USER.findOneAndDelete({username: p.username});

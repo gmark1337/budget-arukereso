@@ -62,6 +62,7 @@ describe('history-tests', () => {
 		assert.equal(items[0], product.image);
 	});
 	it('can-be-deleted', async () => {
+        const before = await HISTORY.find({user: userid});
 		await fetch('http://localhost:8080/history', {
 			method: 'POST',
 			headers: {
@@ -72,9 +73,12 @@ describe('history-tests', () => {
 		const item = await HISTORY.findOne({user: userid});
 		await fetch(`http://localhost:8080/history/${item.id}`, {
 			method: 'DELETE',
+            headers: {
+				Cookie: `Authorize=${auth}`,
+            },
 		});
-		const result = await HISTORY.find({item: item.id});
-		assert.equal(result.length, 0);
+        const after = await HISTORY.find({user: userid});
+		assert.equal(before.length, after.length);
 	});
 	it('max-10-history', async () => {
 		for (let i = 0; i < 15; i++) {

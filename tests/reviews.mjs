@@ -3,7 +3,10 @@ import {
 } from 'node:test';
 import assert from 'node:assert';
 import {load} from 'cheerio';
-import { DB, USER, REVIEWS } from '../db.js';
+import {DB, USER, REVIEWS} from '../db.js';
+import {config} from '../configuration/config.js';
+
+const placeholders = config.placeHolders;
 
 const p = {
 	email: 'test-user-stanley@test.com',
@@ -59,9 +62,9 @@ describe('reviews-tests', () => {
 		const text = await res.text();
 		const $ = load(text);
 		const r = $('fieldset').find('legend').filter((_, e) => $(e).text()
-			== review.vendor).first().parent().find('.review-menu').text();
-		const stars = r.trim().split(' ')[1];
-		assert.equal(review.quality, stars.length);
+			== review.vendor).first().parent().find('.review-menu span').first()
+			.text();
+		assert.equal(review.quality, r.length);
 	});
 	it('name-visible', async () => {
 		const review = genReview();
@@ -81,7 +84,7 @@ describe('reviews-tests', () => {
 		const $ = load(text);
 		const r = $('fieldset').find('legend').filter((_, e) => $(e).text()
 			== review.vendor).first().parent().find('.review-menu').text();
-		const username = r.trim().split(' ')[0];
+		const username = r.trim().split(' ')[0].replaceAll(/[\r\n]+/g, '');
 		assert.equal(username, p.username);
 	});
 	it('trusted-site-visible', async () => {
@@ -105,15 +108,15 @@ describe('reviews-tests', () => {
 		const $ = load(text);
 		const r = $('fieldset').find('legend').filter((_, e) => $(e).text()
 			== review.vendor).first().parent().find('.trusted-site').text();
-		assert.equal(r.trim(), 'Trusted site.');
+		assert.equal(r.trim(), placeholders.reviews.trusted.en);
 	});
-    it('only-logged-in-user-can-create-review', async () => {
+	it('only-logged-in-user-can-create-review', async () => {
 		const res = await fetch('http://localhost:8080/reviews', {
 			method: 'POST',
 			body: new URLSearchParams(genReview()),
 		});
 		assert.equal(JSON.parse(await res.text()).reason, 'unauthorized');
-    });
+	});
 	afterEach(async () => {
 		await REVIEWS.deleteMany({user: userid});
 	});
