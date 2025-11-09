@@ -325,10 +325,11 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
 
 ## can-be-deleted
 
-  A teszt előtt elküldünk egy POST requestet a **/history** endpointra, majd
-  lekérünk egy rekordot a `history` táblából, amely rekord `src` mezőjét eküldjük
-  egy DELETE requesttel a **/history** endpointra, ezután ellenőrizzük hogy
-  valóban eltávolítottuk-e a teszt felhasználó `history` rekordjaiból.
+  Lekérjükm a felhasználó összes rekotdját, majd elküldünk egy POST requestet a
+  **/history** endpointra, majd lekérünk egy rekordot a `history` táblából, amely
+  rekord `src` mezőjét eküldjük egy DELETE requesttel a **/history** endpointra,
+  ezután ismét lekérjük az összes rekordot és ellenőrizzük hogy a rekordok
+  darabszáma megegyezik.
 
 ## max-10-history
 
@@ -442,12 +443,12 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
 
 ## trusted-site-visible
 
-Elküldünk 6 darab POST requestet a **/reviews** endpointra, majd ellenőrizzük
-hogy a review.vendor példa weboldal tartalmazza-e a .trused-site osztály
-tartalmazza-e a 'Trused site' stringet.
+  Elküldünk 6 darab POST requestet a **/reviews** endpointra, majd ellenőrizzük
+  hogy a review.vendor példa weboldal tartalmazza-e a .trused-site osztály
+  tartalmazza-e a 'Trused site' stringet.
 
 ## only-logged-in-user-can-create-review
 
-Elküldünk egy POST requestet bérmi féle autentikációs süti nélkül majd 
-ellenőrizzük, hogy a válaszul beérkezett JSON reason mező értéke megegyezik-e a
-'unauthorized' stringgel.
+  Elküldünk egy POST requestet bérmi féle autentikációs süti nélkül majd
+  ellenőrizzük, hogy a válaszul beérkezett JSON reason mező értéke megegyezik-e a
+  'unauthorized' stringgel.
