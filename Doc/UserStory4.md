@@ -1,3 +1,3 @@
 # Bingus döntésképtelen 
 
-Bingus, Glorp testvére hihetetlen jó memóriával rendelkezik, azonban rendkívül döntésképtelen cica. Megoldáséknt, szereti megnézni más cicák mit kerestek és mi a népszerű keresési termék. A rendszer, a regisztrált cicáknak a keresési eredményeit elmenti és Bingus ezeket meg tudja tekinteni inspirációként. 
+Bingus, Glorp testvére hihetetlen jó memóriával rendelkezik, de nagyon döntésképtelen cica. Gyakran sok terméket elment egyszerre, majd később egyesével nézi át. A rendszer lehetővé teszi a regisztrált cicáknak, hogy elmentsék a keresési eredményeiket kedvencként, így Bingus később át tudja nézni őket inspirációként és könnyebben tud dönteni.

@@ -20,7 +20,7 @@ A felhasználó kulcsszavak (pl.: póló, kabát) alapján kereshet terméket. E
 - Kimenet: találati lista termékekkel
 - Hibaágak: 
     - Ha nincs találat, akkor megpróbálja újraindítani a keresést a rendszer
-    - Ha újra próbálkozás esetén sincs eredmény akkor, egy "No results" üzenetet lát a felhasználó 
+    - Ha újra próbálkozás esetén sincs eredmény akkor, egy "Failed to find products for this website" üzenetet lát a felhasználó 
     - Ha a kereső nem tud elindulni, akkor "Sudden error occured, please try again later." üzenetet lát a felhasználó 
 
 2. Szűrés 
@@ -32,20 +32,29 @@ A felhasználó szűrheti a találatokat ár, méret alapján és rendezheti ők
 3. Kedvencek
 A regisztrált felhasználó, ha nem biztos vásárlási szándékában akkor, elmentheti a kedvencek közé, ami képpel együtt elmenti az adott terméket a kedvencek fül közé. A kedvencekhez bármikor hozzáfér a felhasználó és minden felhasználónak egyedi kedvencek fül tartozik.
 
-- Bemenet: A termék kártyán található csillag gombra rákattint
+- Bemenet: A termék kártyán található szív gombra rákattint
 - Kimenet: A kedvencek fülben megjelenő termék
-- Megszorítás: Egy felhasználónak maximum 20 kedvence lehet egyidejűleg
+- Megszorítás: Egy felhasználónak maximum 10 kedvence lehet egyidejűleg
 
 4. Termék részleteinek megtekintése 
 A felhasználó részletes adatokat lát a termékről (pl.: nagyított kép, leírás méretek, ár és elérhetőség).
 
 - Bemenet: termékenként részletek gombra rákattint 
-- Kimenet: termék adatlap
+- Kimenet: termék részletek
+
+Egy adott termék részletei:
+    - Név
+    - Eredeti ár
+    - Akciós ár
+    - Szín
+    - Anyag
+    - Szállítás
+    - Egyéb információk
 
 5. Navigálás a forráshoz
 A felhasználó átirányítható az eredeti webáruház termékoldalára ahol megvásárolhatja a kívánt terméket. 
 
-- Bemenet: a részletekből vagy a találatokból a képre kattint
+- Bemenet: a részletekből, találatokból vagy a kedvencek fülről a képre kattint
 - Kimenet: új böngészőfülön megnyíló webáruház.
 
 6. Regisztrálás
@@ -79,17 +88,21 @@ A regisztrált felhasználó betud jelentkezni a fiókjába.
 -   Kimenet: sikeres bejelentkezésnél tovább írányítja a kereső oldalra
 -   Hibaágak:
     - Ha helytelen a jelszó vagy a felhasználó, akkor az üzenet: "The username or password doesn't match"
+-   Biztonsági követelmények:
+    - Minden felhasználó jelszava titkosítva, erős hash algoritmussal(bcrypt) kerül tárolásra.
+    - A jelszó soha nem tárolható visszafejthető formában.
+
 
 8. Előzmények
-A felhasználóak eltudják érni más felhasználóak kereséit.
+A felhasználóak láthatják a látogatott weboldalakat elmentve
 
 -   Bemenet: adott keresési mező rákattintása
 -   Kimenet: adott keresési találatok
 
 9. Értékelések
-A felhasználó tud szövegesen és csillagokkal webárúházat értékelni. 
+A regisztrált felhasználó tud szövegesen és csillagokkal webárúházat értékelni. 
 
-- Bemenet: szöveg vagy csillag
+- Bemenet: szöveg vagy csillag vagy mindkettő
 - Kimenet: adott értékelési típus megjelenítése a webáruház alatt
 
 ## Use Case-ek 
@@ -130,8 +143,8 @@ A felhasználó tud szövegesen és csillagokkal webárúházat értékelni.
 5. A rendszer helyes adatok megadása esetén tovább lépteti a felhasználót a keresési oldalra, ellentétes esetben visszadobja.
 
 #### UC8 - Előzmények
-1. A felhasználó a keresések mező mellett láthatja az előző felhasználóak kereséseit
-2. Rákattintva megmutatja az eredményeket
+1. A felhasználó a keresések mező mellett láthatja a saját látogatott weboldalait
+2. Rákattintva elnavigálja az adott weboldalra
 
 #### UC9 - Értékelés
 1. A felhasználó minden weboldal mellett tud értékelést tenni szövegesen is meg csilaggal is.
@@ -153,9 +166,14 @@ A felhasználó tud szövegesen és csillagokkal webárúházat értékelni.
 
 2. Termék részletek oldal
 - Nagy kép
-- Leírás
-- Árlistázás
-- Továbbító gomb
+- Termék részletek :
+    - Név
+    - Eredeti ár
+    - Akciós ár
+    - Szín
+    - Anyag
+    - Szállítás
+    - Egyéb információk
 
 3. Kedvencek oldal
 - Elmentett képek listanézetben + árral
@@ -190,9 +208,55 @@ A felhasználó tud szövegesen és csillagokkal webárúházat értékelni.
 
 
 ## Adatmodell
-- Weboldalak (weboldalNév, találtKépek -> (url,href,src))
+- Weboldalak:
+    - Weboldal név
+    - Talált képek: 
+        - hiperhivatkozás
+        - kép
+        - ár
+        - név
+
+- Termék részletek:
+    - Név:
+        - Eredeti ár
+        - Akciós ár
+        - Szín
+        - Anyag
+        - Szállítás
+        - Egyéb információk
+
+- Kedvencek:
+    - Id
+    - hiperhivatkozás
+    - kép
+    - ár
+    - webáruház
+    - felhasználó
+
+- globális:
+    - titkos kulcsok
+
+- Előzmények:
+    - hiperhivatkozás
+        - kép
+        - ár
+        - név
+    - Felhasználó
+
+- Vélemények:
+    - Üzenet
+    - Értékelés
+    - Webáruház
+    - Felhasználó
+
+- Felhasználó:
+    - Id
+    - Név
+    - Email
+    - Jelszó
+
 
 ## Nem funkcionális követelmények 
-- Teljesítmény: a keresés maximum 20 másodpercet vesz igénybe
+- Teljesítmény: a keresés maximum 12 másodpercet vesz igénybe
 - Megbízhatóság: ha egy áruház nem elérhető, vagy nem talált eredményt akkor is adjon a többi találatról eredményt
 - Használhatóság: reszponzív működés mobilon és weben
