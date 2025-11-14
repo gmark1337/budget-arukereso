@@ -9,6 +9,8 @@ import { fetchAboutYouImagesAsync } from '../models/AboutYou.js';
 import { fetchDecathlonImagesAsync } from '../models/Decathlon.js';
 import { fetchMangoOutletImagesAsync} from '../models/MangoOutlet.js';
 
+import { sleep } from './ImageScraperService.js';
+
 
 import {config} from '../configuration/config.js'
 
@@ -55,6 +57,10 @@ async function LaunchBrowserAsync(){
 			'--disable-gpu'
   		]
 	});
+}
+
+async function ForceButtonClickAsync(page, selector){
+	await page.click(selector);
 }
 
 
@@ -111,8 +117,67 @@ export async function Search(searchword) {
 	return allImages;
 }
 
+
+export async function SearchProductDetails(url, websiteName){
+	if(url == 'undefined' || url == undefined || url.length == 0 || url == '') return null;
+	const productFilters = config.websites[websiteName].details;
+	const browser = await LaunchBrowserAsync();
+
+	DisableImages(browser);
+
+	const page = await browser.newPage();
+
+	await page.goto(url, {waitUntil: 'networkidle2'});
+
+	const details = await page.evaluate((productFilters) => {
+		const getText = (selector) => {
+			const el = document.querySelector(selector);
+			return el ? el.textContent.trim() : null;
+		};
+
+		return {
+			productName: getText(productFilters.productName),
+			originalPrice: getText(productFilters.originalPrice) ?? getText(productFilters.altOriginalPrice),
+			discountPrice: getText(productFilters.discountPrice) ?? 'This product is not on sale',
+			color: getText(productFilters.color),
+			shipping: getText(productFilters.shipping),
+			material: getText(productFilters.material),
+			otherInformation: getText(productFilters.otherInformation)
+		}
+	}, productFilters);
+
+	//sinsay's material information is hiding behind a wall which needs to be open
+	if(!details.material){
+		await ForceButtonClickAsync(page, '#cookiebotDialogOkButton');
+		await ForceButtonClickAsync(page,'.product-compositionstyled__StyledButton-sc-10nvgpk-1.dCbsfg');
+		await page.waitForSelector(productFilters.material, {timeout: 2000});
+
+		const material = await page.evaluate((filter) => {
+			const el = document.querySelector(filter.material);
+			return el ? el.textContent.trim() : null;
+		}, productFilters);
+		details.material = material;
+	}
+
+	await browser.close();
+	return details;
+}
+
 //console.log(await Search("cumi"));
 //await Search("Kék felső");
 
-const testObject = await Search("kék felső");
-testObject.forEach(x => console.log(x));
+/* const testObject = await Search("kék felső");
+testObject.forEach(x => console.log(x)); */
+
+/* const testUrl = "https://www.hervis.hu/shop/Ruházat/Fürdőruhák/Fürdőpólók/Cygnus/Felső/p/COLOR-3372325";
+const testName =  "hervis";
+
+const testUrl2 = "https://www.sinsay.com/hu/hu/nyomott-mintas-pamut-polo-paw-patrol-207fc-99x";
+const testName2 = "sinsay";
+
+const testUrl3 = "https://www.sinsay.com/hu/hu/sportos-felso-439hn-55x";
+
+const details = await SearchProductDetails(testUrl, testName);
+
+console.log(details); */
+

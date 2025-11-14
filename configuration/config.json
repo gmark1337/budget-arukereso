@@ -37,7 +37,17 @@
             "containerSelector": ".algolia-products-module__algolia-products-container",
             "elementSelector": ".product-tilestyled__StyledProductTileContainer-sc-1u901v5-0.kucTee",
             "productPriceSelector": ".product-tilestyled__StyledProductTileDetails-sc-1u901v5-2.blUHpA",
-            "titleContentSelector": ".product-namestyled__StyledProductNameText-ygymof-2.ktoODA"
+            "titleContentSelector": ".product-namestyled__StyledProductNameText-ygymof-2.ktoODA",
+            "details":{
+                "productName":".titlestyled__StyledTitleWrapper-e4vddc-0.IOiA",
+                "originalPrice":".basic-pricestyled__StyledBasicPrice-xikd80-0.iVSEBL.basic-price.old-price",
+                "altOriginalPrice":".basic-pricestyled__StyledBasicPrice-xikd80-0.iVSEBL.basic-price",
+                "discountPrice":".basic-pricestyled__StyledBasicPrice-xikd80-0.iVSEBL.basic-price.promo-price",
+                "color":".titlestyled__SubTitle-sc-1hhfe4z-1.fCtmvp",
+                "shipping":".delivery-detailsstyled__DeliveryDetailsWrapper-sc-175s10x-2.hPhRBq",
+                "material":".product-composition-modalstyled__FeatureValue-sc-1vcfgs0-3.kwYBWP",
+                "otherInformation":".info-boxstyled__Wrapper-sc-1d1rt4r-0.lcSKfF"
+            }
         },
         "aboutYou":{
             "baseUrl":"https://www.aboutyou.hu/",
