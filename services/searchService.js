@@ -146,8 +146,10 @@ export async function SearchProductDetails(url, websiteName){
 		}
 	}, productFilters);
 
+	//console.log(details);
+
 	//sinsay's material information is hiding behind a wall which needs to be open
-	if(!details.material){
+	if(!details.material && websiteName == 'sinsay'){
 		await ForceButtonClickAsync(page, '#cookiebotDialogOkButton');
 		await ForceButtonClickAsync(page,'.product-compositionstyled__StyledButton-sc-10nvgpk-1.dCbsfg');
 		await page.waitForSelector(productFilters.material, {timeout: 2000});

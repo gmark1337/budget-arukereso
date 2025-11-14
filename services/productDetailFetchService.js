@@ -1,25 +1,28 @@
 import * as cheerio from 'cheerio';
 import {config} from '../configuration/config.js';
 
-import { Search } from './searchService.js';
+import { Search, SearchProductDetails } from './searchService.js';
+
 
 
 const notFoundMessage = 'Failed to find any details for this part';
 
 export async function fetchProductDetailsAsync(url){
     let splitted = url.split('.')[1];
-        
-        if(splitted.includes('aboutyou')){
-            splitted = splitted.replace('y', 'Y');
-        }
-        if(splitted.includes('mangooutlet')){
-            splitted = 'mangoOutlet';
-        }
-
-        //TODO
-        //IMPLEMENT SINSAY IMITATED DETAIL SCRAPING
-        if(splitted.includes('sinsay')){
-            return {errorMessage:'Site is blocked! Return later...'};
+        switch(true){
+            case splitted.includes('aboutyou'):
+                splitted = splitted.replace('y', 'Y');
+                break;
+            case splitted.includes('mangooutlet'):
+                splitted = 'mangoOutlet';
+                break;
+            case splitted.includes('sinsay'):
+                return await SearchProductDetails(url, 'sinsay');
+                
+            case splitted.includes('hervis'):
+                return await SearchProductDetails(url, 'hervis');
+            case splitted.includes('decathlon'):
+                return await SearchProductDetails(url, 'decathlon');
         }
         const filters = config.websites[splitted];
         let productDetails = "";
@@ -55,7 +58,7 @@ export async function fetchProductDetailsAsync(url){
             return {errorMessage: `Something went wrong while fetching data! \n ${error.message} `};
         };
         
-
+        console.log(productDetails);
 
         return productDetails;
 }
