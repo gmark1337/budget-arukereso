@@ -130,7 +130,7 @@ A regisztrált felhasználó tud szövegesen és csillagokkal webárúházat ér
 2. A rendszer elnavigálja a kedvencekhez
 
 #### UC6 - Regisztrálás
-1. A felhasználó rákattint a "Create User" gombra, ami tovább irányítja a regisztrációs felületre
+1. A felhasználó rákattint a "Guest" gombra, ami tovább irányítja a regisztrációs felületre
 2. A felületen megadja az adatait
 3. A rendszer ellenőrzi az adatokat, ha hibás visszadobja
 4. Sikeres regisztrációnál a rendszer visszaviszi a keresés mezőhöz a felhasználót
