@@ -13,6 +13,7 @@
             <label for="password"><%= p.user.password[lang] %></label>
             <input type="password" id="password" name="password">
             <input type="submit" value="<%= p.user.register[lang] %>">
+            or <a href="/login">login</a>
         </form>
         <% if (errorMessage) { %>
         <div id="error-message">
