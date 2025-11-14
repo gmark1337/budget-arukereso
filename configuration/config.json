@@ -41,7 +41,7 @@
         },
         "aboutYou":{
             "baseUrl":"https://www.aboutyou.hu/",
-            "containerSelector":".sc-b0e4230f-0.fvkais.fgxrhbr.b14wcnuw",
+            "containerSelector":".sc-b0e4230f-0.gHwMTz.fgxrhbr.b14wcnuw",
             "productImageSelector":".s4qvvij",
             "productPriceSelector":".p1udp918",
             "titleContentSelector":".po1v63h.p10xduha.p1iha8u1",

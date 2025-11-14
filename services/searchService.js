@@ -23,28 +23,9 @@ stealth.enabledEvasions.delete('chrome.runtime')
 puppeteer.use(stealth);
 
 
-export async function Search(searchword) {
-	if(searchword == 'undefined' || searchword == undefined || searchword.length == 0 || searchword == ''){
-		return [];
-	}
-	const browser = await puppeteer.launch({
-		headless: 'new',
-		defaultViewport: false,
-		args: [
-			'--no-sandbox',
-			'--disable-setuid-sandbox',
-			'--disable-dev-shm-usage',
-			'--disable-accelerated-2d-canvas',
-			'--no-first-run',
-			'--no-zygote',
-			'--disable-gpu'
-  		]
-	});
+function DisableImages(browser){
 
 	const context = browser.defaultBrowserContext();
-
-	//Every time a new page is created it automatically blocks the images for faster load. 
-
 	context.on('targetcreated', async target => {
 		if (target.type() === 'page') {
 			const newPage = await target.page();
@@ -58,7 +39,33 @@ export async function Search(searchword) {
 			})
 		}
 	})
+}
 
+async function LaunchBrowserAsync(){
+	return  await puppeteer.launch({
+		headless: 'new',
+		defaultViewport: false,
+		args: [
+			'--no-sandbox',
+			'--disable-setuid-sandbox',
+			'--disable-dev-shm-usage',
+			'--disable-accelerated-2d-canvas',
+			'--no-first-run',
+			'--no-zygote',
+			'--disable-gpu'
+  		]
+	});
+}
+
+
+export async function Search(searchword) {
+	if(searchword == 'undefined' || searchword == undefined || searchword.length == 0 || searchword == ''){
+		return [];
+	}
+	
+	const browser = await LaunchBrowserAsync();
+	
+	DisableImages(browser);
 
 	const limit = pLimit(6);
 
@@ -107,5 +114,5 @@ export async function Search(searchword) {
 //console.log(await Search("cumi"));
 //await Search("Kék felső");
 
-/* const testObject = await Search("kék felső");
-testObject.forEach(x => console.log(x)); */
+const testObject = await Search("kék felső");
+testObject.forEach(x => console.log(x));
