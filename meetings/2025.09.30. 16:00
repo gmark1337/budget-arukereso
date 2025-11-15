@@ -1,0 +1,25 @@
+# Időpont
+
+2025.09.30. 16:00
+
+# Résztvevők
+
+Gados Márk
+Varga Marcell
+
+# Téma
+
+backend rendszer felépítés megszervezése
+landing page véglegesítése
+
+# Döntés / Döntési opciók
+
+külön találati és keresési nézet megszüntetése
+egyetlen nézet a landing page ami tartalmazza a kereső mezőt és a keresési
+paramétereket, illetve a keresési találatokat ha vannak
+
+# Tapasztalatok
+
+átláthatóbb, egyszerűbben kezelhetőbb backend és frontend elérése a cél.
+könnyebb ismételt keresés érhető el az új tervvel ugyanis nem kell két külön
+oldal között ugrálnia a felhasználónak

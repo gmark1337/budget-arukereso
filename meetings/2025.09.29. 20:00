@@ -1,0 +1,85 @@
+# Időpont
+
+- 2025.09.29. 20:00
+
+# Résztvevők
+
+- Gados Márk
+- Szabó Zita
+- Varga Marcell
+
+# Szerepek
+
+- Gados Márk -> Tervező
+- Szabó Zita -> Designer
+- Varga Marcell -> Tesztelő
+
+# Téma
+
+- Nagy projekt terv és cél
+
+# Döntés / Döntési opciók
+
+- 2 User Story megírása
+- /results oldal áthelyezése a landing pagebe, a keresőmező alá
+
+# Tapasztalatok
+
+- Trello-t használni, elvállalni feladatokat határidőket betartani!!
+- Dokumentumok folyamatosan fríssitése, ha eltér a fejlesztés alatt álló rendszertől
+- Fontos a hibakezelés
+- Vezetni róla egy dokumentumot, amibe feljegyezzük a hibákat, mennyire sürgős kijavítani és hogy hogyan lehet újra generálni?
+- Minden sprinten unit tesztek kellenek(legyen ami jó eredményt vár, legyen ami crashelteti a weboldalt) -> Ha nem jó az unit teszt akkor javítani a rendszert + backlog
+
+# Teendők a hétre
+
+    - Trello eligazítás/karbantartás -> Ha van király product backlog nem kell rendszerterv.md !!
+    - kovspec.md es funkspec.md fríssitve az ötletekkel elképzeléssel(legyen több mint kevesebb)
+    - Eldönteni, hogy mit akarunk nagyjából bele rakni a projektbe(lásd.:Tervek rész)
+    - Ha összeraktuk a terveket, akkor szétbontjuk user storykra -> trello
+    - UI design elkészíteni sok képpel
+    - /results endpoint elkészítése
+
+# Tervek
+
+    - Login page
+    - Adatbázis (MongoDB):
+        - username, password
+        - search history: az oldalon megjelennek az előző keresések
+    - kedvencek: minden terméket lehet kedvencek közé felvenni, amit utána vissza tud nézni a felhasználó
+    - cache? (ezt végül hagytuk a search history javára)
+    - Adatbázis terveket felvezetni a dokumentumokban(hogy fog nagyjából kinézni, mennyi tábla lesz stb…) + UML vizualizáció?.
+    - Landing page:
+        - keresőmező, részletes szűrő beállítások
+        - Találatokat a kereső felület alatt jeleníti meg
+        - Keresési előzményeket is itt jelenítjük meg
+        - Felső sáv:
+            - Account:
+            - belépés regisztráció, kijelentkezés
+            - kedvencek megtekintése
+        - Találatok:
+        - Ha nem sikerül a keresés, akkor egy képpel/szöveggel jelezzük hogy nem sikerült az adatlekérés -> újra tudja próbálni csak az adott weboldalra
+    - Webscraping:
+        - Hibakezelés hibakezeléssel -> Ha nem is fut le legalább nem szarik be a program
+        - Hervis süti elfogadása időközönként crashel(quickfix req!)
+    - Dinamikusabb architektúra(Timeout helyett várni a DOM elemek betöltésére)
+    - Sinsay weboldal átdolgozása?
+
+    - 2 User Story megírása
+
+# User Story ötletek
+
+    - Kicsit átírjuk a mostanit hogy beérjük magunkat
+    - Login page el foglalhat magában 1 sprintet
+    - Kedvencek + history
+    - Találatok + több weboldal hozzáadása a listához
+    - Ruhadarabokat egyenként meg lehessen tekinteni infokkal?(ERRŐL NEM VOLT SZÓ)
+    - Lehessen véleményezni??? -> Adatb+
+    - Adott website értékelése csillagokkal -> Adatb+
+
+
+
+
+# Komment
+
+    - Szerintem a hétre, nem nagyon kéne nagyon bele vágnunk kódolásba szerintem a dokumentumokat kell nagyon jól megcsinálni hogy ne tudjon bele kötözködni. Meg ki alakuljon ez a dokumentálás hogy aktívan vezessük az aktivitásunkat. A Landing page-n lehet dolgozni talán még a héten mert Zita nem tudta teljesen át integrálni a sajátját a miénkkel. Nekem a webscrapinget át kell gondolnom és  dolgoznom. (Meg nem is nézte meg az órán a weblapunkat szóval nem köthet bele hogy nem csináltunk sok mindent xdd).
