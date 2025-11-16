@@ -106,10 +106,17 @@ describe('history-tests', () => {
 				body: new URLSearchParams(product),
 			});
 		}
-
 		const itemsAfter = await HISTORY.find({user: userid});
 		assert.equal(itemsAfter.length, items.length + 1);
 	});
+    it('only-logged-in-user-can-add-to-history', async () => {
+        const r = await fetch('http://localhost:8080/history', {
+            method: 'POST',
+            body: new URLSearchParams(genProduct()),
+        });
+        const text = await r.text();
+        assert.equal(JSON.parse(text).reason,'unauthorized');
+    });
 	afterEach(async () => {
 		await HISTORY.deleteMany({user: userid});
 	});
