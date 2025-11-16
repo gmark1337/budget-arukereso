@@ -1,6 +1,6 @@
 # Jelenlegi helyzet leírása:
 
-A világgazdaság jelenlegi helyzete és meg nem mondom melyik politikai párt miatt, az emberek pénztárcája zsugorodik össze, míg rohamosan nőnek vele szemben az árak. Az online vásárlás ugyan rohamosan terjed és soha nem látott népszerűségnek örvend, azonban a megfelelő termék megtalálása a legjobb áron sok időt és energiát igényel. A felhasználók gyakran több órát töltenek különböző webáruházak böngészésével, ami frusztráló és nehézkes folyamat. **Ez a "turkálás" folyamat mértéktelenül lecsökkenthető és leegyszerűsíthető egy célzott kereső használatával**, így a vásárlók gyorsan és kényelmesen találhatják meg a számukra legkedvezőbb ajánlatot.A bizonytalan vásárlóknak biztosítva lenne a mentési lehetőség hogy a későbbiekben ha meggondolják magukat akkor ne kelljen keresgélni.Ráadásul, nélkülözhetetlen információ a megbízhatóság, mennyire lehet megbízni egy weboldalban ezáltal a felhasználók által értékelések mutatják a weboldal hitelességét.
+A világgazdaság jelenlegi helyzete az emberek pénztárcája zsugorodik össze, míg rohamosan nőnek vele szemben az árak. Az online vásárlás ugyan rohamosan terjed és soha nem látott népszerűségnek örvend, azonban a megfelelő termék megtalálása a legjobb áron sok időt és energiát igényel. A felhasználók gyakran több órát töltenek különböző webáruházak böngészésével, ami frusztráló és nehézkes folyamat. **Ez a "turkálás" folyamat mértéktelenül lecsökkenthető és leegyszerűsíthető egy célzott kereső használatával**, így a vásárlók gyorsan és kényelmesen találhatják meg a számukra legkedvezőbb ajánlatot.A bizonytalan vásárlóknak biztosítva lenne a mentési lehetőség hogy a későbbiekben ha meggondolják magukat akkor ne kelljen keresgélni.Ráadásul, nélkülözhetetlen információ a megbízhatóság, mennyire lehet megbízni egy weboldalban ezáltal a felhasználók által értékelések mutatják a weboldal hitelességét.
 
 # Megrendelői igényspecifikáció (megrendelő által megfogalmazott igények, célok, követelmények):
 
@@ -26,16 +26,14 @@ Felesleges könyvjelzők használata nélkül, könnyen tud menteni több száz 
 1. Az alkalmazásban a termékek kereshetőek legyenek kulcsszavak és kategóriák alapján (pl. póló, kabát).
 2. A felhasználó számára legyen elérhető a találatok mező ahol több oldal találatát láthatja. 
 3. Termék részletes adatainak megtekintése.
-4. Alapvető partnerinformációk a webáruház nevéről, logójáról és webcíméről.
-5. Tudjon regisztrálni a felhasználó.
-6. Betudjon lépni a fiókjába a felhasználó.
-7. Eltudja menteni az adott terméket amit majd később is eltud érni.
-8. Újra tudja índitani a keresést ha elbukik. 
-9. Tudja értékelni az áruházat a felhasználó, ami idővel elnyeri a megbízható bolt kitüntetést.
-10. Tud nyelvet választani a felhasználó
+4. Tudjon regisztrálni a felhasználó.
+5. Betudjon lépni a fiókjába a felhasználó.
+6. Eltudja menteni az adott terméket amit majd később is eltud érni.
+7. Újra indul a keresés ha elbukik. 
+8. Tudja értékelni az áruházat a felhasználó, ami idővel elnyeri a megbízható bolt kitüntetést.
+9. Tud nyelvet választani a felhasználó
 
 ## Funkcionális követelmények
-
 A felhasználó által elérhető funkciók
 
 - Tud keresni több helyen egy oldalon keresztül
@@ -61,7 +59,7 @@ A felhasználó által elérhető funkciók
 ## A rendszerrel szemben támasztott általános követelmények
 
 - A rendszert bárki használhatja, bárhonnan
-- Reszponzív felület, webes funkciókhoz és andoridhoz
+- Reszponzív felület, webes funkciókhoz és androidhoz
 - Gyors keresés
 - Keresési találat megegyezik a keresett darabbal
 - A találatok megegyeznek a szűrési feltétellel
@@ -110,6 +108,7 @@ A felhasználó által elérhető funkciók
 **K10 Keresési előzmények** megjelenítése, törlés lehetősége.
 **K11 Értékelések** bekérése
 **K12 Megbízhatóság jelvény** megjelenítése adott értékelés szám esetén.
+**K13 Termék részletek** megjelenítése adott termékeknél.
 
 
 ## Felhasználói esetek
@@ -124,6 +123,7 @@ UC7 - Bejelentkezés
 UC8 - Előzmények
 UC9 - Értékelés
 UC10 - Nyelv
+UC11 - Termék részletek
 
 
 ## Fogalomtár:
