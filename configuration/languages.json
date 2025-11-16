@@ -90,6 +90,14 @@
             "register": {
                 "en": "Register",
                 "hu": "Regisztráció"
+            },
+            "tologin": {
+                "en": "Already have an account?",
+                "hu": "Már van fiókod?"
+            },
+            "toregister": {
+                "en": "No account yet?",
+                "hu": "Még nincs fiókod?"
             }
         },
         "errormessage": {

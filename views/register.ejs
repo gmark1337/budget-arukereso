@@ -12,10 +12,11 @@
       <div class="auth-header">
         <h1><%= p.user.register[lang] %></h1>
         <!-- X gomb: vissza a kezdőoldalra -->
-        <a href="/" class="auth-close">✕</a>
+        <a href="/?lang=<%= lang %>" class="auth-close">✕</a>
       </div>
 
       <form method="POST" action="" class="auth-form">
+        <input type="hidden" name="lang" value="<%= lang %>">
         <div class="auth-field">
           <label for="email"><%= p.user.email[lang] %></label>
           <input type="email" id="email" name="email" autocomplete="email">
@@ -40,8 +41,8 @@
         <% } %>
 
         <p class="auth-switch">
-            <%= (p.user.haveAccount && p.user.haveAccount[lang]) || 'Already have an account?' %>
-            <a href="/login"><%= p.user.login[lang] %></a>
+            <%= p.user.tologin[lang] %>
+            <a href="/login?lang=<%= lang %>"><%= p.user.login[lang] %></a>
         </p>
 
       </form>
