@@ -346,6 +346,12 @@ A teszt ellenőrzni hogy a beérkező tömb hossza egyenlő-e eggyel (3 elérhet
   összes rekordját és ellenőrizzük, hogy a második állapot darabszáma csak eggyel
   nagyobb.
 
+## only-logged-in-user-can-add-to-history
+
+  Elküldünk egy POST requestet a **/history** endpointra bármi féle
+  autentikációs süti nélkül, majd ellenőrizzük hogy a beérkezett válasz indok
+  értéke megegyezik-e a `unauthorized` szöveggel.
+
 # favourites-tests
 
   A teszt előtt regisztrálunk egy teszt felhasználót, akinek a `userid` és a
