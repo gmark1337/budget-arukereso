@@ -14,8 +14,6 @@ async function updateReviews() {
     });
     const html = await res.text();
 
-    // A szerver reviews.ejs-je tartalmaz egy külső <div id="reviews">-t.
-    // Kibontjuk, hogy NE legyen dupla #reviews (különben overlay bug).
     const tmp = document.createElement('div');
     tmp.innerHTML = html.trim();
 

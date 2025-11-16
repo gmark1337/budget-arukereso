@@ -1,8 +1,6 @@
 @custom-variant dark (&:is(.dark *));
 
-/* ===========================
-   ROOT THEME VARIABLES
-   =========================== */
+/* ROOT THEME VARIABLES */
 :root {
   --font-size: 16px;
   --bg: #f6f7fb;
@@ -55,9 +53,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* ===========================
-   DARK MODE OVERRIDES
-   =========================== */
+/*   DARK MODE OVERRIDES */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -95,9 +91,7 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
-/* ===========================
-   THEME EXPORT (Tailwind-like)
-   =========================== */
+/* THEME EXPORT */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -142,9 +136,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* ===========================
-   BASE STYLES
-   =========================== */
+/* BASE STYLES */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -197,9 +189,7 @@
   }
 }
 
-/* ===========================
-   GLOBAL HTML
-   =========================== */
+/*  GLOBAL HTML */
 html {
   font-size: var(--font-size);
 }

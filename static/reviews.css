@@ -1,4 +1,4 @@
-/* ================= REVIEWS – TELJES VÉGLEGES VERZIÓ ================= */
+/*  REVIEWS  */
 :root {
   --line: #e5e7eb;
   --card: #fff;
@@ -23,7 +23,7 @@
   z-index: 900;
 }
 
-/* ================= TOOLBAR (felső sor) ================= */
+/*  TOOLBAR (felső sor)  */
 .reviews-toolbar {
   display: grid;
   grid-template-columns: 160px 1fr 200px auto auto;
@@ -96,7 +96,7 @@
   }
 }
 
-/* ================= OSZLOPOK (6 bolt) ================= */
+/*  OSZLOPOK (6 bolt)  */
 .reviews-content {
   background: var(--card);
   border: 1px solid var(--line);

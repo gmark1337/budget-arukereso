@@ -1,4 +1,4 @@
-/* ===== AUTH MODAL ALAP ===== */
+/*  AUTH MODAL ALAP  */
 
 .auth-body {
   margin: 0;
@@ -22,7 +22,7 @@
   position: relative;
 }
 
-/* ===== FEJLÉC ===== */
+/*  FEJLÉC  */
 
 .auth-header {
   display: flex;
@@ -50,7 +50,7 @@
   color: #111827;
 }
 
-/* ===== FORM ===== */
+/*  FORM  */
 
 .auth-form {
   display: grid;
@@ -82,7 +82,7 @@
   background: #f9fafb;
 }
 
-/* ===== SUBMIT GOMB ===== */
+/*  SUBMIT GOMB  */
 
 .auth-submit {
   margin-top: 4px;
@@ -109,7 +109,7 @@
   box-shadow: none;
 }
 
-/* ===== HIBAÜZENET ===== */
+/*  HIBAÜZENET  */
 
 .auth-error {
   margin-top: 4px;
@@ -121,7 +121,7 @@
   border: 1px solid #fecaca;
 }
 
-/* ===== ALULI LINK – "No account yet?" ===== */
+/*  ALULI LINK – "No account yet?"  */
 
 .auth-switch {
   margin-top: 6px;
