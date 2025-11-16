@@ -63,8 +63,7 @@ describe('registration-edgecases-tests', () => {
 		});
 		const text = await res.text();
 		const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.nousername.en);
 	});
 	it('no-password-provided', async () => {
@@ -76,8 +75,7 @@ describe('registration-edgecases-tests', () => {
 		});
 		const text = await res.text();
 		const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.nopassword.en);
 	});
 	it('no-email-provided', async () => {
@@ -89,8 +87,7 @@ describe('registration-edgecases-tests', () => {
 		});
 		const text = await res.text();
 		const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.noemail.en);
 	});
 });
@@ -115,8 +112,7 @@ describe('taken-username-or-email-tests', () => {
 		});
 		const text = await res.text();
 		const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.usernametaken.en);
 	});
 	it('taken-email', async () => {
@@ -130,8 +126,7 @@ describe('taken-username-or-email-tests', () => {
 		});
 		const text = await res.text();
 		const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.emailtaken.en);
 	});
 	after(async () => {
@@ -159,8 +154,7 @@ describe('login-edgecases-tests', () => {
         });
         const text = await res.text();
         const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.invalidpassword.en);
     });
 	it('incorrect-username', async () => {
@@ -174,8 +168,7 @@ describe('login-edgecases-tests', () => {
         });
         const text = await res.text();
         const $ = load(text);
-		const actual = $('#error-message').map((_, e) => $(e).text()).get()[0]
-			.trim();
+		const actual = $('.auth-error').first().text();
 		assert.equal(actual, placeholders.errormessage.invalidusername.en);
     });
     after(async () => {
