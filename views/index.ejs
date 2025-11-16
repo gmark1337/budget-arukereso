@@ -47,7 +47,7 @@
 
                 <div id="account">
                     <% if (username == p.user.guest[lang]) { %>
-                    <a href="/login"><%= username %></a>
+                    <a href="/login?lang=<%= lang %>"><%= username %></a>
                     <% } else { %>
                     <%= username %>
                     <% } %>
