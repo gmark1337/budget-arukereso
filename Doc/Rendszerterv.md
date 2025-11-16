@@ -4,10 +4,10 @@ Egy weg ár-összehasonlító szolgáltatás, amely:
 
 - webshopok termékeit és áraikat gyűjti
 - gyors keresést és szűrést kínál
-- akciófigyelést biztosít a felhasználónak
-- más felhasználóak keresési találatait megtekinteni
-- más nyelven beszélőek is tudják használni a weboldalt
+- Saját ellátogatott termékeket könnyedén eltudja érni 
+- Magyar és Angol nyelven beszélőek egyaránt tudják használni a weboldalt
 - lehet véleményt írni az adott weboldalról
+- lehet értékelni az adott weboldalról
 - elmenteni az adott terméket
 
 # Fő komponensek
@@ -38,31 +38,30 @@ Egy weg ár-összehasonlító szolgáltatás, amely:
 - userId -> ObjectId || Refer to Users.userId (1:n relation)
 - stars -> int(1-5)
 - message -> string
+- vendor -> string
 
 ## Favorites tábla
 
 - favoriteId -> ObjectId
 - userId -> ObjectId || Refer to Users.userId(1:n)
-- product
-- addedAt -> Date
+- href -> string
+- src -> string
+- price -> string
+- vencdor -> string
 
 ## History tábla
 
 - historyId -> ObjectId
 - userId -> ObjectId || Refer to Users.userId(1:n)
-- product
-
-## Product rész
-
-- websiteName -> string
-- foundImages -> array
-
-## foundImages
-
-- href -> url
-- src -> url
+- href -> string
+- src -> string
 - price -> string
-- title -> string
+
+## GLOABLS tábla
+
+- globalId -> ObjectId
+- name -> string, required
+- value -> string, required
 
 # Fő oldalak és működés (+API endpoint)
 
@@ -73,12 +72,21 @@ Egy weg ár-összehasonlító szolgáltatás, amely:
 | Szűrési feltétel    | &minPrice=4000&maxPrice=16000&size=M&count=3&hervis=true&sinsay=false&sportissimo=true&aboutYou=true&order=asc | kereséshez alkalmazza a szűrést   |
 | Bejelentkezés       | /login                                                                                                         | Bejelentkezési felület            |
 | Regisztráció        | /register                                                                                                      | Regisztrációs felület             |
-| Favorites           | /favorites                                                                                                     | Kedvencek felület                 |
+| Kedvencek           | /favourites                                                                                                    | Kedvencek felület                 |
+| Előzmények          | /history                                                                                                       | Előzmények felület                |
+| Vélemények          | /reviews                                                                                                       | Vélemények felület                |
+| Termék Részletek    | /details                                                                                                       | Termék részletek funkciója        |
+
 
 # Tesztelés
 - Unit + integrációs tesztek
+- Bővebben [itt](./Tesztek.md)
+
 
 # Sprintek 
 1. Alapok - repo, dokumentumok, alap keresőrendszer, routing + minimális frontend
 2. Optimalizálás, takarítás - kód tisztitás, dokumentumok javítása/pótlása, keresőrendszer optimalizálása, kerekebb API rendszer
 3. Felhasználó/előzmények - adatbázis, bejelentkezés/regisztrációs felület + előzmények nézet
+4. Kereső rendszer befejezése, Kedvencek + vélemény felület
+5. Termék részletek, hibakezelés
+6. Nyelvek

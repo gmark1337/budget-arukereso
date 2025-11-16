@@ -110,8 +110,8 @@ A regisztrált felhasználó tud szövegesen és csillagokkal webárúházat ér
 #### UC1 - Termék keresése
 1. A felhasználó beírja a kulcsszót a keresőmezőbe
 2. A felhasználó tud szűrőt beállítani és rendezni ár szerint
-2. A rendszer elkezdi a keresést a kulcsszóval
-3. A rendszer megjeleníti a találatokat listanézetben
+3. A rendszer elkezdi a keresést a kulcsszóval
+4. A rendszer megjeleníti a találatokat listanézetben
 
 #### UC2 - Termék adatainak megtekintése
 1. A felhasználó rákattint egy találatra
@@ -154,6 +154,12 @@ A regisztrált felhasználó tud szövegesen és csillagokkal webárúházat ér
 #### UC10 - Nyelv
 1. A felhasználó tud választani 2 nyelv közül a weboldalon. Angol vagy Magyar
 2. Kiválasztja az adott ikont és a weboldal átvált az adott nyelvezetre. 
+
+#### UC11 - Termék részletek
+1. A rendszer elkezdi a keresést a kulcsszóval
+2. A rendszer megjeleníti a találatokat listanézetben
+3. A felhasználó egy termék elérésével megjeleníti az adott termékhez tartozó információkat
+4. Képre kattintva el navigálja a felhasználót a forgalmazó weboldalra
 
 
 ## Felhasználó felület (UI)
