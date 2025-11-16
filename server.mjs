@@ -164,7 +164,7 @@ app.post('/register', async (request, res) => {
 			res.cookie('Authorize', token, {
 				httpOnly: true,
 			});
-			res.redirect('/');
+			res.redirect(`/?lang=${lang}`);
 		}).catch(() => {
 			res.render('register', {
 				errorMessage: placeholders.errormessage.usercreatefail[lang],
