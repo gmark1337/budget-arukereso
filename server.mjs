@@ -247,7 +247,7 @@ app.post('/history', async (request, res) => {
 	const user = await getUser(request);
 	if (!user) {
 		res.json({
-			reason: 'unathorized',
+			reason: 'unauthorized',
 		});
 		return;
 	}
