@@ -229,7 +229,7 @@ app.post('/login', async (request, res) => {
 	res.cookie('Authorize', token, {
 		httpOnly: true,
 	});
-	res.redirect('/');
+	res.redirect(`/?lang=${lang}`);
 });
 
 app.get('/history', async (request, res) => {
