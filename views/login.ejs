@@ -1,22 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title><%= p.user.login[lang] %></title>
-    </head>
-    <body>
-        <form method="POST" action="">
-            <label for="username"><%= p.user.username[lang] %></label>
-            <input type="text" id="username" name="username">
-            <label for="password"><%= p.user.password[lang] %></label>
-            <input type="password" id="password" name="password">
-            <input type="submit" value="Login">
-            or <a href="/register">register</a>
-        </form>
-        <% if (errorMessage) { %>
-        <div id="error-message">
-            <%= errorMessage %>
+  <head>
+    <meta charset="UTF-8">
+    <title><%= p.user.login[lang] %></title>
+
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="auth.css" />
+
+  </head>
+  <body class="auth-body">
+    <div class="auth-modal">
+      <div class="auth-header">
+        <h1><%= p.user.login[lang] %></h1>
+        <!-- X gomb: vissza a kezdőoldalra -->
+        <a href="/" class="auth-close">✕</a>
+      </div>
+
+      <form method="POST" action="" class="auth-form">
+        <div class="auth-field">
+          <label for="username"><%= p.user.username[lang] %></label>
+          <input type="text" id="username" name="username" autocomplete="username">
         </div>
+
+        <div class="auth-field">
+          <label for="password"><%= p.user.password[lang] %></label>
+          <input type="password" id="password" name="password" autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="auth-submit">
+          <%= p.user.login[lang] %>
+        </button>
+
+        <% if (errorMessage) { %>
+          <div class="auth-error"><%= errorMessage %></div>
         <% } %>
-    </body>
+
+        <p class="auth-switch">
+          <%= (p.user.noAccount && p.user.noAccount[lang])
+                ? p.user.noAccount[lang]
+                : 'No account yet?' %>
+          <a href="/register"><%= p.user.register[lang] %></a>
+        </p>
+      </form>
+    </div>
+  </body>
 </html>

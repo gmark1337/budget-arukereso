@@ -322,13 +322,243 @@ body {
   }
 }
 
+/* ============================================================
+   PRODUCT DETAILS – MODERN MODAL VIEW
+   ============================================================ */
+
 #product-details {
-    display: none;
-    position: absolute;
-    z-index: 10;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--card, #fff);
-    border: 1px solid var(--border, #e5e7eb);
+  position: fixed;
+  inset: 0;
+  display: none;                  /* JS -> .open osztály adja hozzá */
+  align-items: center;
+  justify-content: center;
+  z-index: 1500;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* ha modal nyitva van */
+#product-details.open {
+  display: flex;
+}
+
+/* háttér */
+#product-details .pd-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+/* MODAL KÁRTYA */
+#product-details .pd-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(1000px, 96vw);
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px 18px;
+  animation: fadeInModal 0.15s ease-out;
+}
+
+@keyframes fadeInModal {
+  from { transform: scale(0.97); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+
+#product-details .pd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#product-details .pd-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#product-details .pd-subtitle {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+#product-details .pd-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+#product-details .pd-close:hover {
+  background: #f3f4f6;
+}
+
+/* ============================================================
+   BODY – 2 OSZLOP: KÉP + INFORMÁCIÓK
+   ============================================================ */
+
+#product-details .pd-body {
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
+  gap: 24px;
+  padding: 18px 0 12px;
+  overflow: auto;
+}
+
+/* --- Kép keret --- */
+#product-details .pd-image-wrap {
+  border-radius: 16px;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+#product-details .pd-image-wrap img {
+  max-width: 100%;
+  max-height: 320px;            /* >>> kisebb kép */
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* --- Információk blokk --- */
+#product-details .pd-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#product-details .pd-product-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* Price + vendor chip */
+#product-details .pd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* chip alapos stílus */
+#product-details .pd-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ár chip */
+#product-details .pd-chip-price {
+  background: #ecfeff;
+  color: #0e7490;
+  border: 1px solid #bae6fd;
+}
+
+/* vendor chip */
+#product-details .pd-chip-vendor {
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #e0e7ff;
+}
+
+/* specifikációk */
+#product-details .pd-specs p {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+#product-details .pd-specs strong {
+  font-weight: 600;
+}
+
+/* leírás */
+#product-details .pd-description {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.45;
+}
+
+/* ============================================================
+   FOOTER – GOMBOK
+   ============================================================ */
+
+#product-details .pd-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+#product-details .pd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #111827;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .08s, box-shadow .15s, background .15s;
+}
+
+#product-details .pd-btn-primary {
+  background: #111827;
+  color: #ffffff;
+}
+
+#product-details .pd-btn-secondary {
+  background: #ffffff;
+  color: #111827;
+}
+
+/* hover */
+#product-details .pd-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
+}
+
+#product-details .pd-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+#product-details .pd-btn-icon {
+  font-size: 16px;
+}
+
+/* ============================================================
+   MOBIL BARÁT VERZIÓ
+   ============================================================ */
+
+@media (max-width: 768px) {
+  #product-details .pd-body {
+    grid-template-columns: 1fr;
+  }
+  #product-details .pd-dialog {
+    padding: 16px;
+  }
 }
