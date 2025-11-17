@@ -9,7 +9,7 @@
   --hover-shadow:0 8px 18px rgba(0,0,0,.08);
 }
 
-/* ===== RESULTS GRID ===== */
+/*  RESULTS GRID  */
 #results{
   max-width:1100px;
   margin:16px auto 0;
@@ -32,7 +32,7 @@
   }
 }
 
-/* ===== BOLT KÁRTYA (oszlop) ===== */
+/*  BOLT KÁRTYA (oszlop)  */
 .result{
   background:var(--card);
   border:1px solid var(--line);
@@ -60,7 +60,7 @@
   gap:12px;
 }
 
-/* ===== TERMÉK KÁRTYA ===== */
+/*  TERMÉK KÁRTYA  */
 .item{
   display:grid;
   grid-template-columns:1fr;
@@ -91,7 +91,7 @@
   border:1px solid #eee;
 }
 
-/* ===== KEDVENC SZÍV – nagyobb + jobb alsó sarok ===== */
+/*  KEDVENC SZÍV – nagyobb + jobb alsó sarok  */
 .favourite-add{
   position:absolute;
   right:10px;
@@ -101,7 +101,7 @@
   border-radius:999px;
   display:grid;
   place-items:center;
-  font-size:18px;               /* nagyobb ikon */
+  font-size:18px;               
   background:#ffffff;
   border:1px solid #e5e7eb;
   cursor:pointer;
@@ -128,7 +128,7 @@
   box-shadow:0 3px 8px rgba(220,38,38,.25) !important;
 }
 
-/* ===== META RÉSZ: név + ár ===== */
+/*  META RÉSZ: név + ár  */
 .meta{
   display:grid;
   gap:6px;

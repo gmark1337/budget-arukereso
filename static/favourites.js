@@ -12,24 +12,34 @@ function favouritesListeners() {
 }
 
 async function addTofavourites(b) {
-	b.classList.add('favourited');
-	const root = b.parentElement;
-	const vendor = root.parentElement.parentElement.querySelector('legend').innerText;
-	const href = root.querySelector('img').classList;
-	const image = root.querySelector('img').src;
-	const price = Number.parseInt(root.querySelector('span.chip').innerText);
-	await fetch('/favourites', {
-		method: 'POST',
-		body: new URLSearchParams({
-			vendor,
-			href,
-			image,
-			price,
-		}),
-	});
-	const idClass = await getNewItemId(image);
-	b.classList.add(`id-${idClass}`);
+  b.classList.add('favourited');
+
+  const root = b.parentElement; // .meta
+  const vendor = root.parentElement.parentElement
+    .querySelector('legend')
+    .innerText;
+
+  const href = root.querySelector('img')?.classList || [];
+  const image = root.querySelector('img')?.src || '';
+
+  const priceText = root.querySelector('span.chip')?.innerText || '';
+  const priceNumeric = parseInt(priceText.replace(/\D/g, ''), 10) || 0;
+  // pl. "3 490 Ft", "3.490 Ft" → "3490" → 3490
+
+  await fetch('/favourites', {
+    method: 'POST',
+    body: new URLSearchParams({
+      vendor,
+      href,
+      image,
+      price: priceNumeric,
+    }),
+  });
+
+  const idClass = await getNewItemId(image);
+  b.classList.add(`id-${idClass}`);
 }
+
 
 async function getNewItemId(image) {
 	const res = await fetch('/favourites?' + new URLSearchParams({id: image}));

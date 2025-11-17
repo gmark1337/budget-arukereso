@@ -9,7 +9,7 @@
   --hover-shadow: 0 8px 18px rgba(0,0,0,.08);
 }
 
-/* ===== ALAP ===== */
+/*  ALAP  */
 body {
   margin: 0;
   background: var(--bg);
@@ -17,134 +17,224 @@ body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* ===== TOP BAR ===== */
-#top-bar-menu {
-  position: fixed;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(1180px, 100% - 24px);
-  z-index: 1200;
+/* TOP BAR  */
 
+#top-bar-menu {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 16px;
+  padding: 8px 24px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-/* Search bal oldalt, rugalmasan */
-.searchbar-wrap {
+/* bal – közép – jobb szakasz */
+.top-left {
+  flex: 0 0 auto;
+}
+
+.top-center {
   flex: 1;
   display: flex;
+  justify-content: center;
 }
 
-/* Jobb oldali actionök blokkban */
-.top-actions {
-  display: inline-flex;
+.top-right {
+  flex: 0 0 auto;
+  display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* SEARCHBAR – KISEBB, LETISZTULT */
+/* nyelv “pill” */
+.lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  font-size: 13px;
+}
+
+.lang-icon {
+  font-size: 14px;
+}
+
+/* select kinézet  */
+.language-bar {
+  border: none;
+  background: transparent;
+  font: inherit;
+  padding: 0 4px 0 0;
+  cursor: pointer;
+  appearance: none;
+}
+
+/*  SEARCHBAR  */
+
 #searchbar {
+  max-width: 680px;
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 30px;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 4px;
 
-  width: 100%;
   padding: 4px 6px;
   border-radius: 999px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-  transition: box-shadow .15s, border-color .15s;
-}
-
-#searchbar:focus-within {
-  border-color: #d1d5db;
-  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  background: #f3f4ff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0,0,0,.03);
 }
 
 #searchbar input[type="text"] {
   border: none;
   outline: none;
-  padding: 6px 8px;
+  padding: 6px 10px;
   border-radius: 999px;
-  background: #f3f4ff;
+  background: transparent;
   font-size: 14px;
   color: var(--ink);
 }
+
 #searchbar input::placeholder {
   color: #9ca3af;
 }
 
-#searchbar button[type="submit"] {
+/* Kereső gomb – szürke háttér, fehér ikon */
+#searchbar button[type="submit"],
+#search-button {
   display: grid;
   place-items: center;
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   border: none;
-  border-radius: 999px;
-  background: #111;
-  color: #fff;
+  border-radius: 12px;
+  background: #6b7280;
+  color: #ffffff;
   cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
   transition: transform .08s, box-shadow .15s, background .15s;
+  background-image: none !important;
 }
-#searchbar button[type="submit"]:hover {
-  transform: translateY(-1px);
+
+#searchbar button[type="submit"]:hover,
+#search-button:hover {
+  background: #565f6b;
   box-shadow: 0 4px 10px rgba(0,0,0,.18);
+  transform: translateY(-1px);
 }
-#searchbar button[type="submit"]:active {
+#searchbar button[type="submit"]:active,
+#search-button:active {
   transform: translateY(0);
   box-shadow: none;
 }
 
-/* Favourites / Reviews / Lang / Account dobozok */
-.top-actions > div {
+/* ha SVG lenne benne */
+#searchbar .search-icon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/*  JOBB FELSŐ PILL GOMBOK (TOP RIGHT)  */
+
+/* Reviews + Favourites – fehér pill, ikonokkal */
+.top-right .reviews-bar,
+.top-right .favourites-bar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: 0 1px 4px rgba(0,0,0,.04);
-  font-size: 13px;
-}
-
-/* csak szöveg az accountnál */
-#account {
-  border: none;
-  box-shadow: none;
-  background: transparent;
-  padding: 0;
-}
-
-/* hover a menüpontokra */
-.favourites-bar span,
-.reviews-bar span {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  font-weight: 400;
-}
-.favourites-bar span:hover,
-.reviews-bar span:hover {
-  font-weight: 600;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.08s ease;
 }
 
-/* nyelvváltó */
-.language-bar {
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 3px 6px;
-  background: var(--card);
+/* ikon a felirat előtt */
+.top-right .reviews-bar::before,
+.top-right .favourites-bar::before {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.top-right .reviews-bar::before {
+  content: "☆";
+}
+
+.top-right .favourites-bar::before {
+  content: "♡";
+}
+
+.top-right .reviews-bar span,
+.top-right .favourites-bar span {
+  white-space: nowrap;
+}
+
+.top-right .reviews-bar:hover,
+.top-right .favourites-bar:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+  transform: translateY(-1px);
+}
+
+/* Login / Guest / Username – fekete pill */
+#account,
+#account a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: #111827;
+  border: 1px solid #111827;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.45);
   cursor: pointer;
-  font-size: 13px;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.08s ease;
 }
 
-/* ===== PAGE GRID ===== */
+/* user ikon a név / Login elé – akkor is ha a #account-ban <a> van */
+#account::before,
+#account a::before {
+  content: "👤";
+  font-size: 15px;
+  line-height: 1;
+}
+
+#account:hover,
+#account a:hover {
+  background: #020617;
+  border-color: #020617;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.5);
+  transform: translateY(-1px);
+}
+
+/*  PAGE GRID  */
+
 #page {
   max-width: 1440px;
   margin: 0 auto;
@@ -166,27 +256,53 @@ body {
   min-width: 0;
 }
 
-/* ===== BAL: HISTORY ===== */
-#historyfield,
+/*  BAL: HISTORY  */
+
+#left-col {
+  padding-right: 16px;
+  border-right: 1px solid #e5e7eb;   
+}
+
+#historyfield {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+
+  padding: 4px 0 16px;
+}
+
 #historyfield fieldset {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
 }
 
-#historyfield fieldset { padding: 10px; }
+/* FEJLÉC: "Previous products" / "Viewed products" */
 
-#historyfield legend {
-  display: inline-block;
-  padding: 4px 8px;
-  background: #eef2ff;
-  color: #3730a3;
-  border-radius: 999px;
-  border: 1px solid #e0e7ff;
+#historyfield fieldset > legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin-bottom: 16px;
+
+  font-size: 14px;
   font-weight: 600;
-  font-size: 0.9rem;
+  color: #111827;
 }
+
+/* kis ikon a cím elé */
+#historyfield fieldset > legend::before {
+  content: "📦";                 
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* LISTA  */
 
 #history .items {
   display: grid;
@@ -204,6 +320,7 @@ body {
   background: var(--card);
 }
 
+/* kép bal oldalt, kis kártyában */
 #history .item img {
   width: 56px;
   height: 56px;
@@ -212,6 +329,7 @@ body {
   background: var(--muted);
 }
 
+/* ár chip */
 #history .price .chip {
   padding: 2px 6px;
   border-radius: 999px;
@@ -222,7 +340,7 @@ body {
   font-weight: 600;
 }
 
-/* history remove = favourites stílus */
+/* Remove gomb – egységes a favourites-stílussal */
 #history .remove-history-item {
   padding: 4px 8px;
   border-radius: 8px;
@@ -234,61 +352,129 @@ body {
   cursor: pointer;
   transition: background .12s, color .12s, box-shadow .12s, transform .08s;
 }
+
 #history .remove-history-item:hover {
   background: #2f296a;
   color: #fff;
-  box-shadow: 0 4px 10px rgba(47,41,106,.25);
+  box-shadow: 0 4px 10px rgba(47, 41, 106, .25);
   transform: translateY(-1px);
 }
 
-/* ===== JOBB: FILTERS ===== */
-#filtersfield,
-#filtersfield fieldset {
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: var(--card);
-  box-shadow: var(--shadow);
+
+/*  JOBB: FILTERS */
+
+#right-col {
+  padding-left: 16px;
+  border-left: 1px solid #e5e7eb;
 }
 
 #filtersfield {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+
   max-height: calc(100vh - 96px);
   overflow: auto;
+  padding: 4px 0 16px;
 }
 
-#filtersfield fieldset { padding: 10px; }
+#filtersfield fieldset {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
 
-#filtersfield legend {
-  display: inline-block;
-  padding: 4px 8px;
-  background: #eef2ff;
-  color: #3730a3;
-  border-radius: 999px;
-  border: 1px solid #e0e7ff;
+/*  CÍMSOROK (Filters / Advanced search)  */
+
+/* Fő cím: "Filters" + kis ikon balra */
+#filtersfield #filters > legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin-bottom: 16px;
+
+  font-size: 14px;
   font-weight: 600;
-  font-size: 0.9rem;
+  color: #111827;
 }
 
-#filters fieldset + fieldset { margin-top: 10px; }
+#filtersfield #filters > legend::before {
+  content: "☰";                   
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Második legend: "Advanced search" */
+#filtersfield #filters > fieldset > legend {
+  padding: 0;
+  margin: 24px 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+/*  MEZŐK  */
+
+#filters fieldset + fieldset {
+  margin-top: 0; 
+}
 
 #filters fieldset > label {
   display: block;
-  margin: 6px 0 3px;
-  color: var(--muted);
+  margin: 12px 0 4px;
+  color: #4b5563;
   font-size: 0.85rem;
 }
 
+/* inputok, select  */
 #filters input[type="number"],
 #filters input[type="text"],
 #filters select {
   width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 6px 8px;
-  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #ffffff;
   font-size: 0.9rem;
+  color: #111827;
+  box-sizing: border-box;
 }
 
-/* ===== LOADING ===== */
+#filters input[type="number"]:focus,
+#filters input[type="text"]:focus,
+#filters select:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.35);
+}
+
+/*  WEBSITES LISTA  */
+
+#filters #websites {
+  margin-top: 6px;
+}
+
+#filters #websites label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+  font-size: 0.88rem;
+  color: #111827;
+}
+
+#filters #websites input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+}
+
+
+/*  LOADING  */
 #waitingfield {
   margin-top: 10px;
   font-weight: 500;
@@ -310,255 +496,180 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1200px) {
-  #page {
-    grid-template-columns: 1fr;
-    padding: 64px 12px 24px;
-  }
-  #left-col,
-  #right-col {
-    display: none;
-  }
-}
-
-/* ============================================================
-   PRODUCT DETAILS – MODERN MODAL VIEW
-   ============================================================ */
+/*  PRODUCT DETAILS MODAL  */
 
 #product-details {
   position: fixed;
   inset: 0;
-  display: none;                  /* JS -> .open osztály adja hozzá */
+  display: none;                  
   align-items: center;
   justify-content: center;
-  z-index: 1500;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 1300;
 }
 
-/* ha modal nyitva van */
 #product-details.open {
   display: flex;
 }
 
-/* háttér */
-#product-details .pd-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(3px);
-}
 
-/* MODAL KÁRTYA */
-#product-details .pd-dialog {
-  position: relative;
-  z-index: 1;
-  width: min(1000px, 96vw);
-  max-height: 90vh;
-  background: #ffffff;
+.pd-dialog {
+  width: min(900px, 100% - 32px);
+  max-height: calc(100vh - 48px);
+  background: var(--card);
   border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  display: flex;
-  flex-direction: column;
-  padding: 20px 24px 18px;
-  animation: fadeInModal 0.15s ease-out;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  overflow: hidden;
 }
 
-@keyframes fadeInModal {
-  from { transform: scale(0.97); opacity: 0; }
-  to   { transform: scale(1);   opacity: 1; }
-}
-
-/* ============================================================
-   HEADER
-   ============================================================ */
-
-#product-details .pd-header {
+.pd-header {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--line);
   display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e5e7eb;
 }
-
-#product-details .pd-title {
+.pd-header h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
 }
-
-#product-details .pd-subtitle {
-  margin: 2px 0 0;
+.pd-header p {
+  margin: 4px 0 0;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--muted);
 }
-
-#product-details .pd-close {
+.pd-close {
   border: none;
   background: transparent;
-  font-size: 22px;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-#product-details .pd-close:hover {
-  background: #f3f4f6;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
 }
 
-/* ============================================================
-   BODY – 2 OSZLOP: KÉP + INFORMÁCIÓK
-   ============================================================ */
-
-#product-details .pd-body {
+.pd-body {
+  padding: 16px 20px 18px;
   display: grid;
-  grid-template-columns: minmax(240px, 340px) minmax(0, 1fr);
-  gap: 24px;
-  padding: 18px 0 12px;
-  overflow: auto;
-}
-
-/* --- Kép keret --- */
-#product-details .pd-image-wrap {
-  border-radius: 16px;
-  background: #f9fafb;
-  display: flex;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 16px;
   align-items: center;
-  justify-content: center;
-  padding: 12px;
 }
 
-#product-details .pd-image-wrap img {
-  max-width: 100%;
-  max-height: 320px;            /* >>> kisebb kép */
+.pd-image-wrap img {
+  width: 100%;
+  max-height: 240px;
   object-fit: contain;
   border-radius: 12px;
+  background: #f3f4f6;
+  border: 1px solid #eee;
 }
 
-/* --- Információk blokk --- */
-#product-details .pd-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.pd-info {
+  min-width: 0;
 }
-
-#product-details .pd-product-name {
-  margin: 0;
-  font-size: 20px;
+.pd-product-name {
+  margin: 0 0 8px;
+  font-size: 18px;
   font-weight: 600;
-  line-height: 1.25;
 }
 
-/* Price + vendor chip */
-#product-details .pd-chips {
+.pd-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 10px;
 }
 
-/* chip alapos stílus */
-#product-details .pd-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
+.pd-chip {
+  padding: 3px 10px;
   border-radius: 999px;
-  font-size: 13px;
+  font-size: 0.85rem;
   font-weight: 600;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
 }
 
-/* ár chip */
-#product-details .pd-chip-price {
+.pd-chip-price {
   background: #ecfeff;
   color: #0e7490;
-  border: 1px solid #bae6fd;
+  border-color: #bae6fd;
 }
-
-/* vendor chip */
-#product-details .pd-chip-vendor {
+.pd-chip-price.pd-chip-old {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.pd-chip-vendor {
   background: #eef2ff;
   color: #3730a3;
-  border: 1px solid #e0e7ff;
+  border-color: #e0e7ff;
 }
 
-/* specifikációk */
-#product-details .pd-specs p {
-  margin: 0 0 4px;
-  font-size: 14px;
+.pd-specs {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--muted);
 }
-#product-details .pd-specs strong {
-  font-weight: 600;
+.pd-line {
+  margin: 0;
 }
-
-/* leírás */
-#product-details .pd-description {
-  margin-top: 8px;
-  font-size: 14px;
+.pd-description {
+  margin-top: 10px;
+  font-size: 0.9rem;
   color: #4b5563;
-  line-height: 1.45;
 }
 
-/* ============================================================
-   FOOTER – GOMBOK
-   ============================================================ */
-
-#product-details .pd-footer {
+/* LÁBLÉC gombok */
+.pd-footer {
+  padding: 14px 20px 18px;
+  border-top: 1px solid var(--line);
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   gap: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #e5e7eb;
 }
-
-#product-details .pd-btn {
+.pd-btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
   padding: 10px 18px;
   border-radius: 999px;
-  font-size: 14px;
+  border: none;
   font-weight: 600;
-  border: 1px solid #111827;
+  font-size: 0.95rem;
   cursor: pointer;
-  text-decoration: none;
-  transition: transform .08s, box-shadow .15s, background .15s;
 }
-
-#product-details .pd-btn-primary {
+.pd-btn-primary {
   background: #111827;
   color: #ffffff;
 }
-
-#product-details .pd-btn-secondary {
+.pd-btn-primary:hover {
+  background: #0f172a;
+}
+.pd-btn-secondary {
   background: #ffffff;
   color: #111827;
+  border: 1px solid #e5e7eb;
+}
+.pd-btn-secondary:hover {
+  background: #f3f4f6;
+}
+.pd-btn-icon {
+  font-size: 1rem;
 }
 
-/* hover */
-#product-details .pd-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
-}
-
-#product-details .pd-btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-#product-details .pd-btn-icon {
-  font-size: 16px;
-}
-
-/* ============================================================
-   MOBIL BARÁT VERZIÓ
-   ============================================================ */
-
+/* Mobil  */
 @media (max-width: 768px) {
-  #product-details .pd-body {
-    grid-template-columns: 1fr;
+  .pd-dialog {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
   }
-  #product-details .pd-dialog {
-    padding: 16px;
+  .pd-body {
+    grid-template-columns: 1fr;
   }
 }
