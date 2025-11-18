@@ -17,7 +17,7 @@ Egy weg ár-összehasonlító szolgáltatás, amely:
 3. Scrapers - webes scraping, termékek keresése(párhuzamos keresés, memóriában való tárolás)
 4. Adatbázis - nem relációs adatbázis(mongoDb), felhasználóak, előzmények, kedvencek tárolása
 
-# Architektőra
+# Architektúra
 
 [ FELHASZNÁLÓ (böngésző)] -> [ FRONTEND ] -> EJS sablon (+CSS) -> [ BACKEND ] -> Express.js router, webscraping -> [ ADATBÁZIS ] -> MongoDB(Json struktúra) felhasználóak, előzmények, kedvencek tárolása
 

@@ -101,7 +101,7 @@ export async function Search(searchword) {
 			const start = Date.now();
 			const images = await site.function(searchword, page, site.pagesToFetch);
 			const end = Date.now();
-			//console.log(`Finished scraping ${site.name} in ${(end - start) / 1000} seconds`);
+			console.log(`Finished scraping ${site.name} in ${(end - start) / 1000} seconds`);
 			await page.close();
 			return images;
 		}));
@@ -109,7 +109,7 @@ export async function Search(searchword) {
 
 	const allImages = await Promise.all(tasks);
 	const end = Date.now();
-	//console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
+	console.log(`Runtime for ${sites.length} websites took ${(end - start) / 1000} seconds`);
 	
 	
 	await browser.close();
@@ -165,7 +165,7 @@ export async function SearchProductDetails(url, websiteName){
 	return details;
 }
 
-//console.log(await Search("cumi"));
+console.log(await Search("kék felső"));
 //await Search("Kék felső");
 
 /* const testObject = await Search("kék felső");
