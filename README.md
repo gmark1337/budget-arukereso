@@ -175,3 +175,59 @@ async function Search(searchword) -> string
    ]
 }
 ```
+
+### API endpointok
+
+#### History:
+
+- **GET** /history:
+   - visszaküldi a kirenderelt HTML-t a termék előzményekkel, sikeres Authorize süti jelenlétében
+
+- **POST** /history:
+   - paraméterek:
+      1. **image**: a termék kép URL címe
+      1. **href**: a termék weboldalra átvezető URL cím
+      1. **price**: a termék ára
+   - hozzáadja a felhasználó előzményeihez a terméket, sikeres paraméterek és Authorize süti jelenlétében
+
+- **DELETE** /history/{**id**}:
+   - paraméterek:
+      1. **id**: az előzményekben lévő törölni kívánt termék *_id* mező értéke
+   - eltávolítja a felhasználó előzményei közül a megegyező *_id*-val ellátott terméket sikeres Authorize süti jelenlétében
+
+#### Favourites:
+
+- **GET** /favourites:
+   - visszaküldi a kirenderelt HTML-t a kedvenc termékekkel, sikeres Authorize süti jelenlétében
+
+- **POST** /favoruites:
+   - paraméterek:
+      1. **vendor**: a terméket forgalmazó weboldal neve
+      1. **href**: a termék weboldalra átvezető URL cím
+      1. **image**: a termék kép URL címe
+      1. **price**: a termék ára
+   - hozzáadja a felhasználó kedvenceihez a terméket, sikeres paraméterek és Autohorize süti jelenlétében
+
+- **DELETE** /favourites/{**id**}:
+   - paraméterek:
+      1. **id**: a törölni kívánt termék *_id* mező értéke
+   - eltávolítja a felhasználó kedvencei közül a megegyező *_id*-val ellátott terméket sikeres Authorize süti jelenlétében
+
+#### Reviews:
+
+- **GET** /reviews:
+   - visszaküldi a kirenderelt HTML-t a boltonkénti véleményekkel, sikeres Authorize süti jelenlétében
+
+- **POST** /reviews:
+   - paraméterek:
+      1. **vendor**: a terméket forgalmazó weboldal neve
+      1. **content**: a vélemény tartalma
+      1. **quality**: a weboldal értékelése, 1-5 közötti szám megengedő módon
+   - hozzáadja a felhasználó által írt véleményt sikeres paraméterek és Authorize süti jelenlétében
+
+#### Details:
+
+- **GET** /details:
+   - paraméterek:
+      1. **url**: a termék weboldalra átvezető URL cím
+   - visszaküldi a kirenderelt HTML-t az adott termék részletes leírásával és egyéb adatokkal
