@@ -23,7 +23,7 @@ Egy weg ár-összehasonlító szolgáltatás, amely:
 
 # Adatmodell
 
-[UML](assets/adatbazis_terv.png)
+![Diagram](assets/adatbazis_terv.png)
 
 ## Users tábla
 

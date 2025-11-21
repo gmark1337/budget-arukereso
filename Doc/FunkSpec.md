@@ -202,15 +202,22 @@ A regisztrált felhasználó tud szövegesen és csillagokkal webárúházat ér
 - Csillagértékelések -> megbízható jelvény
 
 
-
-[Eredmény nézet](assets/eredmeny-nezet.jpeg)
-[Előzmények nézet](assets/history-nezet.png)
-[Kedvencek nézet](assets/kedvencek-nezet.png)
-[Kezdőlap nézet](assets/kezdolap-nezet.png)
-[Bejelentkezési nézet](assets/login-nezet.png)
-[Nyelvi beállítások nézet](assets/nyelvi_beallitas-nezet.png)
-[Vélemények nézet](assets/reviews-nezet.png)
-[Termék információ nézet](assets/reviews-nezet.png)
+#### Eredmény nézet
+![Diagram](assets/eredmeny-nezet.jpeg)
+#### Előzmények nézet
+![Diagram](assets/history-nezet.png)
+#### Kedvencek nézet
+![Diagram](assets/kedvencek-nezet.png)
+#### Kezdőlap nézet
+![Diagram](assets/kezdolap-nezet.png)
+#### Bejelentkezési nézet
+![Diagram](assets/login-nezet.png)
+#### Nyelvi beállítások nézet
+![Diagram](assets/nyelvi_beallitas-nezet.png)
+#### Vélemények nézet
+![Diagram](assets/reviews-nezet.png)
+#### Termék információ nézet
+![Diagram](assets/reviews-nezet.png)
 
 
 ## Adatmodell
@@ -260,6 +267,10 @@ A regisztrált felhasználó tud szövegesen és csillagokkal webárúházat ér
     - Név
     - Email
     - Jelszó
+
+#### Vizuálisan
+
+![Diagram](./assets/adatbazis_terv.png)
 
 
 ## Nem funkcionális követelmények 
