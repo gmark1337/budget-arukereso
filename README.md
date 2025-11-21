@@ -257,6 +257,26 @@ Visszatérési értéke:
    * **shipping** -> szállítási információk
    * **material** -> anyag
    * **otherInformation** -> egyéb információk
+---
+#### productDeatilFetchService.js
+
+- Termék részletek kereső
+Meghívja a szükséges metódusokat a sikeres termék részletek kereséshez. Emelett némely weboldalnál ```GET``` kéréssel szerzi meg a termék információkat. 
+- Paraméterek:
+   * **url** -> a keresendő termék URL-je
+
+Visszatérési értéke:
+   * **productName** -> termék név
+   * **originalPrice** -> eredeti ár
+   * **discountPrice** -> akciós ár
+   * **color** -> szín
+   * **shipping** -> szállítási információk
+   * **material** -> anyag
+   * **otherInformation** -> egyéb információk
+
+```
+export async function fetchProductDetailsAsync(url)
+```
 
 ### Endpointok
 
