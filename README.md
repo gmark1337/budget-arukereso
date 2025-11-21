@@ -175,3 +175,114 @@ async function Search(searchword) -> string
    ]
 }
 ```
+
+### Endpointok
+
+#### Landing page:
+
+- **GET** /:
+   - paraméterek:
+      1. **lang**: megjelenítési nyelv
+   - visszaküldi a HTML weboldalt, ami tartalmazza a kereső mezőt és a keresési
+     szűrő feltételeket
+   - nem autentikált felhasználó esetén egy anchor vezet át a bejeletkezési
+     felületre
+   - autentikált felhasználó esetén az anchor helyett láthatja a
+     felhasználónevét, emelett más prémium funkciók is elérhetőek számára:
+      1. előzmények
+      1. kedvencek
+      1. vélemények
+
+#### Login page:
+
+- **GET** /login:
+    - paraméterek:
+       1. **lang**: megjelenítési nyelv
+    - visszaküldi az alapértelmezett bejelentkező felületet
+    - átirányítást biztosít a regisztráló illetve a landing page oldalra
+
+#### Register page:
+
+- **GET** /register:
+    - paraméterek:
+       1. **lang**: megjelenítési nyelv
+    - visszaküldi az alapértelmezett regisztráló felületet
+    - átirányítást biztosít a bejelentkező illetve a landing page oldalra
+
+
+### API endpointok
+
+#### Search:
+
+- **GET** /search:
+   - paraméterek:
+      1. **searchword**: a keresési kulcsszó/kulcsszavak
+      1. **order**: a találatok rendezése növekvő (asc) vagy csökkenő (desc)
+      1. **minPrice**: ár intervallum alsó küszöbe
+      1. **maxPrice**: ár intervallum felső küszöbe
+      1. **size**: termék mérete
+      1. **count**: weboldalankénti darabszám
+      1. **lang**: beállított nyelv
+      - a keresett weboldalak a következő formátumban adódnak hozzá a kéréshez: {**weboldal-neve**}=true
+   - visszaküldi a kirenderelt HTML-t a talált termékekkel oldalanként rendezve, a meghatározott sorrendben
+
+#### History:
+
+- **GET** /history:
+   - paraméterek:
+      1. **lang**: beállított nyelv
+   - visszaküldi a kirenderelt HTML-t a termék előzményekkel, sikeres Authorize süti jelenlétében
+
+- **POST** /history:
+   - paraméterek:
+      1. **image**: a termék kép URL címe
+      1. **href**: a termék weboldalra átvezető URL cím
+      1. **price**: a termék ára
+   - hozzáadja a felhasználó előzményeihez a terméket, sikeres paraméterek és Authorize süti jelenlétében
+
+- **DELETE** /history/{**id**}:
+   - paraméterek:
+      1. **id**: az előzményekben lévő törölni kívánt termék *_id* mező értéke
+   - eltávolítja a felhasználó előzményei közül a megegyező *_id*-val ellátott terméket sikeres Authorize süti jelenlétében
+
+#### Favourites:
+
+- **GET** /favourites:
+   - paraméterek:
+      1. **lang**: beállított nyelv
+   - visszaküldi a kirenderelt HTML-t a kedvenc termékekkel, sikeres Authorize süti jelenlétében
+
+- **POST** /favoruites:
+   - paraméterek:
+      1. **vendor**: a terméket forgalmazó weboldal neve
+      1. **href**: a termék weboldalra átvezető URL cím
+      1. **image**: a termék kép URL címe
+      1. **price**: a termék ára
+   - hozzáadja a felhasználó kedvenceihez a terméket, sikeres paraméterek és Autohorize süti jelenlétében
+
+- **DELETE** /favourites/{**id**}:
+   - paraméterek:
+      1. **id**: a törölni kívánt termék *_id* mező értéke
+   - eltávolítja a felhasználó kedvencei közül a megegyező *_id*-val ellátott terméket sikeres Authorize süti jelenlétében
+
+#### Reviews:
+
+- **GET** /reviews:
+   - paraméterek:
+      1. **lang**: beállított nyelv
+   - visszaküldi a kirenderelt HTML-t a boltonkénti véleményekkel, sikeres Authorize süti jelenlétében
+
+- **POST** /reviews:
+   - paraméterek:
+      1. **vendor**: a terméket forgalmazó weboldal neve
+      1. **content**: a vélemény tartalma
+      1. **quality**: a weboldal értékelése, 1-5 közötti szám megengedő módon
+   - hozzáadja a felhasználó által írt véleményt sikeres paraméterek és Authorize süti jelenlétében
+
+#### Details:
+
+- **GET** /details:
+   - paraméterek:
+      1. **url**: a termék weboldalra átvezető URL cím
+      1. **lang**: beállított nyelv
+   - visszaküldi a kirenderelt HTML-t az adott termék részletes leírásával és egyéb adatokkal
