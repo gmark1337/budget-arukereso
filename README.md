@@ -178,6 +178,19 @@ async function Search(searchword) -> string
 
 ### API endpointok
 
+#### Search:
+
+- **GET** /search:
+   - paraméterek:
+      1. **searchword**: a keresési kulcsszó/kulcsszavak
+      1. **order**: a találatok rendezése növekvő (asc) vagy csökkenő (desc)
+      1. **minPrice**: ár intervallum alsó küszöbe
+      1. **maxPrice**: ár intervallum felső küszöbe
+      1. **size**: termék mérete
+      1. **count**: weboldalankénti darabszám
+      - a keresett weboldalak a következő formátumban adódnak hozzá a kéréshez: {**weboldal-neve**}=true
+   - visszaküldi a kirenderelt HTML-t a talált termékekkel oldalanként rendezve, a meghatározott sorrendben
+
 #### History:
 
 - **GET** /history:
