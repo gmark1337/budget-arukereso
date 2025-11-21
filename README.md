@@ -1,3 +1,15 @@
+# Tartalomjegyzék
+
+* [Áttekintés](#budget-árukereső)
+* [Telepítés](#telepítés)
+* [Használt könyvtárak](#könyvtárak)
+* [Szolgáltatások](#szolgáltatások)
+* [Endpoint dokumentáció](#endpointok)
+* [Funkcionális specifikáció](./Doc/FunkSpec.md)
+* [Rendszer terv](./Doc/Rendszerterv.md)
+* [Követelmény specifikáció](./Doc/KovSpec.md)
+* [Web scraping dokumentáció](./Doc/WebscrapeHelper.md)
+
 # Budget-árukereső
 
 Ez a projekt a Szoftverfejlesztési módszertanok órára készült. A nevétől adódóan a projekt egy [árukereső](https://www.arukereso.hu/?utm_source=google&utm_medium=cpc&utm_campaign=HU>PRF>ALL>Self_promo>SERP>OTH>%28KW%29&utm_id=170299665&gad_source=1&gad_campaignid=170299665&gclid=CjwKCAjwi4PHBhA-EiwAnjTHuTo00ouPrTTxwZmVJERCDJGZaNiYmvmh1TP4C7EU8y4i71vrKIdGABoCMJoQAvD_BwE) másolata, de míg az eredeti a technikai eszközökre koncentrál, a mi keresőnk ruhákat listáz.
@@ -9,6 +21,10 @@ A weboldal számos szűrési lehetőséget kínál:
 - Melyik oldalt mutassa a kereső
 
 A jövőben további funkciók is várhatók, például bejelentkezés, regisztráció, kedvencek kezelése és értékelési lehetőség.
+
+**A fő funkció** amitől eltér az árukereső hogy az adatokat a memóriában tároljuk. Ezt egy saját web scraper segítségével oldjuk meg. 
+
+Részletesebben [itt](./Doc/WebscrapeHelper.md)
 
 # Telepítés
 

@@ -65,17 +65,7 @@ Egy weg ár-összehasonlító szolgáltatás, amely:
 
 # Fő oldalak és működés (+API endpoint)
 
-| Oldal               | Útvonal                                                                                                        | Leírás                            |
-| ------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| Főoldal             | /                                                                                                              | Keresőmező, előzmények listája    |
-| Keresési eredmények | /search?searchword=Kék felső                                                                                   | Találatok weboldalanként lebontva |
-| Szűrési feltétel    | &minPrice=4000&maxPrice=16000&size=M&count=3&hervis=true&sinsay=false&sportissimo=true&aboutYou=true&order=asc | kereséshez alkalmazza a szűrést   |
-| Bejelentkezés       | /login                                                                                                         | Bejelentkezési felület            |
-| Regisztráció        | /register                                                                                                      | Regisztrációs felület             |
-| Kedvencek           | /favourites                                                                                                    | Kedvencek felület                 |
-| Előzmények          | /history                                                                                                       | Előzmények felület                |
-| Vélemények          | /reviews                                                                                                       | Vélemények felület                |
-| Termék Részletek    | /details                                                                                                       | Termék részletek funkciója        |
+endpointokról bővebben [itt](../README.md#api-endpointok)
 
 
 # Tesztelés
