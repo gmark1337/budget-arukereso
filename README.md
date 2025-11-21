@@ -188,12 +188,15 @@ async function Search(searchword) -> string
       1. **maxPrice**: ár intervallum felső küszöbe
       1. **size**: termék mérete
       1. **count**: weboldalankénti darabszám
+      1. **lang**: beállított nyelv
       - a keresett weboldalak a következő formátumban adódnak hozzá a kéréshez: {**weboldal-neve**}=true
    - visszaküldi a kirenderelt HTML-t a talált termékekkel oldalanként rendezve, a meghatározott sorrendben
 
 #### History:
 
 - **GET** /history:
+   - paraméterek:
+      1. **lang**: beállított nyelv
    - visszaküldi a kirenderelt HTML-t a termék előzményekkel, sikeres Authorize süti jelenlétében
 
 - **POST** /history:
@@ -211,6 +214,8 @@ async function Search(searchword) -> string
 #### Favourites:
 
 - **GET** /favourites:
+   - paraméterek:
+      1. **lang**: beállított nyelv
    - visszaküldi a kirenderelt HTML-t a kedvenc termékekkel, sikeres Authorize süti jelenlétében
 
 - **POST** /favoruites:
@@ -229,6 +234,8 @@ async function Search(searchword) -> string
 #### Reviews:
 
 - **GET** /reviews:
+   - paraméterek:
+      1. **lang**: beállított nyelv
    - visszaküldi a kirenderelt HTML-t a boltonkénti véleményekkel, sikeres Authorize süti jelenlétében
 
 - **POST** /reviews:
@@ -243,4 +250,5 @@ async function Search(searchword) -> string
 - **GET** /details:
    - paraméterek:
       1. **url**: a termék weboldalra átvezető URL cím
+      1. **lang**: beállított nyelv
    - visszaküldi a kirenderelt HTML-t az adott termék részletes leírásával és egyéb adatokkal
