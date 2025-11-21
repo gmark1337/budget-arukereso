@@ -165,7 +165,7 @@ export async function SearchProductDetails(url, websiteName){
 	return details;
 }
 
-console.log(await Search("kék felső"));
+//console.log(await Search("kék felső"));
 //await Search("Kék felső");
 
 /* const testObject = await Search("kék felső");
