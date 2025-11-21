@@ -63,11 +63,7 @@
             <%= username %>
           </div>
         <% } else { %>
-          <div class="top-chip reviews-bar">
-            <span><%= p.reviews.title[lang] %></span>
-          </div>
-
-          <a href="/login" class="top-chip top-login">
+          <a href="/login?lang=<%= lang %>" class="top-chip top-login">
             <span><%= p.user.login[lang] %></span>
           </a>
         <% } %>
