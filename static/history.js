@@ -1,17 +1,15 @@
 // Register events for each item
 function historyListeners() {
-	for (const element of document.querySelectorAll('#product-details img')) {
+	for (const element of document.querySelectorAll('#product-details a.pd-btn.pd-btn-primary')) {
 		element.addEventListener('click', () => {
-			const root = document.querySelector(`.item [src="${element.src}"]`)
-				.parentElement;
-			const image = element.src;
-			const href = getUrlFromPathClass(root.querySelector('img'));
+            const src = document.querySelector('.pd-image-wrap img').src;
+			const root = document.querySelector(`.item [src="${src}"]`).parentElement;
+            const href = getUrlFromPathClass(root.querySelector('img'));
 			const price = Number.parseInt(root.querySelector('.chip').innerText);
-			console.log(image, href, price);
 			fetch('/history', {
 				method: 'POST',
 				body: new URLSearchParams({
-					image,
+                    image: src,
 					href,
 					price,
 				}),
