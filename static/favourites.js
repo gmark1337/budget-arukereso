@@ -80,7 +80,9 @@ function registerFavouriteRemoveButtons() {
 			await removeFromFavourites(b);
 			updateHistory(document.querySelector('#favourites'));
 			registerFavouriteRemoveButtons();
-			document.querySelector(`.${id}`).classList.remove('favourited');
+            if (document.querySelector(`.${id}`)) {
+			    document.querySelector(`.${id}`).classList.remove('favourited');
+            }
 		});
 	}
 }

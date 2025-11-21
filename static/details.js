@@ -132,9 +132,7 @@ function detailsListeners() {
 
           <div class="pd-body">
             <div class="pd-image-wrap">
-              <a href="${url}" target="_blank" rel="noopener">
                 <img src="${img.src}" alt="">
-              </a>
             </div>
 
             <div class="pd-info">
@@ -157,11 +155,6 @@ function detailsListeners() {
               <span class="pd-btn-icon">↗</span>
               <span>${L.visit} ${vendor || 'website'}</span>
             </a>
-
-            <button type="button" class="pd-btn pd-btn-secondary pd-fav-toggle">
-              <span class="pd-btn-icon">♡</span>
-              <span>${L.addFav}</span>
-            </button>
           </div>
         </div>
       `;
