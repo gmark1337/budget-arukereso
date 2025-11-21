@@ -115,9 +115,9 @@ const filters = {
    - Szűrés
      A szűrési URL-t az adott weboldal kódolásával hozzuk létre amire a getImageAsync algoritmus használ.
      - Paraméterek:
-        * SearchedItem -> keresett szó
-        * url -> a weboldal kereső URL-je
-        * filters -> ha nincs feltétel akkor üres és csak a keresett szót kódol.
+        * **SearchedItem** -> keresett szó
+        * **url** -> a weboldal kereső URL-je
+        * **filters** -> ha nincs feltétel akkor üres és csak a keresett szót kódol.
 
 ```
 encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {})
@@ -127,9 +127,9 @@ encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {})
 - Kereső funckió<br>
   Itt hívjuk meg a **encodeSearchItemWithFilteringAsync**, **getImageAsync** majd az az eredményt tömbösíve visszaadjuk.
   - Paramétrek:
-    * searchword -> keresett szó
-    * page -> adott oldal
-    * numberOfItemsToFetch -> mennyi oldalt gyüjtsön be az oldal
+    * **searchword** -> keresett szó
+    * **page** -> adott oldal
+    * **numberOfItemsToFetch** -> mennyi oldalt gyüjtsön be az oldal
 ```
 fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch)
 ```
@@ -161,10 +161,11 @@ async function getImagesAsync(page, divSelector, linkSelector, priceSelector, pr
 | priceFilter          | Egy regex ami alapján kiszűri az árat a priceSelector által kiválasztott szövegből | regex  |
 | productImageSelector | Kiválasztja a terméknek a képét                                                    | string |
 ---
+#### searchService.js
 - Search
   Ez a függvény hívja meg a többi weboldalt.
   - Paraméterek:
-      * searchword -> keresett szó
+      * **searchword** -> keresett szó
 
 ```
 async function Search(searchword) -> string
@@ -199,6 +200,63 @@ async function Search(searchword) -> string
    ]
 }
 ```
+
+- Stilisztikai elem letiltás
+Letiltja az elinditott böngésző beállítások egyes elemei megjelenítését:
+   * **Képeket**
+   * **CSS**
+   * **Betűstílus**
+- Paraméterek:
+   * **browser** -> böngésző 
+```
+function DisableImages(browser)
+```
+
+---
+
+- Böngésző elínditás
+Elindít egy headless böngészőt a háttérben.
+**FONTOS!** minden hívás után be kell zárni a böngészőt vagy a háttérben fog futni. Azaz, 
+
+```
+await browser.close()
+```
+
+Amely visszatér a böngésző kontextusával.
+
+```
+async function LaunchBrowserAsync()
+```
+
+--- 
+
+
+- Gomb kattintás kikényszerítés
+Egy adott CSS kiválasztóra rákattint a böngésző kontextusában.
+   - Paraméterek:
+      * **page** -> adott oldal, ahol kell kattintani
+      * **selector** -> kattintadó gombnak a CSS kiválasztója
+
+```
+async function ForceButtonClickAsync(page, selector)
+```
+---
+
+- Termék részlet leírás kereső
+Elíndit egy keresést, egy adott termék illetően.
+   - Paraméterek:
+      * **url** -> keresendő termék URL-je
+      * **websiteName** -> A keresendő termék weboldala
+A weboldal neve megkönnyebbíti kiválasztani a megfelelő kiválasztokat a ``` config.json ``` fájlból. Hasonló müködése van mint a ```Search``` metódusnak.
+
+Visszatérési értéke:
+   * **productName** -> termék név
+   * **originalPrice** -> eredeti ár
+   * **discountPrice** -> akciós ár
+   * **color** -> szín
+   * **shipping** -> szállítási információk
+   * **material** -> anyag
+   * **otherInformation** -> egyéb információk
 
 ### Endpointok
 
