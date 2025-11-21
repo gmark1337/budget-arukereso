@@ -176,6 +176,40 @@ async function Search(searchword) -> string
 }
 ```
 
+### Endpointok
+
+#### Landing page:
+
+- **GET** /:
+   - paraméterek:
+      1. **lang**: megjelenítési nyelv
+   - visszaküldi a HTML weboldalt, ami tartalmazza a kereső mezőt és a keresési
+     szűrő feltételeket
+   - nem autentikált felhasználó esetén egy anchor vezet át a bejeletkezési
+     felületre
+   - autentikált felhasználó esetén az anchor helyett láthatja a
+     felhasználónevét, emelett más prémium funkciók is elérhetőek számára:
+      1. előzmények
+      1. kedvencek
+      1. vélemények
+
+#### Login page:
+
+- **GET** /login:
+    - paraméterek:
+       1. **lang**: megjelenítési nyelv
+    - visszaküldi az alapértelmezett bejelentkező felületet
+    - átirányítást biztosít a regisztráló illetve a landing page oldalra
+
+#### Register page:
+
+- **GET** /register:
+    - paraméterek:
+       1. **lang**: megjelenítési nyelv
+    - visszaküldi az alapértelmezett regisztráló felületet
+    - átirányítást biztosít a bejelentkező illetve a landing page oldalra
+
+
 ### API endpointok
 
 #### Search:
