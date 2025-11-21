@@ -113,17 +113,17 @@ A felhasználó által elérhető funkciók
 
 ## Felhasználói esetek
 
-UC1 - Termék keresése
-UC2 - Termék adatainak megtekintése
-UC3 - Webáruház navigálás
-UC4 - Kedvencekhez hozzáadás
-UC5 - Kedvencekhez navigálás
-UC6 - Regisztrálás
-UC7 - Bejelentkezés
-UC8 - Előzmények
-UC9 - Értékelés
-UC10 - Nyelv
-UC11 - Termék részletek
+UC1 - Termék keresése <br>
+UC2 - Termék adatainak megtekintése <br>
+UC3 - Webáruház navigálás <br>
+UC4 - Kedvencekhez hozzáadás<br>
+UC5 - Kedvencekhez navigálás<br>
+UC6 - Regisztrálás<br>
+UC7 - Bejelentkezés<br>
+UC8 - Előzmények<br>
+UC9 - Értékelés<br>
+UC10 - Nyelv<br>
+UC11 - Termék részletek<br>
 
 
 ## Fogalomtár:
