@@ -110,26 +110,30 @@ const filters = {
 };
 ```
 
-- Hervis.js
+> Minden **modellnek** külön privát függvénye van a szűrésre!
 
-    - Szűrés
+   - Szűrés
      A szűrési URL-t az adott weboldal kódolásával hozzuk létre amire a getImageAsync algoritmus használ.
-        - SearchedItem -> keresett szó
-        - url -> a weboldal kereső URL-je
-        - filters -> ha nincs feltétel akkor üres és csak a keresett szót kódol.
+     - Paraméterek:
+        * SearchedItem -> keresett szó
+        * url -> a weboldal kereső URL-je
+        * filters -> ha nincs feltétel akkor üres és csak a keresett szót kódol.
 
 ```
 encodeSearchItemWithFilteringAsync(searchedItem, url, filters = {})
 ```
 
+---
 - Kereső funckió<br>
-  Itt hívjuk meg a encodeSearchItemWithFilteringAsync, getImageAsync majd az az eredményt tömbösíve visszaadjuk.
-    - searchword -> keresett szó
-    - page -> adott oldal
-    - numberOfItemsToFetch -> mennyi oldalt gyüjtsön be az oldal
+  Itt hívjuk meg a **encodeSearchItemWithFilteringAsync**, **getImageAsync** majd az az eredményt tömbösíve visszaadjuk.
+  - Paramétrek:
+    * searchword -> keresett szó
+    * page -> adott oldal
+    * numberOfItemsToFetch -> mennyi oldalt gyüjtsön be az oldal
 ```
 fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch)
 ```
+---
 ### Függvények
 
 #### ImageScraperService.js
@@ -140,7 +144,7 @@ fetchHervisImagesAsync(searchword, page, numberOfItemsToFetch)
 ```
 async function sleep(ms): int
 ```
-
+--- 
 - Kép kigyűjtés
   Az adott oldalon kiválasztja a termékeket és elmenti a képüknek az URL-ét, az adott termékenek az URL-ét és az adott termék árát.
 
@@ -156,9 +160,11 @@ async function getImagesAsync(page, divSelector, linkSelector, priceSelector, pr
 | priceSelector        | Kiválasztja minden terméknek az árá-t                                              | string |
 | priceFilter          | Egy regex ami alapján kiszűri az árat a priceSelector által kiválasztott szövegből | regex  |
 | productImageSelector | Kiválasztja a terméknek a képét                                                    | string |
-
+---
 - Search
-  Ez a függvény hívja meg a többi weboldalt. Egy kereső szót vár el argumentomként.
+  Ez a függvény hívja meg a többi weboldalt.
+  - Paraméterek:
+      * searchword -> keresett szó
 
 ```
 async function Search(searchword) -> string
@@ -172,9 +178,10 @@ async function Search(searchword) -> string
          "WebsiteName":"Website1",
          "FoundImages":[
             {
-               "Item":"Blue jeans",
-               "URl":"URL",
-               "Price":8500
+               "href":"URL",
+               "src":"URL",
+               "price":8500,
+               "title": "blue jeans"
             }
          ]
       },
@@ -182,9 +189,10 @@ async function Search(searchword) -> string
          "WebsiteName":"Website2",
          "FoundImages":[
             {
-               "Item":"Blue jeans",
-               "URl":"URL",
-               "Price":9000
+               "href":"URL",
+               "src":"URL",
+               "price":8500,
+               "title": "blue jeans"
             }
          ]
       }
