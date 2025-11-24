@@ -86,7 +86,7 @@ function registerFavouriteRemoveButtons() {
 		});
 	}
 }
-// --- Click toggle + outside/Escape close ---
+//  Click toggle + outside/Escape close 
 const favBar = document.querySelector('.favourites-bar');
 const favPanel = document.querySelector('#favourites');
 

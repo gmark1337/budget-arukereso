@@ -1,6 +1,5 @@
-// details.js
 
-// --- Mini fordítószótár a modalhoz (hu / en) ---
+// Fordítószótár a modalhoz (hu / en) 
 const DETAILS_I18N = {
   en: {
     header: 'Product Details',
@@ -29,6 +28,22 @@ const DETAILS_I18N = {
     removeFav: 'Kedvencekből eltávolítás',
   },
 };
+function formatPrice(value) {
+  if (!value) return '';
+
+  const text = String(value);
+
+
+  const match = text.match(/(\d[\d\s.]*)/);
+  if (!match) return text;   // ha nem talál semmit, hagyjuk eredetiben
+
+  // minden nem számjegy törlése ebből a részletből
+  const numeric = match[1].replace(/[^\d]/g, '');
+  if (!numeric) return text;
+
+  return `${numeric} Ft`;
+}
+
 
 function getDetailsTexts() {
   // lang globálisan jön index.ejs-ből – ha valamiért nincs, fallback: en
@@ -75,7 +90,7 @@ function detailsListeners() {
         d.originalPrice ||
         '';
 
-      // --- ÁRAK NORMALIZÁLÁSA ---
+      //  ÁRAK NORMALIZÁLÁSA 
       const origPrice = normalizePriceText(d.originalPrice);
       const discPrice = normalizePriceText(d.discountPrice);
       const fallbackPrice = normalizePriceText(cardPriceText);
@@ -116,7 +131,7 @@ function detailsListeners() {
 
       const description = d.otherInformation || '';
 
-      // === MODAL HTML ===
+      //  MODAL HTML 
       product.innerHTML = `
         <div class="pd-backdrop"></div>
         <div class="pd-dialog">
@@ -161,7 +176,7 @@ function detailsListeners() {
 
       product.classList.add('open');
 
-      // === Bezárás (X, háttér, Esc) ===
+      //  Bezárás (X, háttér, Esc) 
       const close = () => {
         product.classList.remove('open');
         product.innerHTML = '';
@@ -178,7 +193,7 @@ function detailsListeners() {
       };
       document.addEventListener('keydown', escHandler);
 
-      // === Kedvencek gomb a modalban (szinkron a kártya szívével) ===
+      //  Kedvencek gomb a modalban (szinkron a kártya szívével) 
       const cardFavBtn = card?.querySelector('button.favourite-add');
       const modalFavBtn = product.querySelector('.pd-fav-toggle');
 
